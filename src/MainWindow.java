@@ -1,38 +1,54 @@
-import java.awt.*;
-import java.awt.event.*;
 import java.awt.Container;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 
-import javax.swing.*;
 
 public class MainWindow extends JFrame {
 	/**
 	 * Constructor
 	 * @params 
-	 * x: int
 	 * 
 	 */
 	public MainWindow () {
-		Container cp = this.getContentPane();
-		cp.setLayout(new FlowLayout());
-		cp.add(new JLabel("HI there"));
-		thing = new JTextField("0", 10);
-		thing.setEditable(false);
-		cp.add(thing);
+		initUI();
+	}
+	
+	/**
+	 * 
+	 */
+	private void initUI() {
+		JButton quitButton = new JButton("Quit");
 		
-		thingo = new JButton("START");
-		cp.add(thingo);
-		
-		thingo.addActionListener(new ActionListener() {
+		quitButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent evt) {
-				i++;
-				thing.setText(i + " ");
+			public void actionPerformed(ActionEvent event) {
+				System.exit(0);
 			}
 		});
+		
+		createLayout(quitButton);
+		
+		setTitle("Maze Game");
+		setSize(300, 200);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
-
-	// Hayden wants our fields at the bottom for some reason
-	private JTextField thing;
-	private JButton thingo;
-	private int i = 0;
+	
+	
+	private void createLayout(JComponent... arg) {
+		Container pane = getContentPane();
+		GroupLayout gl = new GroupLayout(pane);
+		pane.setLayout(gl);
+		
+		gl.setAutoCreateContainerGaps(true);
+		
+		gl.setHorizontalGroup(gl.createSequentialGroup().addComponent(arg[0]));
+		gl.setVerticalGroup(gl.createSequentialGroup().addComponent(arg[0]));
+	}
+	
 }
