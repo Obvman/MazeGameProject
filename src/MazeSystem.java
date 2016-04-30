@@ -4,11 +4,11 @@ import java.awt.EventQueue;
  *  here to make other stuff work */
 public class MazeSystem {
 	public static void main(String[] args) {
-		System.out.println("Let's start pls");
 		
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				System.out.println("Opening Main Window");
 				MainWindow window = new MainWindow();
 				window.setVisible(true);;
 			}
