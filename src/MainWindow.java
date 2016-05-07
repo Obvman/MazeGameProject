@@ -117,15 +117,26 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
+		pauseButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("The game is actually paused right now, trust me");
+			}
+		});
+		
+		// Should we go straight to the main menu or give an are you sure prompt?
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				exitDialog();
+				//goToMenu() or:
+				ExitDialog ed = new ExitDialog();
+				ed.setVisible(true);
 			}
 		});
+		
 	}
 	
-	public void exitDialog() {
+	private void goToMenu() {
 		
 	}
 
