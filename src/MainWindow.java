@@ -22,7 +22,10 @@ public class MainWindow extends JFrame {
 		containerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		// frame to display the maze state
+		//TODO move this Maze to a legit class maybe
+		Maze maze= new Maze();
 		mazePanel = new MazePanel();
+		mazePanel.addMaze(maze.getMaze(31));
 		initMazePanel();
 
 		// statusBar to appear above the maze
