@@ -1,5 +1,4 @@
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.SwingUtilities;
 
 public class Controller {
 	// Uses a border layout to implement a status bar and side menu
@@ -14,5 +13,4 @@ public class Controller {
 			}
 		});
 	}
-
 }

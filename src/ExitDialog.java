@@ -8,6 +8,8 @@ import javax.swing.JDialog;
 import javax.swing.JTextPane;
 
 public class ExitDialog extends JDialog {
+	
+	private static final long serialVersionUID = 1L;
 	private MainWindow parentWindow;
 	
 	public ExitDialog(MainWindow _parentWindow) {
@@ -64,7 +66,7 @@ public class ExitDialog extends JDialog {
 	}
 
 	// helper to allow this references from inside abstract classes
-	private ExitDialog getThis() {
-		return this;
-	}
+//	private ExitDialog getThis() {
+//		return this;
+//	}
 }

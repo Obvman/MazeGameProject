@@ -1,8 +1,21 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class MainWindow extends JFrame {
+	// dunno what this is for but it gets rid of the yellow warning in eclipse
+	private static final long serialVersionUID = 1L;
+
 	private JPanel screens; // governing panel containing menus and game panel
 	
 	private JPanel statusBar;
