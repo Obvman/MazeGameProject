@@ -77,7 +77,8 @@ public class GamePanel extends JPanel {
 		// Double dWidth = this.frameHeight * 0.8;
 		// mazePanel.setSize(dWidth.intValue(), dHeight.intValue());
 		// just so we can differentiate it until the real maze is made
-		mazePanel.setBackground(Color.blue);
+		
+		// mazePanel.setBackground(Color.blue);
 	}
 
 	private void initStatusBar() {
