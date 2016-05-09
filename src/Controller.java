@@ -21,7 +21,7 @@ public class Controller {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				MainWindow mainWindow = new MainWindow(800, 700);
+				MainWindow mainWindow = new MainWindow(700, 600);
 				mainWindow.setVisible(true);
 			}
 		});

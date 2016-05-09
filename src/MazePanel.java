@@ -65,12 +65,6 @@ public class MazePanel extends JPanel implements ActionListener {
 			}
 		}
 		
-		// start and end grid
-		g.setColor(Color.green);
-		g.fillRect(0, 0, size, size);
-
-		g.setColor(Color.red);
-		g.fillRect(size*(maze[0].length - 1), size*(maze.length - 1), size, size);
 		
 		// paint the player
 		g.drawImage(player.getImage(), player.getX(), player.getY(), this);
