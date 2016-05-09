@@ -1,6 +1,16 @@
 /**
- * Game Panel class containing visual representation 
- * of the maze, status bar and side menu
+ * Game Panel class that displays after starting a game
+ * Contains:
+ *   - Status bar (top)
+ *     * Hints
+ *     * Time display
+ *     * Score display
+ *   - maze panel (centre left)
+ *     * displays image of the maze
+ *   - side menu (right)
+ *     * Hint button
+ *     * Pause button
+ *     * exit button (brings up ExitDialog)
  * 
  * COMP2911 Project - 16s1
  * @author Anna Azzam

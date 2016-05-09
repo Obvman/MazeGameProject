@@ -1,5 +1,8 @@
 /**
- * Main Menu class that contains list of screens to progress to and an exit program button
+ * Main Menu class that displays on program startup
+ * Contains:
+ *   - Start button that takes you to the GamePanel screen
+ *   - Exit button that shuts down program
  * 
  * COMP2911 Project - 16s1
  * @author Anna Azzam

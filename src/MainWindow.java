@@ -1,5 +1,12 @@
 /**
- * Main GUI class that handles all panels/screens
+ * Main GUI class that handles all panels/screens.
+ * Contains:
+ * 	-Start Screen
+ *  -Game Panel and its children
+ *    * status bar
+ *    * maze panel
+ *    * side menu
+ * Main window's size is currently determined by the Controller class
  * 
  * COMP2911 Project - 16s1
  * @author Anna Azzam
@@ -71,10 +78,6 @@ public class MainWindow extends JFrame {
 	public void goToGame() {
 		CardLayout cl = (CardLayout) this.screens.getLayout();
 		cl.show(this.screens, "Game Screen");
-	}
-
-	public void changeSize(int width, int height) {
-		this.setSize(width, height);
 	}
 
 	// helper to allow this references from inside abstract classes

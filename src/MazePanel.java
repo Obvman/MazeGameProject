@@ -1,5 +1,6 @@
 /**
- * Maze Panel TODO
+ * Maze Panel 
+ * Contains graphical representation of the maze
  * 
  * COMP2911 Project - 16s1
  * @author Anna Azzam
@@ -32,7 +33,7 @@ public class MazePanel extends JPanel {
 		super.paintComponent(g);
 		int xIndex = 0;
 		int yIndex = 0;
-		int size = 5;
+		int size = 16;
 		for(int i=0; i<maze[0].length; i++){
 			for(int j=0; j<maze[1].length; j++){
 				if(maze[i][j] == true){
