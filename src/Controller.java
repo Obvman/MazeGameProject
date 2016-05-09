@@ -9,7 +9,7 @@ public class Controller {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				MainWindow mainWindow = new MainWindow(1080, 360);
+				MainWindow mainWindow = new MainWindow(800, 600);
 				mainWindow.setVisible(true);
 			}
 		});

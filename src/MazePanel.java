@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 public class MazePanel extends JPanel {
 	private boolean[][] maze;
+	
 	public MazePanel() {
 		init();
 		this.maze = null;

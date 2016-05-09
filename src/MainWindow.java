@@ -43,6 +43,7 @@ public class MainWindow extends JFrame {
 		// Initialize main frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(width, height);
+		this.setResizable(false);
 		this.setTitle("Main Window");
 		this.setLocationRelativeTo(null);
 		this.add(containerPanel);
@@ -107,13 +108,6 @@ public class MainWindow extends JFrame {
 		
 		// add listeners for each button
 		hintButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Hahaha we don't give you hints");
-			}
-		});
-		
-		pauseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Hahaha we don't give you hints");
