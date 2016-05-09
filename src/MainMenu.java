@@ -16,7 +16,10 @@ public class MainMenu extends JPanel {
 	public void initialiseMenu() {
 		// add the start screen
 		JPanel startScreen = new JPanel();
+		
 		JButton startButton = new JButton("Start Game");
+		JButton exitButton = new JButton("Exit to Desktop");
+		
 		startButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -27,17 +30,16 @@ public class MainMenu extends JPanel {
 			}
 		});
 		
+		exitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// exit program
+				System.exit(0);
+			}
+		});
+		
 		startScreen.add(startButton);
+		startScreen.add(exitButton);
 		this.add(startScreen);
-//		this.screens.add(startScreen, "Start Screen");
-		
-		// add the game screen
-//		GameScreen gameScreen = new GameScreen();
-//		gameScreen.add(new JLabel("Hello this is the game..."));
-//		this.screens.add(gameScreen, "Game Screen");
-		
-		// make the first screen the start screen
-//		CardLayout cl = (CardLayout) this.screens.getLayout();
-//		cl.show(this.screens, "Start Screen");
 	}
 }
