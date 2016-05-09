@@ -25,8 +25,8 @@ public class MainMenu extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JPanel parentWindow;
 	
-	public MainMenu(JPanel _parentWindow) {
-		this.parentWindow = _parentWindow;
+	public MainMenu(JPanel parentWindow) {
+		this.parentWindow = parentWindow;
 		initialiseMenu();
 	}
 	

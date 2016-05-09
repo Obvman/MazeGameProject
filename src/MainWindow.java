@@ -51,15 +51,15 @@ public class MainWindow extends JFrame {
 		screens.add(gamePanel, "Game Screen");
 
 		// make the first screen the start screen
-		goToMenu();
+		goToGame();
 		this.add(screens);
 
 		// Initialize main frame
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(frameWidth, frameHeight);
-		this.setResizable(false);
-		this.setTitle("Maze Game: MainWindow");
-		this.setLocationRelativeTo(null);
+//		this.setResizable(false);
+//		this.setTitle("Maze Game: MainWindow");
+//		this.setLocationRelativeTo(null);
 	}
 
 	/**
