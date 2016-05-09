@@ -32,8 +32,7 @@ public class MainWindow extends JFrame {
 		screens.add(gamePanel, "Game Screen");
 		
 		// make the first screen the start screen
-		CardLayout cl = (CardLayout) this.screens.getLayout();
-		cl.show(this.screens, "Main Menu");
+		goToMenu();
 		this.add(screens);
 	}
 
@@ -157,7 +156,8 @@ public class MainWindow extends JFrame {
 	 *               <li>The maze screen is currently showing</li>
 	 */
 	public void goToMenu() {
-
+		CardLayout cl = (CardLayout) this.screens.getLayout();
+		cl.show(this.screens, "Main Menu");
 	}
 
 	/**
@@ -165,7 +165,8 @@ public class MainWindow extends JFrame {
 	 *               <li>The menu screen is currently showing</li>
 	 */
 	public void goToGame() {
-
+		CardLayout cl = (CardLayout) this.screens.getLayout();
+		cl.show(this.screens, "Game Screen");
 	}
 
 	public void changeSize(int width, int height) {

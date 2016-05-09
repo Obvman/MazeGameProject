@@ -35,9 +35,13 @@ public class ExitDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// placeholder that shuts down entire program
-				getThis().setVisible(false);
-				parentWindow.setVisible(false);
-				System.exit(0);
+//				getThis().setVisible(false);
+//				parentWindow.setVisible(false);
+//				System.exit(0);
+				
+				// go to menu screen
+				parentWindow.goToMenu();
+				dispose(); // get rid of dialogue box
 			}
 		});
 
