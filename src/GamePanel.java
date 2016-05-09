@@ -1,3 +1,4 @@
+
 /**
  * Game Panel class that displays after starting a game
  * Contains:
@@ -39,13 +40,14 @@ public class GamePanel extends JPanel {
 	private JPanel statusBar;
 	private JPanel sideMenu;
 	private MazePanel mazePanel; // just the maze itself
-	private ExitDialog exitDialog; // returning to menu dialog
-	
+	private ExitDialog menuExitDialog; // returning to menu dialog
+	private ExitDialog desktopExitDialog; // returning to menu dialog
+
 	public GamePanel(MainWindow _parentWindow) {
 		this.parentWindow = _parentWindow;
 		init();
 	}
-	
+
 	private void init() {
 		this.setLayout(new BorderLayout());
 		this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -67,15 +69,13 @@ public class GamePanel extends JPanel {
 		this.add(mazePanel, BorderLayout.CENTER);
 		this.add(statusBar, BorderLayout.NORTH);
 		this.add(sideMenu, BorderLayout.EAST);
-
-		
 	}
-	
+
 	// put this into MazePanel's init() when done
 	private void initMazePanel() {
-//		Double dHeight = this.frameWidth * 0.8;
-//		Double dWidth = this.frameHeight * 0.8;
-//		mazePanel.setSize(dWidth.intValue(), dHeight.intValue());
+		// Double dHeight = this.frameWidth * 0.8;
+		// Double dWidth = this.frameHeight * 0.8;
+		// mazePanel.setSize(dWidth.intValue(), dHeight.intValue());
 		// just so we can differentiate it until the real maze is made
 		mazePanel.setBackground(Color.blue);
 	}
@@ -108,22 +108,25 @@ public class GamePanel extends JPanel {
 		// Create buttons for menu
 		JButton hintButton = new JButton("Hint");
 		JButton pauseButton = new JButton("Pause");
-		JButton exitButton = new JButton("Exit to Menu");
-		
+		JButton menuExitButton = new JButton("Exit to Menu");
+		JButton desktopExitButton = new JButton("Exit to desktop");
+
 		// tool tips
 		hintButton.setToolTipText("Get a hint");
 		pauseButton.setToolTipText("Pause the game");
-		exitButton.setToolTipText("Return to the main menu");
+		menuExitButton.setToolTipText("Return to the main menu");
+		desktopExitButton.setToolTipText("Quit game and return to desktop");
 
 		// set out the layout
-		g1.setHorizontalGroup(g1.createSequentialGroup().addGroup(
-				g1.createParallelGroup().addComponent(hintButton).addComponent(pauseButton).addComponent(exitButton)));
+		g1.setHorizontalGroup(g1.createSequentialGroup().addGroup(g1.createParallelGroup().addComponent(hintButton)
+				.addComponent(pauseButton).addComponent(menuExitButton).addComponent(desktopExitButton)));
 
-		g1.setVerticalGroup(g1.createParallelGroup(GroupLayout.Alignment.CENTER).addGroup(g1.createSequentialGroup()
-				.addComponent(hintButton).addComponent(pauseButton).addComponent(exitButton)));
+		g1.setVerticalGroup(g1.createParallelGroup(GroupLayout.Alignment.CENTER)
+				.addGroup(g1.createSequentialGroup().addComponent(hintButton).addComponent(pauseButton)
+						.addComponent(menuExitButton).addComponent(desktopExitButton)));
 
-		g1.linkSize(hintButton, pauseButton, exitButton);
-		//pack();
+		g1.linkSize(hintButton, pauseButton, menuExitButton);
+		// pack();
 
 		// add listeners for each button
 		hintButton.addActionListener(new ActionListener() {
@@ -140,13 +143,22 @@ public class GamePanel extends JPanel {
 			}
 		});
 
-		exitDialog = new ExitDialog(parentWindow);
-		
-		exitButton.addActionListener(new ActionListener() {
+		menuExitDialog = new ExitDialog(parentWindow, "menu");
+		desktopExitDialog = new ExitDialog(parentWindow, "desktop");
+
+		menuExitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				exitDialog.setLocationRelativeTo(parentWindow);
-				exitDialog.setVisible(true);
+				menuExitDialog.setLocationRelativeTo(parentWindow);
+				menuExitDialog.setVisible(true);
+			}
+		});
+
+		desktopExitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				desktopExitDialog.setLocationRelativeTo(parentWindow);
+				desktopExitDialog.setVisible(true);
 			}
 		});
 

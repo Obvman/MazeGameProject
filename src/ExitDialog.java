@@ -24,14 +24,20 @@ public class ExitDialog extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
 	private MainWindow parentWindow;
+	private String mode; // either menu or desktop depending on exit procedure used
 	
-	public ExitDialog(MainWindow _parentWindow) {
+	public ExitDialog(MainWindow _parentWindow, String _mode) {
 		this.parentWindow = _parentWindow;
+		this.mode = _mode;
 		init();
 	}
 
 	private void init() {
-		this.setTitle("Exit to Menu");
+		if (mode.equals("menu"))
+			this.setTitle("Exit to Menu");
+		else if (mode.equals("desktop"));
+			this.setTitle("Exit to desktop");
+		
 		this.setResizable(false);
 		this.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
@@ -40,7 +46,11 @@ public class ExitDialog extends JDialog {
 		JButton cancelButton = new JButton("Cancel");
 		JTextPane message = new JTextPane();
 
-		message.setText("Are you sure you want to exit?");
+		if (mode.equals("menu"))
+			message.setText("Are you sure you want to return to main menu?");
+		else if (mode.equals("desktop"))
+			message.setText("Are you sure you want to exit to desktop?");
+		
 		message.setEditable(false);
 		message.setBackground(getContentPane().getBackground());
 
@@ -48,9 +58,13 @@ public class ExitDialog extends JDialog {
 		// Ok takes you back to the main menu
 		okButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {				
-				// go to menu screen
-				parentWindow.goToMenu();
+			public void actionPerformed(ActionEvent e) {
+				if (mode.equals("menu"))
+					// go to menu screen
+					parentWindow.goToMenu();
+				else if (mode.equals("desktop"))
+					System.exit(0);
+				
 				dispose(); // get rid of dialogue box
 			}
 		});
