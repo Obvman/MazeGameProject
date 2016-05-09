@@ -82,7 +82,7 @@ public class MazePanel extends JPanel implements ActionListener {
 		boolean intersecting = false;
 		for(int i=0; i<maze.length; i++){
 			for(int j=0; j<maze[0].length; j++){
-				if (maze[i][j] == true) {
+				if (maze[i][j] == false) {
 					// wall
 					int xIndex = j * 16; // THIS 16 iS HARDCODED... AND SO AS OTHERS
 					int yIndex = i * 16; // HARDCODED TOO I THINK

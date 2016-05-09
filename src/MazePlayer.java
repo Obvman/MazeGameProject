@@ -73,7 +73,6 @@ public class MazePlayer {
     }
 
     public void keyReleased(KeyEvent e) {
-    	System.out.println("SADKSDKApsk");
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {

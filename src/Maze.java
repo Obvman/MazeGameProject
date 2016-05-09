@@ -30,7 +30,7 @@ public class Maze {
 			this.maze = new boolean[mazeSize][mazeSize];
 			for (int row = 0; row < mazeSize; row++){
 				for (int col = 0; col < mazeSize; col++){
-					this.maze[row][col] = false;
+					this.maze[row][col] = true;
 				}
 		}
 			mazeGenerate(0, mazeSize,0 , mazeSize, mazeSize);
@@ -50,11 +50,11 @@ public class Maze {
 			//This will insert 4 walls in the middle of the matrix
 			if(yend - ystart>2){
 				for(int i = 0; i<yend-ystart; i++){
-					this.maze[ystart + (yend-ystart)/2][i+xstart]=true;
+					this.maze[ystart + (yend-ystart)/2][i+xstart]=false;
 				}
 			}
 			for(int i = 0; i<xend-xstart; i++){
-				this.maze[i+ystart][xstart + (xend-xstart)/2]=true;
+				this.maze[i+ystart][xstart + (xend-xstart)/2]=false;
 			}
 			/* This will dig 3 holes on the 3 of the 4 walls we generated.
 			 * 0 -> the top wall; 1 -> the left wall; 2 -> the bottom wall;
@@ -75,7 +75,7 @@ public class Maze {
 						}else{
 							newHole = 0;
 						}
-						this.maze[ystart + newHole][xstart + (xend-xstart)/2] = false;
+						this.maze[ystart + newHole][xstart + (xend-xstart)/2] = true;
 						break;
 					case 1:
 						if(yend - ystart > 3){
@@ -83,7 +83,7 @@ public class Maze {
 						}else{
 							newHole = 0;
 						}
-						this.maze[ystart + (yend-ystart)/2][xstart + newHole] = false;
+						this.maze[ystart + (yend-ystart)/2][xstart + newHole] = true;
 						break;
 					case 2:
 						if(xend - xstart > 3){
@@ -91,7 +91,7 @@ public class Maze {
 						}else{
 							newHole = 0;
 						}
-						this.maze[ystart + newHole+(xend-xstart)/2 +1][xstart + (xend-xstart)/2] = false;
+						this.maze[ystart + newHole+(xend-xstart)/2 +1][xstart + (xend-xstart)/2] = true;
 						break;
 					case 3:
 						if(yend - ystart > 3){
@@ -99,7 +99,7 @@ public class Maze {
 						}else{
 							newHole = 0;
 						}
-						this.maze[ystart + (yend-ystart)/2][newHole + (yend-ystart)/2 +1 + xstart] = false;
+						this.maze[ystart + (yend-ystart)/2][newHole + (yend-ystart)/2 +1 + xstart] = true;
 						break;
 				}
 			}
