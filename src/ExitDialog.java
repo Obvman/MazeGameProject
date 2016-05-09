@@ -56,7 +56,7 @@ public class ExitDialog extends JDialog {
 		pack();
 		this.setSize(250, 130);
 		this.setBackground(Color.white);
-		this.setLocationRelativeTo(null);
+		this.setLocationRelativeTo(parentWindow);
 	}
 
 	// helper to allow this references from inside abstract classes
