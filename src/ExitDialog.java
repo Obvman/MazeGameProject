@@ -1,5 +1,6 @@
 /**
- * Main GUI class that handles all panels/screens
+ * Class for prompt when exiting game screen
+ * TODO may want to stick this inside GamePanel cos it doesn't work with any other class
  * 
  * COMP2911 Project - 16s1
  * @author Anna Azzam
@@ -44,15 +45,10 @@ public class ExitDialog extends JDialog {
 		message.setBackground(getContentPane().getBackground());
 
 		// set listeners and responses
-		// ok takes you back to the main menu
+		// Ok takes you back to the main menu
 		okButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				// placeholder that shuts down entire program
-//				getThis().setVisible(false);
-//				parentWindow.setVisible(false);
-//				System.exit(0);
-				
+			public void actionPerformed(ActionEvent e) {				
 				// go to menu screen
 				parentWindow.goToMenu();
 				dispose(); // get rid of dialogue box

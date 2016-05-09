@@ -1,5 +1,5 @@
 /**
- * Main GUI class that handles all panels/screens
+ * Maze class that generates maze and stores the datatype
  * 
  * COMP2911 Project - 16s1
  * @author Anna Azzam

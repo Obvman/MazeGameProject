@@ -1,8 +1,3 @@
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 /**
  * Main GUI class that handles all panels/screens
  * 
@@ -15,13 +10,9 @@ import java.awt.event.ActionEvent;
  * 
  */
 
-import java.awt.event.ActionListener;
+import java.awt.CardLayout;
 
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class MainWindow extends JFrame {
@@ -46,8 +37,8 @@ public class MainWindow extends JFrame {
 		// create card layout for switching between screens
 		screens = new JPanel(new CardLayout());
 
-		initGamePanel();
-		initMainMenu();
+		gamePanel = new GamePanel(this);
+		mainMenuScreen = new MainMenu(screens);
 		// open up at the main menu
 		screens.add(mainMenuScreen, "Main Menu");
 		screens.add(gamePanel, "Game Screen");
@@ -62,16 +53,6 @@ public class MainWindow extends JFrame {
 		this.setResizable(false);
 		this.setTitle("Maze Game: MainWindow");
 		this.setLocationRelativeTo(null);
-	}
-
-	private void initMainMenu() {
-		mainMenuScreen = new MainMenu(screens);
-	}
-
-	private void initGamePanel() {
-		gamePanel = new GamePanel(this);
-		// encompassing panel for some extra flexiblity
-
 	}
 
 	/**
@@ -97,7 +78,7 @@ public class MainWindow extends JFrame {
 	}
 
 	// helper to allow this references from inside abstract classes
-	private MainWindow getThis() {
-		return this;
-	}
+//	private MainWindow getThis() {
+//		return this;
+//	}
 }

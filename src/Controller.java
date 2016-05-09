@@ -1,5 +1,5 @@
 /**
- * Main GUI class that handles all panels/screens
+ * Main class that runs and creates window
  * 
  * COMP2911 Project - 16s1
  * @author Anna Azzam

@@ -1,22 +1,30 @@
+/**
+ * Maze Panel TODO
+ * 
+ * COMP2911 Project - 16s1
+ * @author Anna Azzam
+ * @author Charlotte Han
+ * @author Connor Coyne
+ * @author Craig Feeney
+ * @author Leon Nguyen
+ * 
+ */
+
 import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
 public class MazePanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private boolean[][] maze;
 	
 	public MazePanel() {
-		init();
 		this.maze = null;
 	}
 	
 	public void addMaze(boolean[][] maze) {
 		this.maze = maze;
-	}
-	
-	private void init() {
-		
 	}
 	
 	@Override

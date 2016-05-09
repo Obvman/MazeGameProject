@@ -1,3 +1,16 @@
+/**
+ * Game Panel class containing visual representation 
+ * of the maze, status bar and side menu
+ * 
+ * COMP2911 Project - 16s1
+ * @author Anna Azzam
+ * @author Charlotte Han
+ * @author Connor Coyne
+ * @author Craig Feeney
+ * @author Leon Nguyen
+ * 
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,11 +20,11 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private MainWindow parentWindow;
 	private JPanel statusBar;
 	private JPanel sideMenu;
@@ -28,7 +41,6 @@ public class GamePanel extends JPanel {
 		this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		// frame to display the maze state
-		// TODO move this Maze to a legit class maybe
 		Maze maze = new Maze();
 		mazePanel = new MazePanel();
 		mazePanel.addMaze(maze.getMaze(31));
@@ -88,7 +100,7 @@ public class GamePanel extends JPanel {
 		JButton pauseButton = new JButton("Pause");
 		JButton exitButton = new JButton("Exit to Menu");
 		
-		// tooltips
+		// tool tips
 		hintButton.setToolTipText("Get a hint");
 		pauseButton.setToolTipText("Pause the game");
 		exitButton.setToolTipText("Return to the main menu");
@@ -119,12 +131,10 @@ public class GamePanel extends JPanel {
 		});
 
 		exitDialog = new ExitDialog(parentWindow);
-		// Should we go straight to the main menu or give an are you sure
-		// prompt?
+		
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// goToMenu() or:
 				exitDialog.setLocationRelativeTo(parentWindow);
 				exitDialog.setVisible(true);
 			}
