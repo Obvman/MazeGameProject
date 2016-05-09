@@ -7,6 +7,7 @@ public class MainWindow extends JFrame {
 	private JPanel sideMenu;
 	private MazePanel mazePanel;
 	private JPanel containerPanel;
+	private ExitDialog exitDialog;
 	private int frameWidth;
 	private int frameHeight;
 
@@ -121,13 +122,13 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
+		exitDialog = new ExitDialog(this);
 		// Should we go straight to the main menu or give an are you sure prompt?
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//goToMenu() or:
-				ExitDialog ed = new ExitDialog();
-				ed.setVisible(true);
+				exitDialog.setVisible(true);
 			}
 		});
 		
