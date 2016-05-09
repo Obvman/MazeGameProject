@@ -1,3 +1,15 @@
+/**
+ * Main GUI class that handles all panels/screens
+ * 
+ * COMP2911 Project - 16s1
+ * @author Anna Azzam
+ * @author Charlotte Han
+ * @author Connor Coyne
+ * @author Craig Feeney
+ * @author Leon Nguyen
+ * 
+ */
+
 import java.util.Random;
 
 public class Maze {

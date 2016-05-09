@@ -1,3 +1,15 @@
+/**
+ * Main Menu class that contains list of screens to progress to and an exit program button
+ * 
+ * COMP2911 Project - 16s1
+ * @author Anna Azzam
+ * @author Charlotte Han
+ * @author Connor Coyne
+ * @author Craig Feeney
+ * @author Leon Nguyen
+ * 
+ */
+
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +33,9 @@ public class MainMenu extends JPanel {
 		
 		JButton startButton = new JButton("Start Game");
 		JButton exitButton = new JButton("Exit to Desktop");
+		
+		startButton.setToolTipText("Start a new maze");
+		exitButton.setToolTipText("Close program and return to desktop");
 		
 		startButton.addActionListener(new ActionListener() {
 
