@@ -21,19 +21,19 @@ public class MazePanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO: clean everything
 		
-		requestFocus(); // TODO: Fix this hack
+		requestFocus(); // TODO: fix this hack
 		boolean intersecting = false;
 		for(int i=0; i<maze.length; i++){
 			for(int j=0; j<maze[0].length; j++){
 				if (maze[i][j] == false) {
 					// wall
-					int xIndex = j * MAZE_CELL_SIZE; // TODO: remove hardcode
-					int yIndex = i * MAZE_CELL_SIZE; // TODO: remove hardcode
+					int xIndex = j * MAZE_CELL_SIZE;
+					int yIndex = i * MAZE_CELL_SIZE;
 					
-					Rectangle wallRect = new Rectangle(xIndex, yIndex, MAZE_CELL_SIZE, MAZE_CELL_SIZE); // TODO: remove hardcode
+					Rectangle wallRect = new Rectangle(xIndex, yIndex, MAZE_CELL_SIZE, MAZE_CELL_SIZE);
 					int playerWidth = player.getImage().getWidth(this);
 					int playerHeight = player.getImage().getHeight(this);
-					Rectangle playerRect = new Rectangle(player.getX(), player.getY(), playerWidth, playerHeight); // TODO: remove hardcode
+					Rectangle playerRect = new Rectangle(player.getX(), player.getY(), playerWidth, playerHeight);
 					playerRect.translate(player.getDX(), player.getDY());
 					
 					if (wallRect.intersects(playerRect) 
@@ -60,7 +60,7 @@ public class MazePanel extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		
 		// paint the maze
-		int size = MAZE_CELL_SIZE; // TODO: remove hardcode
+		int size = MAZE_CELL_SIZE;
 		for (int i=0; i<maze.length; i++) {
 			for (int j=0; j<maze[0].length; j++) {
 				if (maze[i][j] == true) {
