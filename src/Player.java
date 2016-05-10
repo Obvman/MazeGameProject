@@ -30,6 +30,22 @@ public class Player {
 	}
     
     public Image getImage() {
+    	ImageIcon playerImage = null;
+    	
+    	if (dx > 0) {
+    		playerImage = new ImageIcon("src/images/player_right.png");
+    		image = playerImage.getImage();
+    	} else if (dx < 0) {
+    		playerImage = new ImageIcon("src/images/player_left.png");
+    		image = playerImage.getImage();
+    	} else if (dy > 0) {
+    		playerImage = new ImageIcon("src/images/player_down.png");
+    		image = playerImage.getImage();
+    	} else if (dy < 0) {
+    		playerImage = new ImageIcon("src/images/player_up.png");
+    		image = playerImage.getImage();
+    	}
+    	
         return image;
     }
 	
@@ -84,7 +100,7 @@ public class Player {
     }
     
     private void initPlayer() {
-		ImageIcon playerImage = new ImageIcon("src/images/dot.png");
+		ImageIcon playerImage = new ImageIcon("src/images/player_down.png");
 		image = playerImage.getImage();
 		x = 0;
 		y = 0;

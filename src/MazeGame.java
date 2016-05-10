@@ -7,7 +7,7 @@ public class MazeGame {
 			
 			@Override
 			public void run() {
-				MainWindow mw = new MainWindow(800, 700);
+				MainWindow mw = new MainWindow(900, 1000);
 				mw.setVisible(true);
 			}
 		});

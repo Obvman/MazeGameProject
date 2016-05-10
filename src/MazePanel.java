@@ -10,7 +10,7 @@ public class MazePanel extends JPanel implements ActionListener {
 	private Timer timer;
 	
 	// constants
-	private final int MAZE_CELL_SIZE = 16;
+	private final int MAZE_CELL_SIZE = 32;
 	private final int REFRESH_TIME = 10;
 	
 	public MazePanel() {
@@ -44,16 +44,17 @@ public class MazePanel extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		
 		// paint the maze
+		Image stoneTile = (new ImageIcon("src/images/32_stone.png")).getImage();
+		Image fireTile = (new ImageIcon("src/images/32_mountain.png")).getImage();
+		
 		int size = MAZE_CELL_SIZE;
 		for (int i=0; i<maze.length; i++) {
 			for (int j=0; j<maze[0].length; j++) {
 				if (maze[i][j] == true) {
-					g.setColor(Color.white);
+					g.drawImage(stoneTile, j * size, i * size, this);
 				} else{
-					g.setColor(Color.black);
+					g.drawImage(fireTile, j * size, i * size, this);
 				}
-				
-				g.fillRect(j * size, i * size, size, size);
 			}
 		}
 		
