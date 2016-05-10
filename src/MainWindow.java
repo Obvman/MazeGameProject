@@ -51,7 +51,7 @@ public class MainWindow extends JFrame {
 		screens.add(gamePanel, "Game Screen");
 
 		// make the first screen the start screen
-		goToGame();
+		goToMenu();
 		this.add(screens);
 
 		// Initialize main frame
