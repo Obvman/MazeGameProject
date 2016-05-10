@@ -97,8 +97,8 @@ public class MazePanel extends JPanel implements ActionListener {
 					Rectangle playerRect = new Rectangle(player.getX(), player.getY(), 8, 8); // HARDCODE
 					playerRect.translate(player.getDX(), player.getDY());
 					
-					if (wallRect.intersects(playerRect) || playerRect.getX() < 0 || playerRect.getX() >= maze[0].length * 16
-														|| playerRect.getY() < 0 || playerRect.getY() >= maze.length * 16) {
+					if (wallRect.intersects(playerRect) || playerRect.getX() < 0 || playerRect.getX() >= maze[0].length * 16-8
+														|| playerRect.getY() < 0 || playerRect.getY() >= maze.length * 16-8) {
 						intersecting = true;
 					}
 				} 
