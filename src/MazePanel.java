@@ -22,35 +22,19 @@ public class MazePanel extends JPanel implements ActionListener {
 		// TODO: clean everything
 		
 		requestFocus(); // TODO: fix this hack
-		boolean intersecting = false;
-		for(int i=0; i<maze.length; i++){
-			for(int j=0; j<maze[0].length; j++){
-				if (maze[i][j] == false) {
-					// wall
-					int xIndex = j * MAZE_CELL_SIZE;
-					int yIndex = i * MAZE_CELL_SIZE;
-					
-					Rectangle wallRect = new Rectangle(xIndex, yIndex, MAZE_CELL_SIZE, MAZE_CELL_SIZE);
-					int playerWidth = player.getImage().getWidth(this);
-					int playerHeight = player.getImage().getHeight(this);
-					Rectangle playerRect = new Rectangle(player.getX(), player.getY(), playerWidth, playerHeight);
-					playerRect.translate(player.getDX(), player.getDY());
-					
-					if (wallRect.intersects(playerRect) 
-							|| playerRect.getX() < 0 
-							|| playerRect.getX() >= maze[0].length * MAZE_CELL_SIZE
-							|| playerRect.getY() < 0 
-							|| playerRect.getY() >= maze.length * MAZE_CELL_SIZE) {
-						
-						intersecting = true;
-					}
-				} 
+		
+		if (isLegalMove(player.getDX(), player.getDY())) {
+			player.move();
+		} else if (player.getDX() != 0 && player.getDY() != 0) {
+			// player is holding two arrow keys so check if just activating one of the two makes the move legal
+			if (isLegalMove(0, player.getDY())) {
+				// move in Y-axis direction only
+				player.manualMove(0, player.getDY());
+			} else if (isLegalMove(player.getDX(), 0)) {
+				// move in X-axis direction only
+				player.manualMove(player.getDX(), 0);
 			}
 		}
-		
-		if (!intersecting) {
-			player.move();
-		} 
 		
 		repaint();
 	}
@@ -86,6 +70,43 @@ public class MazePanel extends JPanel implements ActionListener {
 		
 		timer = new Timer(REFRESH_TIME, this);
 		timer.start();
+	}
+	
+	/**
+	 * Checks whether a player will intersect with a maze wall based on where they want to move
+	 * @param playerDX the wanted x-axis movement
+	 * @param playerDY the wanted y-axis movement
+	 * @return
+	 */
+	private boolean isLegalMove(int playerDX, int playerDY) {
+		for (int i=0; i<maze.length; i++) {
+			for (int j=0; j<maze[0].length; j++) {
+				if (maze[i][j] == false) {
+					// wall 
+					int xIndex = j * MAZE_CELL_SIZE;
+					int yIndex = i * MAZE_CELL_SIZE;
+					Rectangle wallRect = new Rectangle(xIndex, yIndex, MAZE_CELL_SIZE, MAZE_CELL_SIZE);
+					
+					// player
+					int playerWidth = player.getImage().getWidth(this);
+					int playerHeight = player.getImage().getHeight(this);
+					Rectangle playerRect = new Rectangle(player.getX(), player.getY(), playerWidth, playerHeight);
+					playerRect.translate(playerDX, playerDY);
+					
+					// check if wall and player intersection or if player outside of maze
+					if (wallRect.intersects(playerRect) 
+							|| playerRect.getX() < 0 
+							|| playerRect.getX() >= maze[0].length * MAZE_CELL_SIZE
+							|| playerRect.getY() < 0 
+							|| playerRect.getY() >= maze.length * MAZE_CELL_SIZE) {
+						
+						return false;
+					}
+				} 
+			}
+		}
+		
+		return true;
 	}
 	
 	private class TAdapter extends KeyAdapter {
