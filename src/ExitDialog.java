@@ -46,11 +46,11 @@ public class ExitDialog extends JDialog {
 		JButton cancelButton = new JButton("Cancel");
 		JTextPane message = new JTextPane();
 
-		if (mode.equals("menu"))
+		if (mode.equals("menu")) {
 			message.setText("Are you sure you want to return to main menu?");
-		else if (mode.equals("desktop"))
+		} else if (mode.equals("desktop")) {
 			message.setText("Are you sure you want to exit to desktop?");
-		
+		}
 		message.setEditable(false);
 		message.setBackground(getContentPane().getBackground());
 
@@ -82,9 +82,10 @@ public class ExitDialog extends JDialog {
 		this.add(cancelButton);
 
 		pack();
-		this.setSize(250, 130);
+		
 		this.setBackground(Color.white);
 		this.setLocationRelativeTo(parentWindow);
+		this.setSize(320, 130);
 	}
 
 	// helper to allow this references from inside abstract classes
