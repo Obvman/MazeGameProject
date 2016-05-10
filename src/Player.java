@@ -3,22 +3,14 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class Player {
-	private int dx;
-	private int dy;
 	private int x;
 	private int y;
+	private int dx;
+	private int dy;
 	private Image image;
 	
 	public Player() {
 		initPlayer();
-	}
-	
-	public int getDX() {
-		return dx;
-	}
-	
-	public int getDY() {
-		return dy;
 	}
 	
 	public int getX() {
@@ -29,11 +21,27 @@ public class Player {
         return y;
     }
 
+    public int getDX() {
+		return dx;
+	}
+	
+	public int getDY() {
+		return dy;
+	}
+    
     public Image getImage() {
         return image;
     }
 	
-	
+	public void move() {
+		x += dx;
+		y += dy;
+	}
+    
+    public void manualMove(int dx, int dy) {
+    	x += dx;
+    	y += dy;
+    }
 	
 	public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
@@ -75,19 +83,12 @@ public class Player {
         }
     }
     
-    /**
-	 * Move player based on values of dx, dy
-	 * Note: dx, dy are set by key presses (arrows)
-	 */
-	public void move() {
-		x += dx;
-		y += dy;
-	}
-	
     private void initPlayer() {
 		ImageIcon playerImage = new ImageIcon("src/images/dot.png");
 		image = playerImage.getImage();
 		x = 0;
 		y = 0;
 	}
+
+	
 }
