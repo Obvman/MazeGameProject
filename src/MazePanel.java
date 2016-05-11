@@ -5,7 +5,7 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class MazePanel extends JPanel implements ActionListener {
 	private boolean[][] maze;
-	private final int mazeSize = 31;
+	private final int mazeSize = 15;
 	private Player player;
 	private Timer timer;
 	
@@ -97,9 +97,9 @@ public class MazePanel extends JPanel implements ActionListener {
 					// check if wall and player intersection or if player outside of maze
 					if (wallRect.intersects(playerRect) 
 							|| playerRect.getX() < 0 
-							|| playerRect.getX() >= maze[0].length * MAZE_CELL_SIZE
+							|| playerRect.getX() >= maze[0].length * MAZE_CELL_SIZE - spriteWidth
 							|| playerRect.getY() < 0 
-							|| playerRect.getY() >= maze.length * MAZE_CELL_SIZE) {
+							|| playerRect.getY() >= maze.length * MAZE_CELL_SIZE - spriteHeight) {
 						
 						return false;
 					}
