@@ -97,9 +97,9 @@ public class MazePanel extends JPanel implements ActionListener {
 					// check if wall and player intersection or if player outside of maze
 					if (wallRect.intersects(playerRect) 
 							|| playerRect.getX() < 0 
-							|| playerRect.getX() >= maze[0].length * MAZE_CELL_SIZE - spriteWidth
+							|| playerRect.getX() >= maze[0].length * MAZE_CELL_SIZE - playerWidth
 							|| playerRect.getY() < 0 
-							|| playerRect.getY() >= maze.length * MAZE_CELL_SIZE - spriteHeight) {
+							|| playerRect.getY() >= maze.length * MAZE_CELL_SIZE - playerHeight) {
 						
 						return false;
 					}
