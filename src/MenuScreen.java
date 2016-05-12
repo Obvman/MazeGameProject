@@ -29,7 +29,6 @@ public class MenuScreen extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// start game
-				// TODO: start a NEW game
 				mainWindow.switchToGame();
 			}
 		});

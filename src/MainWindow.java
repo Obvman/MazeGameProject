@@ -22,6 +22,8 @@ public class MainWindow extends JFrame {
 	}
 	
 	public void switchToGame() {
+		// first start a new game
+		screens.add(new GameScreen(this), "Game");
 		CardLayout cl = (CardLayout) screens.getLayout();
 		cl.show(screens, "Game");
 	}
