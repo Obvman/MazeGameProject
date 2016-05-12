@@ -1,5 +1,3 @@
-import javax.swing.*;
-
 public interface MazeConstants {
 	// maze configuration
 	int MAZE_SIZE = 15;

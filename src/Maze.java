@@ -21,10 +21,10 @@ public class Maze implements MazeConstants{
 		player = new Player();
 		
 		// tiles
-		pathTile = (new ImageIcon("images/32_stone.png")).getImage();
-		wallTile = (new ImageIcon("images/32_mountain.png")).getImage();
-		startTile = (new ImageIcon("images/32_open_door.png")).getImage();
-		endTile = (new ImageIcon("images/32_locked_door.png")).getImage();
+		pathTile = (new ImageIcon("images/leon_path.png")).getImage();
+		wallTile = (new ImageIcon("images/leon_wall_lava.png")).getImage();
+		startTile = (new ImageIcon("images/leon_open_door.png")).getImage();
+		endTile = (new ImageIcon("images/leon_closed_door.png")).getImage();
 	}
 
 	public int[][] getGrid() {

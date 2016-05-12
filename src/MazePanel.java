@@ -26,8 +26,8 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 		super.paintComponent(g);
 
 		int[][] mazeGrid = maze.getGrid();
-		for (int i = 0; i < mazeGrid.length; i++) {
-			for (int j = 0; j < mazeGrid[i].length; j++) {
+		for (int i = 0; i < MAZE_SIZE; i++) {
+			for (int j = 0; j < MAZE_SIZE; j++) {
 				Image tile = null;
 				switch (mazeGrid[i][j]) {
 				case PATH_TILE: tile = maze.getPathTile(); break;
@@ -37,12 +37,42 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 				};
 
 				g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
+				// graphics improvement
+				
+				System.out.println("At " + j + " " + i);
+				if (mazeGrid[i][j] == WALL_TILE) {
+					if (withinMaze(i, j-1) && mazeGrid[i][j-1] == WALL_TILE) {
+						System.out.println("Found " + (j-1) + " " + i);
+						tile = (new ImageIcon("images/leon_wall_left_cover_lava.png")).getImage();
+						g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
+					}
+					if (withinMaze(i-1, j) && mazeGrid[i-1][j] == WALL_TILE) {
+						System.out.println("Found " + j + " " + (i-1));
+						tile = (new ImageIcon("images/leon_wall_top_cover_lava.png")).getImage();
+						g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
+					}
+					if (withinMaze(i, j+1) && mazeGrid[i][j+1] == WALL_TILE) {
+						System.out.println("Found " + (j+1) + " " + i);
+						tile = (new ImageIcon("images/leon_wall_right_cover_lava.png")).getImage();
+						g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
+					}
+					if (withinMaze(i+1, j) && mazeGrid[i+1][j] == WALL_TILE) {
+						System.out.println("Found " + j + " " + (i+1));
+						tile = (new ImageIcon("images/leon_wall_bottom_cover_lava.png")).getImage();
+						g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
+					}
+				}
 			}
 		}
+
 
 		// paint the player
 		Player player = maze.getPlayer();
 		g.drawImage(player.getImage(), player.getX(), player.getY(), this);
+	}
+
+	private boolean withinMaze(int x, int y) {
+		return x >= 0 && y >= 0 && x < MAZE_SIZE && y < MAZE_SIZE;
 	}
 
 	private void initMazePanel() {
