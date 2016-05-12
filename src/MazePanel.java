@@ -60,10 +60,14 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 			}
 		}
 
-
 		// paint the player
 		Player player = maze.getPlayer();
 		g.drawImage(player.getImage(), player.getX(), player.getY(), this);
+		
+		// paint the monsters
+		for (Monster m : maze.getMonsters()) {
+			g.drawImage(m.getImage(), m.getX(), m.getY(), this);
+		}
 	}
 
 	private boolean withinMaze(int x, int y) {
