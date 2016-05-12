@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Player {
+public class Player implements MovableSprite {
 	private int x;
 	private int y;
 	private int dx;
@@ -13,22 +13,27 @@ public class Player {
 		initPlayer();
 	}
 	
+	@Override
 	public int getX() {
         return x;
     }
 
+	@Override
     public int getY() {
         return y;
     }
 
+	@Override
     public int getDX() {
 		return dx;
 	}
 	
+	@Override
 	public int getDY() {
 		return dy;
 	}
     
+	@Override
     public Image getImage() {
     	ImageIcon playerImage = null;
     	
@@ -49,15 +54,16 @@ public class Player {
         return image;
     }
 	
-	public void move() {
-		x += dx;
-		y += dy;
-	}
-    
+	@Override
     public void manualMove(int dx, int dy) {
     	x += dx;
     	y += dy;
     }
+	
+	public void move() {
+		x += dx;
+		y += dy;
+	}
 	
 	public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
@@ -71,11 +77,11 @@ public class Player {
         }
 
         if (key == KeyEvent.VK_UP) {
-            dy = -1;
+        	dy = -1;
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dy = 1;
+        	dy = 1;
         }
     }
 
