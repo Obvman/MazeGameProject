@@ -26,8 +26,8 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 		super.paintComponent(g);
 
 		int[][] mazeGrid = maze.getGrid();
-		for (int i = 0; i < MAZE_SIZE; i++) {
-			for (int j = 0; j < MAZE_SIZE; j++) {
+		for (int i = 0; i < MAZE_SIZE_1; i++) {
+			for (int j = 0; j < MAZE_SIZE_2; j++) {
 				Image tile = null;
 				switch (mazeGrid[i][j]) {
 				case PATH_TILE: tile = maze.getPathTile(); break;
@@ -71,7 +71,7 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 	}
 
 	private boolean withinMaze(int x, int y) {
-		return x >= 0 && y >= 0 && x < MAZE_SIZE && y < MAZE_SIZE;
+		return x >= 0 && y >= 0 && x < MAZE_SIZE_1 && y < MAZE_SIZE_2;
 	}
 
 	private void initMazePanel() {

@@ -18,7 +18,7 @@ public class Maze implements MazeConstants{
 	public Maze() {
 		// maze
 		mazeGenerator = new MazeGenerator();
-		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE);
+		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2);
 
 		// player
 		player = new Player();
@@ -26,11 +26,11 @@ public class Maze implements MazeConstants{
 		// monsters
 		monsters = new LinkedList<Monster>();
 		Monster m1 = new Monster();
-		m1.setPosition((MAZE_SIZE - 1) * MAZE_CELL_SIZE, (MAZE_SIZE - 1) * MAZE_CELL_SIZE);
+		m1.setPosition((MAZE_SIZE_2 - 1) * MAZE_CELL_SIZE, (MAZE_SIZE_1 - 1) * MAZE_CELL_SIZE);
 		Monster m2 = new Monster();
-		m2.setPosition((MAZE_SIZE - 1) * MAZE_CELL_SIZE, 0);
+		m2.setPosition((MAZE_SIZE_2 - 1) * MAZE_CELL_SIZE, 0);
 		Monster m3 = new Monster();
-		m3.setPosition(0, (MAZE_SIZE - 1) * MAZE_CELL_SIZE);
+		m3.setPosition(0, (MAZE_SIZE_1 - 1) * MAZE_CELL_SIZE);
 		monsters.add(m1);
 		monsters.add(m2);
 		monsters.add(m3);
@@ -104,7 +104,7 @@ public class Maze implements MazeConstants{
 				for (int j = cellY - 1; j <= cellY + 1 ; j++) {
 					if ((i == cellX || j == cellY) && !(i == cellX && j == cellY)
 							&& i >= 0 && j >= 0
-							&& i < MAZE_SIZE && j < MAZE_SIZE
+							&& i < MAZE_SIZE_2 && j < MAZE_SIZE_1
 							&& solution[j][i]) {
 						nextX = i;
 						nextY = j;
@@ -137,11 +137,11 @@ public class Maze implements MazeConstants{
 	}
 
 	public boolean[][] solveMaze(int startX, int startY, int goalX, int goalY) {
-		boolean[][] visited = new boolean[MAZE_SIZE][MAZE_SIZE];
-		boolean[][] solution = new boolean[MAZE_SIZE][MAZE_SIZE];
+		boolean[][] visited = new boolean[MAZE_SIZE_1][MAZE_SIZE_2];
+		boolean[][] solution = new boolean[MAZE_SIZE_1][MAZE_SIZE_2];
 
-		for (int row = 0; row < MAZE_SIZE; row++) {
-			for (int col = 0; col < MAZE_SIZE; col++) {
+		for (int row = 0; row < MAZE_SIZE_1; row++) {
+			for (int col = 0; col < MAZE_SIZE_2; col++) {
 				visited[row][col] = false;
 				solution[row][col] = false;
 			}
@@ -167,7 +167,7 @@ public class Maze implements MazeConstants{
 				return true	;
 			}
 
-		if (x != MAZE_SIZE - 1) // Checks if not on right edge
+		if (x != MAZE_SIZE_1 - 1) // Checks if not on right edge
 			if (recursiveSolve(x+1, y, goalX, goalY, visited, solution)) { // Recalls method one to the right
 				solution[x][y] = true;
 				return true;
@@ -179,7 +179,7 @@ public class Maze implements MazeConstants{
 				return true;
 			}
 
-		if (y != MAZE_SIZE - 1) // Checks if not on bottom edge
+		if (y != MAZE_SIZE_2 - 1) // Checks if not on bottom edge
 			if (recursiveSolve(x, y+1, goalX, goalY, visited, solution)) { // Recalls method one down
 				solution[x][y] = true;
 				return true;
