@@ -44,8 +44,8 @@ public class MazePanel extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		
 		// paint the maze
-		Image stoneTile = (new ImageIcon("src/images/32_stone.png")).getImage();
-		Image fireTile = (new ImageIcon("src/images/32_mountain.png")).getImage();
+		Image stoneTile = (new ImageIcon("images/32_stone.png")).getImage();
+		Image fireTile = (new ImageIcon("images/32_mountain.png")).getImage();
 		
 		int size = MAZE_CELL_SIZE;
 		for (int i=0; i<maze.length; i++) {
