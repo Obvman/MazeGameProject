@@ -37,27 +37,22 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 				};
 
 				g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
-				// graphics improvement
 				
-				System.out.println("At " + j + " " + i);
 				if (mazeGrid[i][j] == WALL_TILE) {
+					// check whether there are adjacent wall tiles for improved graphics
 					if (withinMaze(i, j-1) && mazeGrid[i][j-1] == WALL_TILE) {
-						System.out.println("Found " + (j-1) + " " + i);
 						tile = (new ImageIcon("images/leon_wall_left_cover_lava.png")).getImage();
 						g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
 					}
 					if (withinMaze(i-1, j) && mazeGrid[i-1][j] == WALL_TILE) {
-						System.out.println("Found " + j + " " + (i-1));
 						tile = (new ImageIcon("images/leon_wall_top_cover_lava.png")).getImage();
 						g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
 					}
 					if (withinMaze(i, j+1) && mazeGrid[i][j+1] == WALL_TILE) {
-						System.out.println("Found " + (j+1) + " " + i);
 						tile = (new ImageIcon("images/leon_wall_right_cover_lava.png")).getImage();
 						g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
 					}
 					if (withinMaze(i+1, j) && mazeGrid[i+1][j] == WALL_TILE) {
-						System.out.println("Found " + j + " " + (i+1));
 						tile = (new ImageIcon("images/leon_wall_bottom_cover_lava.png")).getImage();
 						g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
 					}
