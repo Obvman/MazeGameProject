@@ -17,7 +17,7 @@ public class MenuScreen extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Image background = (new ImageIcon("images/background.jpeg")).getImage();
-        g.drawImage(background, -585, -200, null); // offset to position background in middle of window
+        g.drawImage(background, 0, 0, null); 
 	}
 	
 	private void initMenu() {

@@ -25,17 +25,18 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 
-		Image pathTile = maze.getPathTile();
-		Image wallTile = maze.getWallTile();
-
-		boolean[][] mazeGrid = maze.getGrid();
+		int[][] mazeGrid = maze.getGrid();
 		for (int i = 0; i < mazeGrid.length; i++) {
 			for (int j = 0; j < mazeGrid[i].length; j++) {
-				if (mazeGrid[i][j]) {
-					g.drawImage(pathTile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
-				} else{
-					g.drawImage(wallTile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
-				}
+				Image tile = null;
+				switch (mazeGrid[i][j]) {
+				case PATH_TILE: tile = maze.getPathTile(); break;
+				case WALL_TILE: tile = maze.getWallTile(); break;
+				case START_TILE: tile = maze.getStartTile(); break;
+				case END_TILE: tile = maze.getEndTile(); break;
+				};
+
+				g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
 			}
 		}
 
@@ -46,7 +47,7 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 
 	private void initMazePanel() {
 		maze = new Maze();
-		
+
 		addKeyListener(new TAdapter());
 
 		timer = new Timer(REFRESH_TIME, this);

@@ -1,7 +1,7 @@
 import java.util.Random;
 
-public class MazeGenerator {
-	private boolean[][] maze;
+public class MazeGenerator implements MazeConstants {
+	private int[][] maze;
 
 	/**
 	 * This method takes an integer mazeSize as input and 
@@ -11,18 +11,22 @@ public class MazeGenerator {
 	 * @param mazeSize
 	 * @return
 	 */
-	public boolean[][] generateMaze(int mazeSize){
+	public int[][] generateMaze(int mazeSize){
 		if (this.maze == null) {
-			this.maze = new boolean[mazeSize][mazeSize];
+			this.maze = new int[mazeSize][mazeSize];
 
 			for (int row = 0; row < mazeSize; row++) {
 				for (int col = 0; col < mazeSize; col++) {
-					this.maze[row][col] = true;
+					this.maze[row][col] = PATH_TILE;
 				}
 			}
 
 			generateMazeRecursive(0, mazeSize,0 , mazeSize, mazeSize);
 		}
+
+		// set start and end tile
+		maze[0][0] = START_TILE;
+		maze[mazeSize - 1][mazeSize - 1] = END_TILE;
 
 		return this.maze;
 	}
@@ -40,11 +44,11 @@ public class MazeGenerator {
 			//This will insert 4 walls in the middle of the matrix
 			if(yEnd - yStart>2){
 				for(int i = 0; i<yEnd-yStart; i++){
-					this.maze[yStart + (yEnd-yStart)/2][i+xStart]=false;
+					this.maze[yStart + (yEnd-yStart)/2][i+xStart]= WALL_TILE;
 				}
 			}
 			for(int i = 0; i<xEnd-xStart; i++){
-				this.maze[i+yStart][xStart + (xEnd-xStart)/2]=false;
+				this.maze[i+yStart][xStart + (xEnd-xStart)/2]= WALL_TILE;
 			}
 			/* This will dig 3 holes on the 3 of the 4 walls we generated.
 			 * 0 -> the top wall; 1 -> the left wall; 2 -> the bottom wall;
@@ -65,7 +69,7 @@ public class MazeGenerator {
 						}else{
 							newHole = 0;
 						}
-						this.maze[yStart + newHole][xStart + (xEnd-xStart)/2] = true;
+						this.maze[yStart + newHole][xStart + (xEnd-xStart)/2] = PATH_TILE;
 						break;
 					case 1:
 						if(yEnd - yStart > 3){
@@ -73,7 +77,7 @@ public class MazeGenerator {
 						}else{
 							newHole = 0;
 						}
-						this.maze[yStart + (yEnd-yStart)/2][xStart + newHole] = true;
+						this.maze[yStart + (yEnd-yStart)/2][xStart + newHole] = PATH_TILE;
 						break;
 					case 2:
 						if(xEnd - xStart > 3){
@@ -81,7 +85,7 @@ public class MazeGenerator {
 						}else{
 							newHole = 0;
 						}
-						this.maze[yStart + newHole+(xEnd-xStart)/2 +1][xStart + (xEnd-xStart)/2] = true;
+						this.maze[yStart + newHole+(xEnd-xStart)/2 +1][xStart + (xEnd-xStart)/2] = PATH_TILE;
 						break;
 					case 3:
 						if(yEnd - yStart > 3){
@@ -89,7 +93,7 @@ public class MazeGenerator {
 						}else{
 							newHole = 0;
 						}
-						this.maze[yStart + (yEnd-yStart)/2][newHole + (yEnd-yStart)/2 +1 + xStart] = true;
+						this.maze[yStart + (yEnd-yStart)/2][newHole + (yEnd-yStart)/2 +1 + xStart] = PATH_TILE;
 						break;
 				}
 			}

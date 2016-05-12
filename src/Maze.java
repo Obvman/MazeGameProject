@@ -5,10 +5,12 @@ import javax.swing.*;
 
 public class Maze implements MazeConstants{
 	private MazeGenerator mazeGenerator;
-	private boolean[][] mazeGrid;
+	private int[][] mazeGrid;
 	private Player player;
 	private Image pathTile;
 	private Image wallTile;
+	private Image startTile;
+	private Image endTile;
 	
 	public Maze() {
 		// maze
@@ -21,9 +23,11 @@ public class Maze implements MazeConstants{
 		// tiles
 		pathTile = (new ImageIcon("images/32_stone.png")).getImage();
 		wallTile = (new ImageIcon("images/32_mountain.png")).getImage();
+		startTile = (new ImageIcon("images/32_open_door.png")).getImage();
+		endTile = (new ImageIcon("images/32_locked_door.png")).getImage();
 	}
 
-	public boolean[][] getGrid() {
+	public int[][] getGrid() {
 		return mazeGrid;
 	}
 
@@ -37,6 +41,14 @@ public class Maze implements MazeConstants{
 	
 	public Image getWallTile() {
 		return wallTile;
+	}
+	
+	public Image getStartTile() {
+		return startTile;
+	}
+
+	public Image getEndTile() {
+		return endTile;
 	}
 	
 	public void updateSprites(ActionEvent e) {
@@ -57,7 +69,7 @@ public class Maze implements MazeConstants{
 	private boolean isLegalMove(int dx, int dy) {
 		for (int i = 0; i < mazeGrid.length; i++) {
 			for (int j = 0; j < mazeGrid[i].length; j++) {
-				if (mazeGrid[i][j] == false) {
+				if (mazeGrid[i][j] == WALL_TILE) {
 					// wall 
 					int xIndex = j * MAZE_CELL_SIZE;
 					int yIndex = i * MAZE_CELL_SIZE;
@@ -83,4 +95,6 @@ public class Maze implements MazeConstants{
 		
 		return true;
 	}
+
+	
 }

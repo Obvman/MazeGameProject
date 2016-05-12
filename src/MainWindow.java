@@ -7,8 +7,8 @@ public class MainWindow extends JFrame {
 	
 	private JPanel screens; // contains all the screens of the game
 	
-	public MainWindow(int width, int height) {
-		initScreens(width, height);
+	public MainWindow() {
+		initScreens();
 	}
 	
 	public void switchToMenu() {
@@ -26,16 +26,14 @@ public class MainWindow extends JFrame {
 		cl.show(screens, "Game");
 	}
 	
-	private void initScreens(int width, int height) {
+	private void initScreens() {
 		screens = new JPanel(new CardLayout());
 		add(screens);
 		
 		// configure the main window
 		setTitle("Maze Game");
-		setSize(width, height);
-		setResizable(false);
+		setExtendedState(JFrame.MAXIMIZED_BOTH); // full screen
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
 		
 		// add the screens
 		screens.add(new MenuScreen(this), "Menu");
