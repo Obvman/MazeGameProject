@@ -17,6 +17,11 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 		requestFocus(); // TODO: fix this hack (disable focus for all other elements)
 
 		maze.updateSprites(e);
+		
+		if (maze.isGameFinished()) {
+			// TODO: display a score screen
+			return;
+		}
 
 		repaint();
 	}
@@ -34,9 +39,13 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 				case WALL_TILE: tile = maze.getWallTile(); break;
 				case START_TILE: tile = maze.getStartTile(); break;
 				case END_TILE: tile = maze.getEndTile(); break;
+				default: tile = maze.getPathTile();
 				};
 
 				g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
+				if (mazeGrid[i][j] == KEY_TILE) {
+					g.drawImage(maze.getKeyTile(), j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
+				}
 				
 				if (mazeGrid[i][j] == WALL_TILE) {
 					// check whether there are adjacent wall tiles for improved graphics

@@ -13,6 +13,10 @@ public class Maze implements MazeConstants {
 	private Image wallTile;
 	private Image startTile;
 	private Image endTile;
+	private Image keyTile;
+	private boolean keyAcquired;
+	private int keyX;
+	private int keyY;
 	private int counter;
 
 	public Maze() {
@@ -20,10 +24,44 @@ public class Maze implements MazeConstants {
 		mazeGenerator = new MazeGenerator();
 		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2);
 
+		// determine where key tile should go
+		// TODO: improve this dodgy algorithm
+		boolean keyTileFound = false;
+		for (int row = MAZE_SIZE_1 - 1; row >= 0 && !keyTileFound; row--) {
+			for (int col = MAZE_SIZE_2 - 1; col >= 0 && !keyTileFound; col--) {
+				if (withinMaze(col, row) && mazeGrid[row][col] == PATH_TILE) {
+					// check whether it has 3 surrounding wall tiles;
+					int surroundingWalls = 0;
+					if (withinMaze(row, col-1) && mazeGrid[row][col-1] == WALL_TILE) {
+						surroundingWalls++;
+					}
+					if (withinMaze(row-1, col) && mazeGrid[row-1][col] == WALL_TILE) {
+						surroundingWalls++;
+					}
+					if (withinMaze(row, col+1) && mazeGrid[row][col+1] == WALL_TILE) {
+						surroundingWalls++;
+					}
+					if (withinMaze(row+1, col) && mazeGrid[row+1][col] == WALL_TILE) {
+						surroundingWalls++;
+					}
+
+					if (surroundingWalls == 3) {
+						mazeGrid[row][col] = KEY_TILE;
+						keyX = col;
+						keyY = row;
+						keyTileFound = true;
+					}
+				}
+			}
+		}
+
+		keyAcquired = false;
+
 		// player
 		player = new Player();
 
 		// monsters
+		// TODO: fix hardcode of 3 monsters
 		monsters = new LinkedList<Monster>();
 		Monster m1 = new Monster();
 		m1.setPosition((MAZE_SIZE_2 - 1) * MAZE_CELL_SIZE, 
@@ -35,13 +73,14 @@ public class Maze implements MazeConstants {
 		monsters.add(m1);
 		monsters.add(m2);
 		monsters.add(m3);
-		
+
 		// tiles
 		pathTile = (new ImageIcon("src/images/leon_path.png")).getImage();
 		wallTile = (new ImageIcon("src/images/leon_wall_lava.png")).getImage();
 		startTile = (new ImageIcon("src/images/leon_open_door.png")).getImage();
 		endTile = (new ImageIcon("src/images/leon_closed_door.png")).getImage();
-		
+		keyTile = (new ImageIcon("src/images/key_for_32.png")).getImage();
+	
 		counter = 0;
 	}
 
@@ -73,8 +112,29 @@ public class Maze implements MazeConstants {
 		return endTile;
 	}
 
+	public Image getKeyTile() {
+		return keyTile;
+	}
+
+	public boolean isGameFinished() {
+		return keyAcquired && player.getX()/MAZE_CELL_SIZE == MAZE_SIZE_2 - 1 && player.getY()/MAZE_CELL_SIZE == MAZE_SIZE_1 - 1;
+	}
+	
 	public void updateSprites(ActionEvent e) {
 		// update player
+
+		// check if key picked up
+		if (player.getX()/MAZE_CELL_SIZE == keyX && player.getY()/MAZE_CELL_SIZE == keyY) {
+			keyAcquired = true;
+			mazeGrid[keyY][keyX] = PATH_TILE;
+		}
+		
+		// check if game finished
+		if (isGameFinished()) {
+			return;
+		}
+
+		// update movement
 		if (isLegalMove(player, player.getDX(), player.getDY())) {
 			player.move();
 		} else if (player.getDX() != 0 && player.getDY() != 0) {
@@ -188,6 +248,10 @@ public class Maze implements MazeConstants {
 			}
 
 		return false;
+	}
+
+	private boolean withinMaze(int y, int x) {
+		return x >= 0 && y >= 0 && x < MAZE_SIZE_2 && y < MAZE_SIZE_1;
 	}
 
 	private boolean isLegalMove(MovableSprite sprite, int dx, int dy) {

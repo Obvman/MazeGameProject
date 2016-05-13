@@ -1,3 +1,4 @@
+
 public class MazeGenerator implements MazeConstants {
 	private int[][] maze;
 
@@ -23,12 +24,10 @@ public class MazeGenerator implements MazeConstants {
 			this.maze = s.generateMaze(mazeSize1, mazeSize2, this.maze);
 		}
 
-		// set start and end tile
+		// set start, end, and key tile
 		maze[0][0] = START_TILE;
 		maze[mazeSize1 - 1][mazeSize2 - 1] = END_TILE;
-
+		
 		return this.maze;
 	}
-
-	
 }
