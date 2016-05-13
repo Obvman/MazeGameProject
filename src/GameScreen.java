@@ -6,7 +6,6 @@ import javax.swing.*;
 public class GameScreen extends JPanel {
 	
 	private MainWindow mainWindow;
-	private MazePanel mazePanel;
 	
 	public GameScreen(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
@@ -16,7 +15,7 @@ public class GameScreen extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Image background = (new ImageIcon("src/images/game_bg.jpg")).getImage();
+		Image background = (new ImageIcon("images/game_bg.jpg")).getImage();
         g.drawImage(background, 0, 0, null); 
 	}
 	
@@ -25,8 +24,7 @@ public class GameScreen extends JPanel {
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // check
 
 		// add UI components
-		this.mazePanel = new MazePanel();
-		add(mazePanel);
+		add(new MazePanel());
 		initStatusBar();
 		initSideMenu();
 	}

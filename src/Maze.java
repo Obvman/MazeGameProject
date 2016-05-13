@@ -75,11 +75,11 @@ public class Maze implements MazeConstants {
 		monsters.add(m3);
 
 		// tiles
-		pathTile = (new ImageIcon("src/images/leon_path.png")).getImage();
-		wallTile = (new ImageIcon("src/images/leon_wall_lava.png")).getImage();
-		startTile = (new ImageIcon("src/images/leon_open_door.png")).getImage();
-		endTile = (new ImageIcon("src/images/leon_closed_door.png")).getImage();
-		keyTile = (new ImageIcon("src/images/key_for_32.png")).getImage();
+		pathTile = (new ImageIcon("images/leon_path.png")).getImage();
+		wallTile = (new ImageIcon("images/leon_wall_lava.png")).getImage();
+		startTile = (new ImageIcon("images/leon_open_door.png")).getImage();
+		endTile = (new ImageIcon("images/leon_closed_door.png")).getImage();
+		keyTile = (new ImageIcon("images/key_for_32.png")).getImage();
 	
 		counter = 0;
 	}
