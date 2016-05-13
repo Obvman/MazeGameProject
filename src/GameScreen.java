@@ -6,6 +6,7 @@ import javax.swing.*;
 public class GameScreen extends JPanel {
 	
 	private MainWindow mainWindow;
+	private MazePanel mazePanel;
 	
 	public GameScreen(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
@@ -24,7 +25,8 @@ public class GameScreen extends JPanel {
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // check
 
 		// add UI components
-		add(new MazePanel());
+		this.mazePanel = new MazePanel();
+		add(mazePanel);
 		initStatusBar();
 		initSideMenu();
 	}

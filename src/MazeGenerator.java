@@ -1,6 +1,8 @@
 import java.util.LinkedList;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+
 public class MazeGenerator implements MazeConstants {
 	private int[][] maze;
 	private int mazeSize1;
@@ -31,10 +33,10 @@ public class MazeGenerator implements MazeConstants {
 			newGenerateMaze();
 		}
 
-		// set start and end tile
+		// set start, end, and key tile
 		maze[0][0] = START_TILE;
 		maze[mazeSize1 - 1][mazeSize2 - 1] = END_TILE;
-
+		
 		return this.maze;
 	}
 	/**
@@ -175,7 +177,6 @@ public class MazeGenerator implements MazeConstants {
 	private void breakWall(Node n1, Node n2){
 		maze[(n1.getx()+n2.getx())/2][(n1.gety()+n2.gety())/2] = PATH_TILE;
 	}
-
 
 	/**
 	 * A recursive maze generator
