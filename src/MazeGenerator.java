@@ -2,6 +2,7 @@
 public class MazeGenerator implements MazeConstants {
 	private int[][] maze;
 
+	// TODO: fix this description -- not in the right place
 	/**
 	 * This method takes an integer mazeSize as input and 
 	 * returns a generated maze.

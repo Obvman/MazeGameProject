@@ -5,13 +5,28 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 	private Maze maze;
-	private Timer timer;
-	private final int REFRESH_TIME = 10;
-
+	private Timer timer; 
+	private long startTime;
+	private long duration;
+	
+	// temp
+	public Maze getMaze() {
+		return maze;
+	}
+	
 	public MazePanel() {
 		initMazePanel();
+		startTime = System.nanoTime();
 	}
 
+	public boolean isGameFinished() {
+		return maze.isGameFinished();
+	}
+	
+	public long getDuration() {
+		return duration;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		requestFocus(); // TODO: fix this hack (disable focus for all other elements)
@@ -21,7 +36,12 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 		if (maze.isGameFinished()) {
 			// TODO: display a score screen
 			return;
+		} else {
+			// update duration
+			duration = System.nanoTime() - startTime;
 		}
+		
+		
 
 		repaint();
 	}
@@ -39,7 +59,7 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 				case WALL_TILE: tile = maze.getWallTile(); break;
 				case START_TILE: tile = maze.getStartTile(); break;
 				case END_TILE: tile = maze.getEndTile(); break;
-				default: tile = maze.getPathTile();
+				default: tile = maze.getPathTile(); 
 				};
 
 				g.drawImage(tile, j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, this);
@@ -88,7 +108,7 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 
 		addKeyListener(new TAdapter());
 
-		timer = new Timer(REFRESH_TIME, this);
+		timer = new Timer(10, this);
 		timer.start();
 	}
 
@@ -105,4 +125,6 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 
 
 	}
+
+	
 }

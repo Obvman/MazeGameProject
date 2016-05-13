@@ -23,7 +23,7 @@ public class Maze implements MazeConstants {
 		// maze
 		mazeGenerator = new MazeGenerator();
 		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2);
-
+		
 		// determine where key tile should go
 		// TODO: improve this dodgy algorithm
 		boolean keyTileFound = false;
@@ -54,7 +54,14 @@ public class Maze implements MazeConstants {
 				}
 			}
 		}
-
+		
+		if (!keyTileFound) {
+			keyX = -1;
+			keyY = -1;
+			keyAcquired = true;
+		}
+		
+//		keyAcquired = true; // temporary to test game
 		keyAcquired = false;
 
 		// player

@@ -1,7 +1,7 @@
 public interface MazeConstants {
 	// maze configuration
 	public static int MAZE_SIZE_1 = 15 /*25*/;
-	public static int MAZE_SIZE_2 = 15 /*45*/;
+	public static int MAZE_SIZE_2 = 25 /*45*/;
 	public static int MAZE_CELL_SIZE = 32;
 	public static int DIFFICULTY = 3; // corresponds to number of monsters that spawn
 	
