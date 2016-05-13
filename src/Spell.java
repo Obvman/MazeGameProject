@@ -11,8 +11,8 @@ public class Spell implements MovableSprite {
 	private int stage; 
 
 	public Spell(int startX, int startY, int dx, int dy) {
-		x = startX + dx;
-		y = startY + dy;
+		x = startX;
+		y = startY;
 		this.dx = dx;
 		this.dy = dy;
 	}
@@ -39,8 +39,6 @@ public class Spell implements MovableSprite {
 
 	@Override
 	public Image getImage() {
-		x += dx;
-		y += dy;
 		if (stage == 0) {
 			return (new ImageIcon("images/32_flame_1.png")).getImage();
 		} else if (stage == 1) {
@@ -48,6 +46,11 @@ public class Spell implements MovableSprite {
 		} else {
 			return (new ImageIcon("images/32_flame_3.png")).getImage();
 		}
+	}
+	
+	public void updatePosition() {
+		x += dx;
+		y += dy;
 	}
 	
 	public int getStage() {

@@ -173,6 +173,16 @@ public class Maze implements MazeConstants {
 			}
 		}
 
+		// update spell positions
+		// TODO: remove hack to slow down spell
+		counter++;
+		for (Spell s : player.getSpells()) {
+			s.updatePosition();
+			if (counter % 15 == 0) {
+				s.updateStage();
+			}
+		}
+		
 		// check whether spells have killed monsters
 		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
 			Spell s = spellIter.next();

@@ -8,7 +8,6 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 	private Timer timer; 
 	private long startTime;
 	private long duration;
-	private int counter;
 	
 	// temp
 	public Maze getMaze() {
@@ -100,16 +99,7 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 		
 		// paint the player's spells
 		for (Spell s : player.getSpells()) {
-			// TODO: remove hack to slow down spell
-			counter++;
-			if (counter % 15 == 0)
-				s.updateStage();
-			
 			g.drawImage(s.getImage(), s.getX(), s.getY(), this);
-			g.drawImage(s.getImage(), s.getX(), s.getY(), this); // TODO: remove 
-			
-			
-			
 		}
 		 
 		// paint the monsters
