@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.*;
@@ -23,7 +24,7 @@ public class Maze implements MazeConstants {
 		// maze
 		mazeGenerator = new MazeGenerator();
 		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2);
-		
+
 		// determine where key tile should go
 		// TODO: improve this dodgy algorithm
 		boolean keyTileFound = false;
@@ -54,14 +55,14 @@ public class Maze implements MazeConstants {
 				}
 			}
 		}
-		
+
 		if (!keyTileFound) {
 			keyX = -1;
 			keyY = -1;
 			keyAcquired = true;
 		}
-		
-//		keyAcquired = true; // temporary to test game
+
+		// keyAcquired = true; // temporary to test game
 		keyAcquired = false;
 
 		// player
@@ -72,7 +73,7 @@ public class Maze implements MazeConstants {
 		monsters = new LinkedList<Monster>();
 		Monster m1 = new Monster();
 		m1.setPosition((MAZE_SIZE_2 - 1) * MAZE_CELL_SIZE, 
-					   (MAZE_SIZE_1 - 1) * MAZE_CELL_SIZE);
+				(MAZE_SIZE_1 - 1) * MAZE_CELL_SIZE);
 		Monster m2 = new Monster();
 		m2.setPosition((MAZE_SIZE_2 - 1) * MAZE_CELL_SIZE, 0);
 		Monster m3 = new Monster();
@@ -87,7 +88,7 @@ public class Maze implements MazeConstants {
 		startTile = (new ImageIcon("images/leon_open_door.png")).getImage();
 		endTile = (new ImageIcon("images/leon_closed_door.png")).getImage();
 		keyTile = (new ImageIcon("images/key_for_32.png")).getImage();
-	
+
 		counter = 0;
 	}
 
@@ -123,22 +124,39 @@ public class Maze implements MazeConstants {
 		return keyTile;
 	}
 
-	public boolean isGameFinished() {
+	public boolean isGameLost() {
+		return !player.isAlive();
+	}
+
+	public boolean isGameWon() {
 		return keyAcquired && player.getX()/MAZE_CELL_SIZE == MAZE_SIZE_2 - 1 && player.getY()/MAZE_CELL_SIZE == MAZE_SIZE_1 - 1;
 	}
-	
+
 	public void updateSprites(ActionEvent e) {
+		// check if game finished
+		if (isGameWon()) {
+			return;
+		}
+
 		// update player
 
+		// check if player has been killed from monsters
+		Image playerImage = player.getImage();
+		Rectangle playerRect = new Rectangle(player.getX(), player.getY(), playerImage.getWidth(null), playerImage.getHeight(null));
+		for (Monster m: monsters) {
+			Image monsterImage = m.getImage();
+			Rectangle monsterRect = new Rectangle(m.getX(), m.getY(), monsterImage.getWidth(null), monsterImage.getHeight(null));
+			
+			if (playerRect.intersects(monsterRect)) {
+				player.setAlive(false);
+				return;
+			}
+		}
+		
 		// check if key picked up
 		if (player.getX()/MAZE_CELL_SIZE == keyX && player.getY()/MAZE_CELL_SIZE == keyY) {
 			keyAcquired = true;
 			mazeGrid[keyY][keyX] = PATH_TILE;
-		}
-		
-		// check if game finished
-		if (isGameFinished()) {
-			return;
 		}
 
 		// update movement
@@ -155,10 +173,23 @@ public class Maze implements MazeConstants {
 			}
 		}
 
-		// TODO: remove this hack to half speed of monsters
-		counter++;
-		if (counter % 2 == 0) {
-			return;
+		// check whether spells have killed monsters
+		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
+			Spell s = spellIter.next();
+			Image spellImage = s.getImage();
+			Rectangle spellRect = new Rectangle(s.getX(), s.getY(), spellImage.getWidth(null), spellImage.getHeight(null));
+
+			for (Iterator<Monster> monsterIter = monsters.iterator(); monsterIter.hasNext(); ) {
+				Monster m = monsterIter.next();
+				Image monsterImage = m.getImage();
+				Rectangle monsterRect = new Rectangle(m.getX(), m.getY(), monsterImage.getWidth(null), monsterImage.getHeight(null));
+
+				if (spellRect.intersects(monsterRect)) {
+					spellIter.remove();
+					monsterIter.remove();
+					break;
+				}
+			}
 		}
 
 		// update monsters
@@ -166,7 +197,7 @@ public class Maze implements MazeConstants {
 			int cellX = m.getX() / MAZE_CELL_SIZE;
 			int cellY = m.getY() / MAZE_CELL_SIZE;
 			boolean[][] solution = solveMaze(cellY, cellX, player.getY() / MAZE_CELL_SIZE, 
-					                          player.getX() / MAZE_CELL_SIZE);
+					player.getX() / MAZE_CELL_SIZE);
 
 			int nextX = 0, nextY = 0;
 			for (int i = cellX - 1; i <= cellX + 1; i++) {

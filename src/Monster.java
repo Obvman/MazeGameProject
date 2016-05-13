@@ -10,7 +10,8 @@ public class Monster implements MovableSprite {
 	private Image image;
 	
 	public Monster() {
-		initMonster();
+		ImageIcon monsterImage = new ImageIcon("images/monster_down.png");
+		image = monsterImage.getImage();
 	}
 
 	@Override
@@ -65,12 +66,5 @@ public class Monster implements MovableSprite {
 	public void setPosition (int x, int y) {
 		this.x = x;
 		this.y = y;
-	}
-	
-    private void initMonster() {
-		ImageIcon monsterImage = new ImageIcon("images/monster_down.png");
-		image = monsterImage.getImage();
-		x = 0;
-		y = 0;
 	}
 }

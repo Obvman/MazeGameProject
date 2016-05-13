@@ -8,6 +8,7 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 	private Timer timer; 
 	private long startTime;
 	private long duration;
+	private int counter;
 	
 	// temp
 	public Maze getMaze() {
@@ -19,8 +20,12 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 		startTime = System.nanoTime();
 	}
 
-	public boolean isGameFinished() {
-		return maze.isGameFinished();
+	public boolean isGameWon() {
+		return maze.isGameWon();
+	}
+	
+	public boolean isGameLost() {
+		return maze.isGameLost();
 	}
 	
 	public long getDuration() {
@@ -33,8 +38,8 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 
 		maze.updateSprites(e);
 		
-		if (maze.isGameFinished()) {
-			// TODO: display a score screen
+		
+		if (maze.isGameWon() || maze.isGameLost()) {
 			return;
 		} else {
 			// update duration
@@ -48,7 +53,7 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 
 	@Override
 	protected void paintComponent(Graphics g){
-		super.paintComponent(g);
+//		super.paintComponent(g);
 
 		int[][] mazeGrid = maze.getGrid();
 		for (int i = 0; i < MAZE_SIZE_1; i++) {
@@ -93,6 +98,20 @@ public class MazePanel extends JPanel implements ActionListener, MazeConstants {
 		Player player = maze.getPlayer();
 		g.drawImage(player.getImage(), player.getX(), player.getY(), this);
 		
+		// paint the player's spells
+		for (Spell s : player.getSpells()) {
+			// TODO: remove hack to slow down spell
+			counter++;
+			if (counter % 15 == 0)
+				s.updateStage();
+			
+			g.drawImage(s.getImage(), s.getX(), s.getY(), this);
+			g.drawImage(s.getImage(), s.getX(), s.getY(), this); // TODO: remove 
+			
+			
+			
+		}
+		 
 		// paint the monsters
 		for (Monster m : maze.getMonsters()) {
 			g.drawImage(m.getImage(), m.getX(), m.getY(), this);

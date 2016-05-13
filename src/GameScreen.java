@@ -11,6 +11,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	// panels making up the mazePanel
 	private MazePanel mazeGame;
 	private JPanel mazeScorePanel;
+	private JPanel mazeLostPanel;
 	
 	// status bar components
 	JLabel level;
@@ -35,7 +36,11 @@ public class GameScreen extends JPanel implements ActionListener {
 		if(e.getSource() == timer) {
 			updateComponents();
 			
-			if (mazeGame.isGameFinished()) {
+			if (mazeGame.isGameLost()) {
+				timer.stop();
+				initMazeLostPanel();
+				switchToMazeLostPanel();
+			} else if (mazeGame.isGameWon()) {
 				timer.stop();
 				currLevel++;
 				initMazeScorePanel();
@@ -62,6 +67,11 @@ public class GameScreen extends JPanel implements ActionListener {
 	private void switchToMazeFinishedPanel() {
 		CardLayout cl = (CardLayout) mazePanel.getLayout();
 		cl.show(mazePanel, "Finished");
+	}
+	
+	private void switchToMazeLostPanel() {
+		CardLayout cl = (CardLayout) mazePanel.getLayout();
+		cl.show(mazePanel, "Lost");
 	}
 
 	private void initGame() {
@@ -113,6 +123,23 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeScorePanel.add(menuButton);
 		
 		mazePanel.add(mazeScorePanel, "Finished");
+	}
+	
+	private void initMazeLostPanel() {
+		mazeLostPanel = new JPanel();
+		JLabel levelLabel = new JLabel("You died at level " + currLevel);
+		mazeLostPanel.add(levelLabel);
+		
+		JButton menuButton = new JButton("Back to Main Menu");
+		menuButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainWindow.switchToMenu();
+			}
+		});
+		mazeLostPanel.add(menuButton);
+		
+		mazePanel.add(mazeLostPanel, "Lost");
 	}
 
 	private void initStatusBar() {
