@@ -38,16 +38,16 @@ public class Player implements MovableSprite {
     	ImageIcon playerImage = null;
     	
     	if (dx > 0) {
-    		playerImage = new ImageIcon("images/player_right.png");
+    		playerImage = new ImageIcon("src/images/player_right.png");
     		image = playerImage.getImage();
     	} else if (dx < 0) {
-    		playerImage = new ImageIcon("images/player_left.png");
+    		playerImage = new ImageIcon("src/images/player_left.png");
     		image = playerImage.getImage();
     	} else if (dy > 0) {
-    		playerImage = new ImageIcon("images/player_down.png");
+    		playerImage = new ImageIcon("src/images/player_down.png");
     		image = playerImage.getImage();
     	} else if (dy < 0) {
-    		playerImage = new ImageIcon("images/player_up.png");
+    		playerImage = new ImageIcon("src/images/player_up.png");
     		image = playerImage.getImage();
     	}
     	
@@ -106,7 +106,7 @@ public class Player implements MovableSprite {
     }
     
     private void initPlayer() {
-		ImageIcon playerImage = new ImageIcon("images/player_down.png");
+		ImageIcon playerImage = new ImageIcon("src/images/player_down.png");
 		image = playerImage.getImage();
 		x = 0;
 		y = 0;

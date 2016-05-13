@@ -15,7 +15,7 @@ public class GameScreen extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Image background = (new ImageIcon("images/game_bg.jpg")).getImage();
+		Image background = (new ImageIcon("src/images/game_bg.jpg")).getImage();
         g.drawImage(background, 0, 0, null); 
 	}
 	

@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import javax.swing.*;
 
-public class Maze implements MazeConstants{
+public class Maze implements MazeConstants {
 	private MazeGenerator mazeGenerator;
 	private int[][] mazeGrid;
 	private Player player;
@@ -26,7 +26,8 @@ public class Maze implements MazeConstants{
 		// monsters
 		monsters = new LinkedList<Monster>();
 		Monster m1 = new Monster();
-		m1.setPosition((MAZE_SIZE_2 - 1) * MAZE_CELL_SIZE, (MAZE_SIZE_1 - 1) * MAZE_CELL_SIZE);
+		m1.setPosition((MAZE_SIZE_2 - 1) * MAZE_CELL_SIZE, 
+					   (MAZE_SIZE_1 - 1) * MAZE_CELL_SIZE);
 		Monster m2 = new Monster();
 		m2.setPosition((MAZE_SIZE_2 - 1) * MAZE_CELL_SIZE, 0);
 		Monster m3 = new Monster();
@@ -36,10 +37,10 @@ public class Maze implements MazeConstants{
 		monsters.add(m3);
 		
 		// tiles
-		pathTile = (new ImageIcon("images/leon_path.png")).getImage();
-		wallTile = (new ImageIcon("images/leon_wall_lava.png")).getImage();
-		startTile = (new ImageIcon("images/leon_open_door.png")).getImage();
-		endTile = (new ImageIcon("images/leon_closed_door.png")).getImage();
+		pathTile = (new ImageIcon("src/images/leon_path.png")).getImage();
+		wallTile = (new ImageIcon("src/images/leon_wall_lava.png")).getImage();
+		startTile = (new ImageIcon("src/images/leon_open_door.png")).getImage();
+		endTile = (new ImageIcon("src/images/leon_closed_door.png")).getImage();
 		
 		counter = 0;
 	}
@@ -95,9 +96,10 @@ public class Maze implements MazeConstants{
 
 		// update monsters
 		for (Monster m : monsters) {
-			int cellX = m.getX()/MAZE_CELL_SIZE;
-			int cellY = m.getY()/MAZE_CELL_SIZE;
-			boolean[][] solution = solveMaze(cellY, cellX, player.getY()/MAZE_CELL_SIZE, player.getX()/MAZE_CELL_SIZE);
+			int cellX = m.getX() / MAZE_CELL_SIZE;
+			int cellY = m.getY() / MAZE_CELL_SIZE;
+			boolean[][] solution = solveMaze(cellY, cellX, player.getY() / MAZE_CELL_SIZE, 
+					                          player.getX() / MAZE_CELL_SIZE);
 
 			int nextX = 0, nextY = 0;
 			for (int i = cellX - 1; i <= cellX + 1; i++) {
