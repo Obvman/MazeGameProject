@@ -74,10 +74,9 @@ public class Maze {
 			keyX = -1;
 			keyY = -1;
 			keyAcquired = true;
-		}
+		} 
 
 		// keyAcquired = true; // temporary to test game
-		keyAcquired = false;
 
 		// player
 		player = new Player();
@@ -190,10 +189,31 @@ public class Maze {
 		// update spell positions
 		// TODO: remove hack to slow down spell
 		counter++;
-		for (Spell s : player.getSpells()) {
-			s.updatePosition();
-			if (counter % 15 == 0) {
-				s.updateStage();
+		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
+			Spell s = spellIter.next();
+			// kind of a hack to prevent spell from going out of the maze
+			int xDirection = 0;
+			if (s.getDX() > 0) {
+				xDirection = 1;
+			} else if (s.getDX() < 0) {
+				xDirection = -1;
+			}
+			
+			int yDirection = 0;
+			if (s.getDY() > 0) {
+				yDirection = 1;
+			} else if (s.getDY() < 0) {
+				yDirection = -1;
+			}
+			
+			if (!withinMaze((s.getX() + xDirection * s.getImage().getWidth(null))/MAZE_CELL_SIZE , 
+					(s.getY() + yDirection * s.getImage().getHeight(null))/MAZE_CELL_SIZE)) {
+				spellIter.remove();
+			} else {
+				s.updatePosition();
+				if (counter % 15 == 0) {
+					s.updateStage();
+				}
 			}
 		}
 		

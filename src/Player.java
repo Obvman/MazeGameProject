@@ -139,8 +139,8 @@ public class Player implements MovableSprite {
         if (key == KeyEvent.VK_SPACE) {
         	int imageWidth = image.getWidth(null);
         	int imageHeight = image.getHeight(null);
-    		spells.add(new Spell(x + lastDX * Maze.MAZE_CELL_SIZE - imageWidth/2, 
-    							 y + lastDY * Maze.MAZE_CELL_SIZE - imageHeight, 2*lastDX, 2*lastDY));
+    		spells.add(new Spell(x + lastDX * imageWidth  - imageWidth/2, 
+    							 y + lastDY * imageWidth - imageHeight/2, 2*lastDX, 2*lastDY));
         }
     }
 }

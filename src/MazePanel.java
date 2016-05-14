@@ -6,53 +6,38 @@ import javax.swing.*;
 public class MazePanel extends JPanel implements ActionListener {
 	private Maze maze;
 	private Timer timer; 
-	private long startTime;
-	private long duration;
 	
-	// temp
+	public MazePanel() {
+		maze = new Maze();
+		
+		addKeyListener(new TAdapter());
+
+		// make this panel have focus
+		this.addComponentListener( new ComponentAdapter() {
+	        @Override
+	        public void componentShown( ComponentEvent e ) {
+	            MazePanel.this.requestFocusInWindow();
+	        }
+	    });
+		
+		timer = new Timer(10, this); // corresponds to game speed
+		timer.start();
+	}
+	
 	public Maze getMaze() {
 		return maze;
 	}
-	
-	public MazePanel() {
-		initMazePanel();
-		startTime = System.nanoTime();
-	}
 
-	public boolean isGameWon() {
-		return maze.isGameWon();
-	}
-	
-	public boolean isGameLost() {
-		return maze.isGameLost();
-	}
-	
-	public long getDuration() {
-		return duration;
-	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		requestFocus(); // TODO: fix this hack (disable focus for all other elements)
-
 		maze.updateSprites(e);
 		
-		
-		if (maze.isGameWon() || maze.isGameLost()) {
-			return;
-		} else {
-			// update duration
-			duration = System.nanoTime() - startTime;
-		}
-		
-		
-
 		repaint();
 	}
 
 	@Override
 	protected void paintComponent(Graphics g){
-//		super.paintComponent(g);
+		super.paintComponent(g);
 
 		int[][] mazeGrid = maze.getGrid();
 		for (int i = 0; i < Maze.MAZE_SIZE_1; i++) {
@@ -111,15 +96,6 @@ public class MazePanel extends JPanel implements ActionListener {
 		return x >= 0 && y >= 0 && x < Maze.MAZE_SIZE_1 && y < Maze.MAZE_SIZE_2;
 	}
 
-	private void initMazePanel() {
-		maze = new Maze();
-
-		addKeyListener(new TAdapter());
-
-		timer = new Timer(10, this);
-		timer.start();
-	}
-
 	private class TAdapter extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
@@ -130,9 +106,5 @@ public class MazePanel extends JPanel implements ActionListener {
 		public void keyReleased(KeyEvent e) {
 			maze.getPlayer().keyReleased(e);
 		}
-
-
 	}
-
-	
 }
