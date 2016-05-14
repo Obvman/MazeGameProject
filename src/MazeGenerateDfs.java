@@ -6,7 +6,7 @@ import java.util.Random;
  * All the walls are inserted before the algorithm starts connecting
  * all the PATH_TILE
  */
-public class MazeGenerateDfs implements MazeGenerationStrategy, MazeConstants {
+public class MazeGenerateDfs implements MazeGenerationStrategy {
 
 	public int[][] generateMaze(int mazeSize1, int mazeSize2, int[][] maze) {
 		Node currNode = new Node(0, 0);
@@ -126,12 +126,12 @@ public class MazeGenerateDfs implements MazeGenerationStrategy, MazeConstants {
 	private int[][] insertWalls(int mazeSize1, int mazeSize2, int[][] maze) {
 		for (int i = 1; i < mazeSize1; i += 2) {
 			for (int j = 0; j < mazeSize2; j++){
-				maze[i][j] = WALL_TILE;
+				maze[i][j] = Maze.WALL_TILE;
 			}
 		}
 		for (int i = 1; i < mazeSize2; i += 2) {
 			for (int j = 0; j < mazeSize1; j++){
-				maze[j][i] = WALL_TILE;
+				maze[j][i] = Maze.WALL_TILE;
 			}
 		}
 		return maze;
@@ -143,7 +143,7 @@ public class MazeGenerateDfs implements MazeGenerationStrategy, MazeConstants {
 	 * @param n2
 	 */
 	private int[][] breakWall(Node n1, Node n2, int[][] maze) {
-		maze[(n1.getx()+n2.getx())/2][(n1.gety()+n2.gety())/2] = PATH_TILE;
+		maze[(n1.getx()+n2.getx())/2][(n1.gety()+n2.gety())/2] = Maze.PATH_TILE;
 		return maze;
 	}
 

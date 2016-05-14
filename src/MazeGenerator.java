@@ -1,5 +1,5 @@
 
-public class MazeGenerator implements MazeConstants {
+public class MazeGenerator {
 	private int[][] maze;
 
 	// TODO: fix this description -- not in the right place
@@ -18,7 +18,7 @@ public class MazeGenerator implements MazeConstants {
 
 			for (int row = 0; row < mazeSize1; row++) {
 				for (int col = 0; col < mazeSize2; col++) {
-					this.maze[row][col] = PATH_TILE;
+					this.maze[row][col] = Maze.PATH_TILE;
 				}
 			}
 			MazeGenerationStrategy s = new MazeGenerateDfs();
@@ -26,8 +26,8 @@ public class MazeGenerator implements MazeConstants {
 		}
 
 		// set start, end, and key tile
-		maze[0][0] = START_TILE;
-		maze[mazeSize1 - 1][mazeSize2 - 1] = END_TILE;
+		maze[0][0] = Maze.START_TILE;
+		maze[mazeSize1 - 1][mazeSize2 - 1] = Maze.END_TILE;
 		
 		return this.maze;
 	}

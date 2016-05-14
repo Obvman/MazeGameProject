@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import javax.swing.*;
 
-public class Player implements MovableSprite, MazeConstants {
+public class Player implements MovableSprite {
 	private int x;
 	private int y;
 	private int dx;
@@ -139,8 +139,8 @@ public class Player implements MovableSprite, MazeConstants {
         if (key == KeyEvent.VK_SPACE) {
         	int imageWidth = image.getWidth(null);
         	int imageHeight = image.getHeight(null);
-    		spells.add(new Spell(x + lastDX*MAZE_CELL_SIZE - imageWidth/2, 
-    							 y + lastDY*MAZE_CELL_SIZE - imageHeight, 2*lastDX, 2*lastDY));
+    		spells.add(new Spell(x + lastDX * Maze.MAZE_CELL_SIZE - imageWidth/2, 
+    							 y + lastDY * Maze.MAZE_CELL_SIZE - imageHeight, 2*lastDX, 2*lastDY));
         }
     }
 }

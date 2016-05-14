@@ -3,7 +3,7 @@ import java.util.Random;
 /**
  * A recursive maze generator
  */
-public class MazeGenerateRecursive implements MazeGenerationStrategy, MazeConstants {
+public class MazeGenerateRecursive implements MazeGenerationStrategy {
 
 	public int[][] generateMaze(int mazeSize1, int mazeSize2, int[][] maze) {
 		return generateMazeRecursive(0, mazeSize1, 0, mazeSize2, maze);
@@ -14,11 +14,11 @@ public class MazeGenerateRecursive implements MazeGenerationStrategy, MazeConsta
 			//This will insert 4 walls in the middle of the matrix
 			if (yEnd - yStart>2) {
 				for (int i = 0; i<yEnd-yStart; i++) {
-					maze[xStart + (xEnd-xStart)/2][i+yStart]= WALL_TILE;
+					maze[xStart + (xEnd-xStart)/2][i+yStart] = Maze.WALL_TILE;
 				}
 			}
 			for(int i = 0; i<xEnd-xStart; i++){
-				maze[i+xStart][yStart + (yEnd-yStart)/2]= WALL_TILE;
+				maze[i+xStart][yStart + (yEnd-yStart)/2]= Maze.WALL_TILE;
 			}
 			/*This will dig 3 holes on the 3 of the 4 walls we generated.
 			 * 0 -> the top wall; 1 -> the left wall; 2 -> the bottom wall;
@@ -39,7 +39,7 @@ public class MazeGenerateRecursive implements MazeGenerationStrategy, MazeConsta
 						} else {
 							newHole = 0;
 						}
-						maze[xStart + (xEnd-xStart)/2][yStart + newHole] = PATH_TILE;
+						maze[xStart + (xEnd-xStart)/2][yStart + newHole] = Maze.PATH_TILE;
 						break;
 					case 1:
 						if (xEnd - xStart > 3) {
@@ -47,7 +47,7 @@ public class MazeGenerateRecursive implements MazeGenerationStrategy, MazeConsta
 						} else {
 							newHole = 0;
 						}
-						maze[xStart + newHole][yStart + (yEnd-yStart)/2] = PATH_TILE;
+						maze[xStart + newHole][yStart + (yEnd-yStart)/2] = Maze.PATH_TILE;
 						break;
 					case 2:
 						if (yEnd - yStart > 3) {
@@ -55,7 +55,7 @@ public class MazeGenerateRecursive implements MazeGenerationStrategy, MazeConsta
 						} else {
 							newHole = 0;
 						}
-						maze[xStart + (xEnd-xStart)/2][yStart + newHole+(yEnd-yStart)/2 +1] = PATH_TILE;
+						maze[xStart + (xEnd-xStart)/2][yStart + newHole+(yEnd-yStart)/2 +1] = Maze.PATH_TILE;
 						break;
 					case 3:
 						if (xEnd - xStart > 3) {
@@ -63,11 +63,11 @@ public class MazeGenerateRecursive implements MazeGenerationStrategy, MazeConsta
 						} else {
 							newHole = 0;
 						}
-						maze[newHole + (xEnd-xStart)/2 +1 + xStart][yStart + (yEnd-yStart)/2] = PATH_TILE;
+						maze[newHole + (xEnd-xStart)/2 +1 + xStart][yStart + (yEnd-yStart)/2] = Maze.PATH_TILE;
 						break;
 				}
 			}
-			if((xEnd-xStart > 3) && (yEnd-yStart > 3)){
+			if ((xEnd-xStart > 3) && (yEnd-yStart > 3)) {
 				maze = generateMazeRecursive(xStart, xStart + (xEnd-xStart)/2, yStart, yStart + (yEnd-yStart)/2, maze);
 				maze = generateMazeRecursive(xStart + (xEnd-xStart)/2+1, xEnd, yStart, yStart + (yEnd-yStart)/2, maze);
 				maze = generateMazeRecursive(xStart + (xEnd-xStart)/2+1, xEnd, yStart + (yEnd-yStart)/2+1, yEnd, maze);
