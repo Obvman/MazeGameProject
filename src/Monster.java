@@ -10,7 +10,7 @@ public class Monster implements MovableSprite {
 	private Image image;
 	
 	public Monster() {
-		ImageIcon monsterImage = new ImageIcon("images/monster_down.png");
+		ImageIcon monsterImage = new ImageIcon("resources/monster_down.png");
 		image = monsterImage.getImage();
 	}
 
@@ -39,16 +39,16 @@ public class Monster implements MovableSprite {
     	ImageIcon monsterImage = null;
     	
     	if (dx > 0) {
-    		monsterImage = new ImageIcon("images/monster_right.png");
+    		monsterImage = new ImageIcon("resources/monster_right.png");
     		image = monsterImage.getImage();
     	} else if (dx < 0) {
-    		monsterImage = new ImageIcon("images/monster_left.png");
+    		monsterImage = new ImageIcon("resources/monster_left.png");
     		image = monsterImage.getImage();
     	} else if (dy > 0) {
-    		monsterImage = new ImageIcon("images/monster_down.png");
+    		monsterImage = new ImageIcon("resources/monster_down.png");
     		image = monsterImage.getImage();
     	} else if (dy < 0) {
-    		monsterImage = new ImageIcon("images/monster_up.png");
+    		monsterImage = new ImageIcon("resources/monster_up.png");
     		image = monsterImage.getImage();
     	}
     	

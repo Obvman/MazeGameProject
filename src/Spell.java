@@ -40,11 +40,11 @@ public class Spell implements MovableSprite {
 	@Override
 	public Image getImage() {
 		if (stage == 0) {
-			return (new ImageIcon("images/32_flame_1.png")).getImage();
+			return (new ImageIcon("resources/32_flame_1.png")).getImage();
 		} else if (stage == 1) {
-			return (new ImageIcon("images/32_flame_2.png")).getImage();
+			return (new ImageIcon("resources/32_flame_2.png")).getImage();
 		} else {
-			return (new ImageIcon("images/32_flame_3.png")).getImage();
+			return (new ImageIcon("resources/32_flame_3.png")).getImage();
 		}
 	}
 	

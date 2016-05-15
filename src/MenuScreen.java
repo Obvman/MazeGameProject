@@ -19,7 +19,7 @@ public class MenuScreen extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Image background = (new ImageIcon("images/background.jpeg")).getImage();
+		Image background = (new ImageIcon("resources/background.jpeg")).getImage();
 		int x = (this.getWidth() - background.getWidth(null)) / 2;
 	    int y = (this.getHeight() - background.getHeight(null)) / 2;
 	    g.drawImage(background, x, y, null);

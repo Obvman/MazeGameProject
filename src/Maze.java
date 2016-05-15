@@ -20,18 +20,27 @@ public class Maze {
 	public static int END_TILE = 3;
 	public static int KEY_TILE = 4;
 	
+	// maze and characters
 	private MazeGenerator mazeGenerator;
 	private int[][] mazeGrid;
 	private Player player;
 	private LinkedList<Monster> monsters;
+	
+	// images of tiles
+	// TODO: create a tile generator class
 	private Image pathTile;
 	private Image wallTile;
 	private Image startTile;
 	private Image endTile;
 	private Image keyTile;
+	
+	// key location
 	private boolean keyAcquired;
 	private int keyX;
 	private int keyY;
+	
+	// used to delay spells
+	// TODO: remove this hack
 	private int counter;
 
 	public Maze() {
@@ -96,11 +105,11 @@ public class Maze {
 		monsters.add(m3);
 
 		// tiles
-		pathTile = (new ImageIcon("images/leon_path.png")).getImage();
-		wallTile = (new ImageIcon("images/leon_wall_lava.png")).getImage();
-		startTile = (new ImageIcon("images/leon_open_door.png")).getImage();
-		endTile = (new ImageIcon("images/leon_closed_door.png")).getImage();
-		keyTile = (new ImageIcon("images/key_for_32.png")).getImage();
+		pathTile = (new ImageIcon("resources/leon_path.png")).getImage();
+		wallTile = (new ImageIcon("resources/leon_wall_lava.png")).getImage();
+		startTile = (new ImageIcon("resources/leon_open_door.png")).getImage();
+		endTile = (new ImageIcon("resources/leon_closed_door.png")).getImage();
+		keyTile = (new ImageIcon("resources/key_for_32.png")).getImage();
 
 		counter = 0;
 	}
@@ -188,29 +197,32 @@ public class Maze {
 
 		// update spell positions
 		// TODO: remove hack to slow down spell
-		counter++;
+		
 		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
 			Spell s = spellIter.next();
-			// kind of a hack to prevent spell from going out of the maze
-			int xDirection = 0;
+			
+			// prevent spell from going out of maze
+			int spellX = s.getX();
 			if (s.getDX() > 0) {
-				xDirection = 1;
+				spellX += s.getImage().getWidth(null);
 			} else if (s.getDX() < 0) {
-				xDirection = -1;
+				spellX -= s.getImage().getWidth(null);
 			}
+			spellX /= MAZE_CELL_SIZE;
 			
-			int yDirection = 0;
+			int spellY = s.getY();
 			if (s.getDY() > 0) {
-				yDirection = 1;
+				spellY += s.getImage().getHeight(null);
 			} else if (s.getDY() < 0) {
-				yDirection = -1;
+				spellY -= s.getImage().getHeight(null);
 			}
+			spellY /= MAZE_CELL_SIZE;
 			
-			if (!withinMaze((s.getX() + xDirection * s.getImage().getWidth(null))/MAZE_CELL_SIZE , 
-					(s.getY() + yDirection * s.getImage().getHeight(null))/MAZE_CELL_SIZE)) {
+			if (!withinMaze(spellY, spellX)) {
 				spellIter.remove();
 			} else {
 				s.updatePosition();
+				counter++;
 				if (counter % 15 == 0) {
 					s.updateStage();
 				}
@@ -364,8 +376,4 @@ public class Maze {
 
 		return true;
 	}
-
-
-
-
 }
