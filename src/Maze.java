@@ -11,7 +11,7 @@ public class Maze {
 	public static int MAZE_SIZE_1 = 15 /*25*/;
 	public static int MAZE_SIZE_2 = 25 /*45*/;
 	public static int MAZE_CELL_SIZE = 32;
-	public static int DIFFICULTY = 3; // corresponds to number of monsters that spawn
+	public static int DIFFICULTY = 20; // corresponds to number of monsters that spawn
 	
 	// types of tiles
 	public static int PATH_TILE = 0;
@@ -34,7 +34,7 @@ public class Maze {
 	private Image endTile;
 	private Image keyTile;
 	
-	// key location
+	// key 
 	private boolean keyAcquired;
 	private int keyX;
 	private int keyY;
@@ -89,20 +89,23 @@ public class Maze {
 
 		// player
 		player = new Player();
-
+		
 		// monsters
-		// TODO: fix hardcode of 3 monsters
 		monsters = new LinkedList<Monster>();
-		Monster m1 = new Monster();
-		m1.setPosition((MAZE_SIZE_2 - 1) * MAZE_CELL_SIZE, 
-				(MAZE_SIZE_1 - 1) * MAZE_CELL_SIZE);
-		Monster m2 = new Monster();
-		m2.setPosition((MAZE_SIZE_2 - 1) * MAZE_CELL_SIZE, 0);
-		Monster m3 = new Monster();
-		m3.setPosition(0, (MAZE_SIZE_1 - 1) * MAZE_CELL_SIZE);
-		monsters.add(m1);
-		monsters.add(m2);
-		monsters.add(m3);
+		for (int i = 0; i < Maze.DIFFICULTY; i++) {
+			boolean placed = false;
+			while (!placed) {
+				int monsterX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
+				int monsterY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
+				
+				if (monsterX > 5 && monsterY > 5 && mazeGrid[monsterY][monsterX] == PATH_TILE) {
+					Monster m = new Monster();
+					m.setPosition(monsterX * MAZE_CELL_SIZE, monsterY * MAZE_CELL_SIZE);
+					monsters.add(m);
+					placed = true;
+				}
+			}
+		}
 
 		// tiles
 		pathTile = (new ImageIcon("resources/leon_path.png")).getImage();
@@ -156,7 +159,7 @@ public class Maze {
 
 	public void updateSprites(ActionEvent e) {
 		// check if game finished
-		if (isGameWon()) {
+		if (isGameWon() || isGameLost()) {
 			return;
 		}
 

@@ -17,8 +17,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	// status bar components
 	JPanel statusBar;
 	
-	private long startTime;
-	private long duration;
+	private float duration;
 	private int currLevel;
 	private Timer timer;
 
@@ -41,7 +40,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		// initialise stats
 		currLevel = 1;
-
 		timer = new Timer(30, this);
 		timer.start();
 		
@@ -61,7 +59,7 @@ public class GameScreen extends JPanel implements ActionListener {
 				currLevel++;
 				switchToMazeFinishedPanel();
 			} else {
-				duration = System.nanoTime() - startTime;
+				duration += (double)timer.getDelay()/1000;
 			}
 		}
 	}
@@ -79,8 +77,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeGame = new MazePanel();
 		mazePanel.add(mazeGame, "Playing");
 		maze = mazeGame.getMaze();
-		
-		startTime = System.nanoTime();
 		
 		CardLayout cl = (CardLayout) mazePanel.getLayout();
 		cl.show(mazePanel, "Playing");
@@ -159,7 +155,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		statusBar.add(level, BorderLayout.WEST);
 
 		// time
-		JLabel time = new JLabel("Time: " + duration/1000000000);
+		JLabel time = new JLabel("Time: " + (int)duration);
 		statusBar.add(time, BorderLayout.CENTER);
 		time.setHorizontalAlignment(JLabel.CENTER);
 
@@ -191,13 +187,23 @@ public class GameScreen extends JPanel implements ActionListener {
 		});
 
 		// pause button
-		JButton pauseButton = new JButton("Pause");
+		// final modifier to allow modification of the button (see action listener)
+		final JButton pauseButton = new JButton("Pause");
 		pauseButton.setFocusable(false);
-		pauseButton.setToolTipText("Pause the game and timer");
+		pauseButton.setToolTipText("Pause/unpause the game and timer");
 		pauseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("The game is actually paused right now, trust me");
+				
+				if (timer.isRunning()) {
+					pauseButton.setText("Unpause");
+					timer.stop();
+					mazeGame.setRunning(false);
+				} else {
+					pauseButton.setText("Pause");
+					timer.start();
+					mazeGame.setRunning(true);;
+				}
 			}
 		});
 
@@ -208,6 +214,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		menuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				mazeGame.setRunning(false);
 				mainWindow.switchToMenu();
 			}
 		});

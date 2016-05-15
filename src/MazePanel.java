@@ -6,32 +6,39 @@ import javax.swing.*;
 public class MazePanel extends JPanel implements ActionListener {
 	private Maze maze;
 	private Timer timer; 
-	
+
 	public MazePanel() {
 		maze = new Maze();
-		
+
 		addKeyListener(new TAdapter());
 
 		// make this panel have focus
 		this.addComponentListener( new ComponentAdapter() {
-	        @Override
-	        public void componentShown( ComponentEvent e ) {
-	            MazePanel.this.requestFocusInWindow();
-	        }
-	    });
-		
+			@Override
+			public void componentShown( ComponentEvent e ) {
+				MazePanel.this.requestFocusInWindow();
+			}
+		});
+
 		timer = new Timer(10, this); // corresponds to game speed
 		timer.start();
 	}
-	
+
 	public Maze getMaze() {
 		return maze;
+	}
+
+	public void setRunning(boolean isRunning) {
+		if (isRunning) {
+			timer.start();
+		} else {
+			timer.stop();
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		maze.updateSprites(e);
-		
 		repaint();
 	}
 
@@ -43,7 +50,7 @@ public class MazePanel extends JPanel implements ActionListener {
 		for (int i = 0; i < Maze.MAZE_SIZE_1; i++) {
 			for (int j = 0; j < Maze.MAZE_SIZE_2; j++) {
 				Image tile = null;
-				
+
 				if (mazeGrid[i][j] == Maze.PATH_TILE) tile = maze.getPathTile();
 				else if (mazeGrid[i][j] == Maze.WALL_TILE) tile = maze.getWallTile();
 				else if (mazeGrid[i][j] == Maze.START_TILE) tile = maze.getStartTile();
@@ -54,7 +61,7 @@ public class MazePanel extends JPanel implements ActionListener {
 				if (mazeGrid[i][j] == Maze.KEY_TILE) {
 					g.drawImage(maze.getKeyTile(), j * Maze.MAZE_CELL_SIZE, i * Maze.MAZE_CELL_SIZE, this);
 				}
-				
+
 				if (mazeGrid[i][j] == Maze.WALL_TILE) {
 					// check whether there are adjacent wall tiles for improved graphics
 					if (withinMaze(i, j-1) && mazeGrid[i][j-1] == Maze.WALL_TILE) {
@@ -80,12 +87,12 @@ public class MazePanel extends JPanel implements ActionListener {
 		// paint the player
 		Player player = maze.getPlayer();
 		g.drawImage(player.getImage(), player.getX(), player.getY(), this);
-		
+
 		// paint the player's spells
 		for (Spell s : player.getSpells()) {
 			g.drawImage(s.getImage(), s.getX(), s.getY(), this);
 		}
-		 
+
 		// paint the monsters
 		for (Monster m : maze.getMonsters()) {
 			g.drawImage(m.getImage(), m.getX(), m.getY(), this);
