@@ -89,10 +89,6 @@ public class Player implements MovableSprite {
     }
 	
 	public void move() {
-		if (!(dx == 0 && dy == 0)) {
-			lastDX = dx;
-			lastDY = dy;
-		}
 		x += dx;
 		y += dy;
 	}
@@ -101,18 +97,22 @@ public class Player implements MovableSprite {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
+        	lastDX = -1;
             dx = -1;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
+        	lastDX = 1;
             dx = 1;
         }
 
         if (key == KeyEvent.VK_UP) {
+        	lastDY = -1;
         	dy = -1;
         }
 
         if (key == KeyEvent.VK_DOWN) {
+        	lastDY = 1;
         	dy = 1;
         }
     }
@@ -121,26 +121,32 @@ public class Player implements MovableSprite {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
-            dx = 0;
+        	if (dy != 0) lastDX = 0;
+        	if (dx != 1) dx = 0;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-            dx = 0;
+        	if (dy != 0) lastDX = 0;
+        	if (dx != -1) dx = 0;
         }
 
         if (key == KeyEvent.VK_UP) {
-            dy = 0;
+        	if (dx != 0) lastDY = 0;
+            if (dy != 1) dy = 0;
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dy = 0;
+        	if (dx != 0) lastDY = 0;
+            if (dy != -1) dy = 0;
         }
         
         if (key == KeyEvent.VK_SPACE) {
-        	int imageWidth = image.getWidth(null);
-        	int imageHeight = image.getHeight(null);
-    		spells.add(new Spell(x + lastDX * imageWidth  - imageWidth/2, 
-    							 y + lastDY * imageWidth - imageHeight/2, 2*lastDX, 2*lastDY));
+        	if (spells.size() < 2) {
+        		int imageWidth = image.getWidth(null);
+            	int imageHeight = image.getHeight(null);
+        		spells.add(new Spell(x + lastDX * imageWidth  - imageWidth/2, 
+        							 y + lastDY * imageWidth - imageHeight/2, 2*lastDX, 2*lastDY));
+        	}
         }
     }
 }
