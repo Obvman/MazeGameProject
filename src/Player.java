@@ -121,23 +121,39 @@ public class Player implements MovableSprite {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
-        	if (dy != 0) lastDX = 0;
-        	if (dx != 1) dx = 0;
+        	if (dy != 0) {
+        		lastDX = 0;
+        	} else {
+        		lastDY = 0;
+        	}
+        	if (dx != 1) dx = 0; // smooth reversing of direction
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-        	if (dy != 0) lastDX = 0;
-        	if (dx != -1) dx = 0;
+        	if (dy != 0) {
+        		lastDX = 0;
+        	} else {
+        		lastDY = 0;
+        	}
+        	if (dx != -1) dx = 0; // smooth reversing of direction
         }
 
         if (key == KeyEvent.VK_UP) {
-        	if (dx != 0) lastDY = 0;
-            if (dy != 1) dy = 0;
+        	if (dx != 0) { 
+        		lastDY = 0;
+        	} else {
+        		lastDX = 0;
+        	}
+            if (dy != 1) dy = 0; // smooth reversing of direction
         }
 
         if (key == KeyEvent.VK_DOWN) {
-        	if (dx != 0) lastDY = 0;
-            if (dy != -1) dy = 0;
+        	if (dx != 0) {
+        		lastDY = 0;
+        	} else {
+        		lastDX = 0;
+        	}
+            if (dy != -1) dy = 0; // smooth reversing of direction
         }
         
         if (key == KeyEvent.VK_SPACE) {
