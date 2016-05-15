@@ -7,8 +7,23 @@ public class MazePanel extends JPanel implements ActionListener {
 	private Maze maze;
 	private Timer timer; 
 
+	// images of tiles
+	// TODO: create a tile generator class
+	private Image pathTile;
+	private Image wallTile;
+	private Image startTile;
+	private Image endTile;
+	private Image keyTile;
+
 	public MazePanel() {
 		maze = new Maze();
+
+		// tiles
+		pathTile = (new ImageIcon("resources/leon_path.png")).getImage();
+		wallTile = (new ImageIcon("resources/leon_wall_lava.png")).getImage();
+		startTile = (new ImageIcon("resources/leon_open_door.png")).getImage();
+		endTile = (new ImageIcon("resources/leon_closed_door.png")).getImage();
+		keyTile = (new ImageIcon("resources/key_for_32.png")).getImage();
 
 		addKeyListener(new TAdapter());
 
@@ -51,15 +66,16 @@ public class MazePanel extends JPanel implements ActionListener {
 			for (int j = 0; j < Maze.MAZE_SIZE_2; j++) {
 				Image tile = null;
 
-				if (mazeGrid[i][j] == Maze.PATH_TILE) tile = maze.getPathTile();
-				else if (mazeGrid[i][j] == Maze.WALL_TILE) tile = maze.getWallTile();
-				else if (mazeGrid[i][j] == Maze.START_TILE) tile = maze.getStartTile();
-				else if (mazeGrid[i][j] == Maze.END_TILE) tile = maze.getEndTile();
-				else tile = maze.getPathTile();
+				if (mazeGrid[i][j] == Maze.PATH_TILE) tile = pathTile;
+				else if (mazeGrid[i][j] == Maze.WALL_TILE) tile = wallTile;
+				else if (mazeGrid[i][j] == Maze.START_TILE) tile = startTile;
+				else if (mazeGrid[i][j] == Maze.END_TILE) tile = endTile;
+				else tile = pathTile;
 
+				// key
 				g.drawImage(tile, j * Maze.MAZE_CELL_SIZE, i * Maze.MAZE_CELL_SIZE, this);
 				if (mazeGrid[i][j] == Maze.KEY_TILE) {
-					g.drawImage(maze.getKeyTile(), j * Maze.MAZE_CELL_SIZE, i * Maze.MAZE_CELL_SIZE, this);
+					g.drawImage(keyTile, j * Maze.MAZE_CELL_SIZE, i * Maze.MAZE_CELL_SIZE, this);
 				}
 
 				if (mazeGrid[i][j] == Maze.WALL_TILE) {

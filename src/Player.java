@@ -65,6 +65,11 @@ public class Player implements MovableSprite {
         return image;
     }
 	
+	@Override
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+	}
+	
 	public LinkedList<Spell> getSpells() {
 		for (Iterator<Spell> iterator = spells.iterator(); iterator.hasNext(); ) {
 			if (iterator.next().getStage() > 2) {
@@ -126,7 +131,8 @@ public class Player implements MovableSprite {
         	} else {
         		lastDY = 0;
         	}
-        	if (dx != 1) dx = 0; // smooth reversing of direction
+        	
+        	if (dx != 1) dx = 0;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
@@ -135,7 +141,8 @@ public class Player implements MovableSprite {
         	} else {
         		lastDY = 0;
         	}
-        	if (dx != -1) dx = 0; // smooth reversing of direction
+        	
+        	if (dx != -1) dx = 0;
         }
 
         if (key == KeyEvent.VK_UP) {
@@ -144,7 +151,8 @@ public class Player implements MovableSprite {
         	} else {
         		lastDX = 0;
         	}
-            if (dy != 1) dy = 0; // smooth reversing of direction
+        	
+            if (dy != 1) dy = 0;
         }
 
         if (key == KeyEvent.VK_DOWN) {
@@ -153,7 +161,8 @@ public class Player implements MovableSprite {
         	} else {
         		lastDX = 0;
         	}
-            if (dy != -1) dy = 0; // smooth reversing of direction
+        	
+            if (dy != -1) dy = 0;
         }
         
         if (key == KeyEvent.VK_SPACE) {
@@ -165,4 +174,6 @@ public class Player implements MovableSprite {
         	}
         }
     }
+
+	
 }

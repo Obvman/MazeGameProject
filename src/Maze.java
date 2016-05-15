@@ -6,90 +6,47 @@ import java.util.LinkedList;
 import javax.swing.*;
 
 public class Maze {
-	// MAZE CONSTANTS:
+	// MAZE CONSTANTS
 	// maze configuration
 	public static int MAZE_SIZE_1 = 15 /*25*/;
 	public static int MAZE_SIZE_2 = 25 /*45*/;
 	public static int MAZE_CELL_SIZE = 32;
-	public static int DIFFICULTY = 20; // corresponds to number of monsters that spawn
-	
+	public static int DIFFICULTY = 10; // corresponds to number of monsters that spawn
+
 	// types of tiles
 	public static int PATH_TILE = 0;
 	public static int WALL_TILE = 1;
 	public static int START_TILE = 2;
 	public static int END_TILE = 3;
 	public static int KEY_TILE = 4;
-	
+
+	// GAME CONFIGURATION
 	// maze and characters
 	private MazeGenerator mazeGenerator;
 	private int[][] mazeGrid;
 	private Player player;
 	private LinkedList<Monster> monsters;
-	
-	// images of tiles
-	// TODO: create a tile generator class
-	private Image pathTile;
-	private Image wallTile;
-	private Image startTile;
-	private Image endTile;
-	private Image keyTile;
-	
-	// key 
 	private boolean keyAcquired;
-	private int keyX;
-	private int keyY;
-	
-	// used to delay spells
-	// TODO: remove this hack
-	private int counter;
 
 	public Maze() {
 		// maze
 		mazeGenerator = new MazeGenerator();
-		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2);
+		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2); // TODO: place this somewhere else
 
 		// determine where key tile should go
-		// TODO: improve this dodgy algorithm
-		boolean keyTileFound = false;
-		for (int row = MAZE_SIZE_1 - 1; row >= 0 && !keyTileFound; row--) {
-			for (int col = MAZE_SIZE_2 - 1; col >= 0 && !keyTileFound; col--) {
-				if (withinMaze(col, row) && mazeGrid[row][col] == PATH_TILE) {
-					// check whether it has 3 surrounding wall tiles;
-					int surroundingWalls = 0;
-					if (withinMaze(row, col-1) && mazeGrid[row][col-1] == WALL_TILE) {
-						surroundingWalls++;
-					}
-					if (withinMaze(row-1, col) && mazeGrid[row-1][col] == WALL_TILE) {
-						surroundingWalls++;
-					}
-					if (withinMaze(row, col+1) && mazeGrid[row][col+1] == WALL_TILE) {
-						surroundingWalls++;
-					}
-					if (withinMaze(row+1, col) && mazeGrid[row+1][col] == WALL_TILE) {
-						surroundingWalls++;
-					}
-
-					if (surroundingWalls == 3) {
-						mazeGrid[row][col] = KEY_TILE;
-						keyX = col;
-						keyY = row;
-						keyTileFound = true;
-					}
-				}
+		// TODO: make sure it is not within a radius of start and end tile
+		while (true) {
+			int keyX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
+			int keyY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
+			if (mazeGrid[keyY][keyX] == PATH_TILE) {
+				mazeGrid[keyY][keyX] = KEY_TILE;
+				break;
 			}
 		}
 
-		if (!keyTileFound) {
-			keyX = -1;
-			keyY = -1;
-			keyAcquired = true;
-		} 
-
-		// keyAcquired = true; // temporary to test game
-
 		// player
 		player = new Player();
-		
+
 		// monsters
 		monsters = new LinkedList<Monster>();
 		for (int i = 0; i < Maze.DIFFICULTY; i++) {
@@ -97,7 +54,7 @@ public class Maze {
 			while (!placed) {
 				int monsterX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
 				int monsterY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
-				
+
 				if (monsterX > 5 && monsterY > 5 && mazeGrid[monsterY][monsterX] == PATH_TILE) {
 					Monster m = new Monster();
 					m.setPosition(monsterX * MAZE_CELL_SIZE, monsterY * MAZE_CELL_SIZE);
@@ -106,15 +63,6 @@ public class Maze {
 				}
 			}
 		}
-
-		// tiles
-		pathTile = (new ImageIcon("resources/leon_path.png")).getImage();
-		wallTile = (new ImageIcon("resources/leon_wall_lava.png")).getImage();
-		startTile = (new ImageIcon("resources/leon_open_door.png")).getImage();
-		endTile = (new ImageIcon("resources/leon_closed_door.png")).getImage();
-		keyTile = (new ImageIcon("resources/key_for_32.png")).getImage();
-
-		counter = 0;
 	}
 
 	public int[][] getGrid() {
@@ -129,26 +77,6 @@ public class Maze {
 		return monsters;
 	}
 
-	public Image getPathTile() {
-		return pathTile;
-	}
-
-	public Image getWallTile() {
-		return wallTile;
-	}
-
-	public Image getStartTile() {
-		return startTile;
-	}
-
-	public Image getEndTile() {
-		return endTile;
-	}
-
-	public Image getKeyTile() {
-		return keyTile;
-	}
-
 	public boolean isGameLost() {
 		return !player.isAlive();
 	}
@@ -158,92 +86,23 @@ public class Maze {
 	}
 
 	public void updateSprites(ActionEvent e) {
-		// check if game finished
-		if (isGameWon() || isGameLost()) {
-			return;
-		}
-
-		// update player
+		int playerCellX = player.getX() / MAZE_CELL_SIZE;
+		int playerCellY = player.getY() / MAZE_CELL_SIZE;
 
 		// check if player has been killed from monsters
-		Image playerImage = player.getImage();
-		Rectangle playerRect = new Rectangle(player.getX(), player.getY(), playerImage.getWidth(null), playerImage.getHeight(null));
 		for (Monster m: monsters) {
-			Image monsterImage = m.getImage();
-			Rectangle monsterRect = new Rectangle(m.getX(), m.getY(), monsterImage.getWidth(null), monsterImage.getHeight(null));
-			
-			if (playerRect.intersects(monsterRect)) {
+			if (m.getBounds().intersects(player.getBounds())) {
 				player.setAlive(false);
 				return;
 			}
 		}
-		
-		// check if key picked up
-		if (player.getX()/MAZE_CELL_SIZE == keyX && player.getY()/MAZE_CELL_SIZE == keyY) {
-			keyAcquired = true;
-			mazeGrid[keyY][keyX] = PATH_TILE;
-		}
 
-		// update movement
-		if (isLegalMove(player, player.getDX(), player.getDY())) {
-			player.move();
-		} else if (player.getDX() != 0 && player.getDY() != 0) {
-			// player is holding two arrow keys so check if just activating one of the two makes the move legal
-			if (isLegalMove(player, 0, player.getDY())) {
-				// move in Y-axis direction only
-				player.manualMove(0, player.getDY());
-			} else if (isLegalMove(player, player.getDX(), 0)) {
-				// move in X-axis direction only
-				player.manualMove(player.getDX(), 0);
-			}
-		}
-
-		// update spell positions
-		// TODO: remove hack to slow down spell
-		
-		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
-			Spell s = spellIter.next();
-			
-			// prevent spell from going out of maze
-			int spellX = s.getX();
-			if (s.getDX() > 0) {
-				spellX += s.getImage().getWidth(null);
-			} else if (s.getDX() < 0) {
-				spellX -= s.getImage().getWidth(null);
-			}
-			spellX /= MAZE_CELL_SIZE;
-			
-			int spellY = s.getY();
-			if (s.getDY() > 0) {
-				spellY += s.getImage().getHeight(null);
-			} else if (s.getDY() < 0) {
-				spellY -= s.getImage().getHeight(null);
-			}
-			spellY /= MAZE_CELL_SIZE;
-			
-			if (!withinMaze(spellY, spellX)) {
-				spellIter.remove();
-			} else {
-				s.updatePosition();
-				counter++;
-				if (counter % 15 == 0) {
-					s.updateStage();
-				}
-			}
-		}
-		
 		// check whether spells have killed monsters
 		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
 			Spell s = spellIter.next();
-			Image spellImage = s.getImage();
-			Rectangle spellRect = new Rectangle(s.getX(), s.getY(), spellImage.getWidth(null), spellImage.getHeight(null));
-
 			for (Iterator<Monster> monsterIter = monsters.iterator(); monsterIter.hasNext(); ) {
 				Monster m = monsterIter.next();
-				Image monsterImage = m.getImage();
-				Rectangle monsterRect = new Rectangle(m.getX(), m.getY(), monsterImage.getWidth(null), monsterImage.getHeight(null));
-
-				if (spellRect.intersects(monsterRect)) {
+				if (s.getBounds().intersects(m.getBounds())) {
 					spellIter.remove();
 					monsterIter.remove();
 					break;
@@ -251,50 +110,151 @@ public class Maze {
 			}
 		}
 
-		// update monsters
-		for (Monster m : monsters) {
-			int cellX = m.getX() / MAZE_CELL_SIZE;
-			int cellY = m.getY() / MAZE_CELL_SIZE;
-			boolean[][] solution = solveMaze(cellY, cellX, player.getY() / MAZE_CELL_SIZE, 
-					player.getX() / MAZE_CELL_SIZE);
+		// check if key picked up
+		if (mazeGrid[playerCellY][playerCellX] == KEY_TILE) {
+			keyAcquired = true;
+			mazeGrid[playerCellY][playerCellX] = PATH_TILE;
+		}
 
-			int nextX = 0, nextY = 0;
-			for (int i = cellX - 1; i <= cellX + 1; i++) {
-				for (int j = cellY - 1; j <= cellY + 1 ; j++) {
-					if ((i == cellX || j == cellY) && !(i == cellX && j == cellY)
-							&& i >= 0 && j >= 0
-							&& i < MAZE_SIZE_2 && j < MAZE_SIZE_1
-							&& solution[j][i]) {
-						nextX = i;
-						nextY = j;
-					}
-				}
+		// update player position
+		if (isLegalMove(player, player.getDX(), player.getDY())) {
+			player.move();
+		} else if (player.getDX() != 0 && player.getDY() != 0) {
+			// player is holding two arrow keys so check if just activating one of the two makes the move legal
+			if (isLegalMove(player, 0, player.getDY())) {
+				player.manualMove(0, player.getDY()); // move in Y-axis direction only
+			} else if (isLegalMove(player, player.getDX(), 0)) {
+				player.manualMove(player.getDX(), 0); // move in X-axis direction only
+			}
+		}
+
+		// update spell positions
+		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
+			Spell s = spellIter.next();
+
+			// prevent spell from going out of maze
+			int spellX = s.getX();
+			if (s.getDX() > 0) {
+				spellX += s.getImage().getWidth(null);
+			} else if (s.getDX() < 0) {
+				spellX -= s.getImage().getWidth(null);
 			}
 
-			if (nextX != cellX) {
-				// check if left or right
-				int dx = nextX - cellX;
+			int spellY = s.getY();
+			if (s.getDY() > 0) {
+				spellY += s.getImage().getHeight(null);
+			} else if (s.getDY() < 0) {
+				spellY -= s.getImage().getHeight(null);
+			}
+
+			if (!withinMaze(spellY/MAZE_CELL_SIZE, spellX/MAZE_CELL_SIZE)) {
+				spellIter.remove();
+			} else {
+				s.updatePosition();
+			}
+		}
 
 
-				if (isLegalMove(m, dx, 0)) {
-					m.manualMove(dx, 0);
-				} else if (isLegalMove(m, 0, 1)){
-					// stuck so move up
-					m.manualMove(0, -1);
+		// update monster positions
+		for (Monster m : monsters) {
+			int monsterCellX = m.getX() / MAZE_CELL_SIZE;
+			int monsterCellY = m.getY() / MAZE_CELL_SIZE;
+
+			double distance = Math.sqrt(Math.pow(monsterCellX-playerCellX,2) 
+										+ Math.pow(monsterCellY-playerCellY, 2));
+			
+			if (distance > Math.sqrt(Math.pow(MAZE_SIZE_1, 2) + Math.pow(MAZE_SIZE_2, 2))/3) {
+				// random movement
+				// TODO: improve algorithm
+				
+				if (isLegalMove(m, m.getDX(), m.getDY()) && !(m.getDX() == 0 && m.getDY() == 0)) {
+					// continue in straight line
+					m.manualMove(m.getDX(), m.getDY());
+				} else {
+					while (true) {
+						m.randomiseDirection();
+						if (isLegalMove(m, m.getDX(), m.getDY())) {
+							m.manualMove(m.getDX(), m.getDY());
+							break;
+						}
+					}
 				}
-			} else if (nextY != cellY) {
-				int dy = nextY - cellY;
+			} else {
+				// chase player
+				
+				// TODO: fix coordinates order is reversed
+				boolean[][] pathToPlayer = solveMaze(monsterCellY, monsterCellX, playerCellY, playerCellX);
+				
+				int nextCellX = monsterCellX;
+				int nextCellY = monsterCellY;
+				if (withinMaze(monsterCellY + 1, monsterCellX) && pathToPlayer[monsterCellY + 1][monsterCellX]) {
+					nextCellY += 1;
+				} else if (withinMaze(monsterCellY, monsterCellX - 1) && pathToPlayer[monsterCellY][monsterCellX - 1]) {
+					nextCellX -= 1;
+				} else if (withinMaze(monsterCellY - 1, monsterCellX) && pathToPlayer[monsterCellY - 1][monsterCellX]) {
+					nextCellY -= 1;
+				} else {
+					nextCellX += 1;
+				}
+				
+				if (nextCellX != monsterCellX) {
+					// move horizontally
+					int dx = nextCellX > monsterCellX ? 1 : -1;
 
-				if (isLegalMove(m, 0, dy)) {
-					m.manualMove(0, dy);
-				} else if (isLegalMove(m, -1, 0)) {
-					// stuck so left
-					m.manualMove(-1, 0);
+					if (isLegalMove(m, dx, 0)) {
+						m.manualMove(dx, 0);
+					} else if (isLegalMove(m, 0, -1)){
+						// stuck so move up
+						m.manualMove(0, -1);
+					}
+				} else if (nextCellY != monsterCellY) {
+					// move vertically
+					int dy = nextCellY  > monsterCellY ? 1 : -1;
+
+					if (isLegalMove(m, 0, dy)) {
+						m.manualMove(0, dy);
+					} else if (isLegalMove(m, -1, 0)) {
+						// stuck so left
+						m.manualMove(-1, 0);
+					}
 				}
 			}
 		}
 	}
 
+	private boolean withinMaze(int y, int x) {
+		return x >= 0 && y >= 0 && x < MAZE_SIZE_2 && y < MAZE_SIZE_1;
+	}
+
+	private boolean isLegalMove(MovableSprite sprite, int dx, int dy) {
+		for (int i = 0; i < mazeGrid.length; i++) {
+			for (int j = 0; j < mazeGrid[i].length; j++) {
+				if (mazeGrid[i][j] == WALL_TILE) {
+					// wall 
+					int xIndex = j * MAZE_CELL_SIZE;
+					int yIndex = i * MAZE_CELL_SIZE;
+					Rectangle wallRect = new Rectangle(xIndex, yIndex, MAZE_CELL_SIZE, MAZE_CELL_SIZE);
+
+					// sprite
+					int spriteWidth = sprite.getImage().getWidth(null);
+					int spriteHeight = sprite.getImage().getHeight(null);
+					Rectangle spriteRect = new Rectangle(sprite.getX(), sprite.getY(), spriteWidth, spriteHeight);
+					spriteRect.translate(dx, dy);
+
+					if (wallRect.intersects(spriteRect) 
+							|| spriteRect.getX() < 0 
+							|| spriteRect.getX() >= mazeGrid[0].length * MAZE_CELL_SIZE - spriteWidth
+							|| spriteRect.getY() < 0 
+							|| spriteRect.getY() >= mazeGrid.length * MAZE_CELL_SIZE - spriteHeight) {
+						return false;
+					}
+				} 
+			}
+		}
+
+		return true;
+	}
+	
 	public boolean[][] solveMaze(int startX, int startY, int goalX, int goalY) {
 		boolean[][] visited = new boolean[MAZE_SIZE_1][MAZE_SIZE_2];
 		boolean[][] solution = new boolean[MAZE_SIZE_1][MAZE_SIZE_2];
@@ -345,38 +305,5 @@ public class Maze {
 			}
 
 		return false;
-	}
-
-	private boolean withinMaze(int y, int x) {
-		return x >= 0 && y >= 0 && x < MAZE_SIZE_2 && y < MAZE_SIZE_1;
-	}
-
-	private boolean isLegalMove(MovableSprite sprite, int dx, int dy) {
-		for (int i = 0; i < mazeGrid.length; i++) {
-			for (int j = 0; j < mazeGrid[i].length; j++) {
-				if (mazeGrid[i][j] == WALL_TILE) {
-					// wall 
-					int xIndex = j * MAZE_CELL_SIZE;
-					int yIndex = i * MAZE_CELL_SIZE;
-					Rectangle wallRect = new Rectangle(xIndex, yIndex, MAZE_CELL_SIZE, MAZE_CELL_SIZE);
-
-					// sprite
-					int spriteWidth = sprite.getImage().getWidth(null);
-					int spriteHeight = sprite.getImage().getHeight(null);
-					Rectangle spriteRect = new Rectangle(sprite.getX(), sprite.getY(), spriteWidth, spriteHeight);
-					spriteRect.translate(dx, dy);
-
-					if (wallRect.intersects(spriteRect) 
-							|| spriteRect.getX() < 0 
-							|| spriteRect.getX() >= mazeGrid[0].length * MAZE_CELL_SIZE - spriteWidth
-							|| spriteRect.getY() < 0 
-							|| spriteRect.getY() >= mazeGrid.length * MAZE_CELL_SIZE - spriteHeight) {
-						return false;
-					}
-				} 
-			}
-		}
-
-		return true;
 	}
 }
