@@ -235,7 +235,7 @@ public class Maze {
 
 					// sprite
 					Rectangle spriteRect = sprite.getBounds();
-					spriteRect.translate(dx, dy);
+					spriteRect.translate(2*dx, 2*dy);
 
 					if (wallRect.intersects(spriteRect) 
 							|| spriteRect.getX() < 0 
