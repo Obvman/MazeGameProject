@@ -29,12 +29,8 @@ public class GameScreen extends JPanel implements ActionListener {
 	public GameScreen(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		
+		// use grid bag layout for consistency when resizing
 		this.setLayout(new GridBagLayout());
-		this.setSize(1200,600);
-		
-		// allow this panel to add inner panels using BorderLayout
-//		setLayout(new BorderLayout());
-//		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		// maze panel
 		mazePanel = new JPanel(new CardLayout());
@@ -81,60 +77,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		this.add(mazePanel, gbcMaze);
 		this.add(statusBar, gbcStatus);
 		this.add(sideMenu, gbcSide);
-		
-		
-		
-		
-		
-//		gLayout.setAutoCreateGaps(true);
-//		gLayout.setAutoCreateContainerGaps(true);
-		
-//		gLayout.setHorizontalGroup(
-//				gLayout.createParallelGroup(Alignment.LEADING)
-//					.addGroup(Alignment.TRAILING, gLayout.createSequentialGroup()
-//						.addContainerGap()
-//						.addGroup(gLayout.createParallelGroup(Alignment.LEADING)
-//							.addComponent(mazePanel, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE)
-//							.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE)
-//						)
-//						.addPreferredGap(ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-//						.addComponent(sideMenu, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-//						.addContainerGap()
-//					)
-//		);
-//		gLayout.setVerticalGroup(
-//				gLayout.createParallelGroup(Alignment.LEADING)
-//					.addGroup(Alignment.TRAILING, gLayout.createSequentialGroup()
-//						.addContainerGap()
-//						.addGroup(gLayout.createParallelGroup(Alignment.TRAILING)
-//							.addGroup(gLayout.createSequentialGroup()
-//								.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-//								.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-//								.addComponent(mazePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-//							)
-//							.addComponent(sideMenu, GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
-//						)
-//						.addContainerGap()
-//					)
-//		);
-		
-//		gLayout.setHorizontalGroup(
-//				gLayout.createSequentialGroup()
-//					
-//					.addGroup(gLayout.createParallelGroup()
-//						.addComponent(statusBar)
-//						.addComponent(mazePanel)
-//					)
-//					
-//		);
-//		
-//		gLayout.setVerticalGroup(
-//				gLayout.createSequentialGroup()
-//					.addGroup(gLayout.createParallelGroup()
-//						.addComponent(statusBar)
-//					)
-//					.addComponent(mazePanel)
-//		);
 		
 		// initialise stats
 		currLevel = 1;
@@ -261,7 +203,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		JLabel hintsRemaining = new JLabel("Hints Remaining: ");
 		statusBar.add(hintsRemaining, BorderLayout.EAST);
 
-		//add(statusBar, BorderLayout.NORTH);
 	}
 
 	private void initSideMenu() {
@@ -317,16 +258,23 @@ public class GameScreen extends JPanel implements ActionListener {
 			}
 		});
 
-		// TODO: clean this
-		groupLayout.setHorizontalGroup(groupLayout.createSequentialGroup().addGroup(groupLayout.createParallelGroup().addComponent(hintButton)
-				.addComponent(pauseButton).addComponent(menuButton)));
+		groupLayout.setHorizontalGroup(groupLayout.createSequentialGroup()
+				.addGroup(groupLayout.createParallelGroup()
+						.addComponent(hintButton)
+						.addComponent(pauseButton)
+						.addComponent(menuButton)
+				)
+		);
 
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-				.addGroup(groupLayout.createSequentialGroup().addComponent(hintButton).addComponent(pauseButton)
-						.addComponent(menuButton)));
+				.addGroup(groupLayout.createSequentialGroup()
+						.addComponent(hintButton)
+						.addComponent(pauseButton)
+						.addComponent(menuButton)
+				)
+		);
 
 		groupLayout.linkSize(hintButton, pauseButton, menuButton); // keep size of buttons consistent
 
-		//add(sideMenu, BorderLayout.EAST);
 	}
 }
