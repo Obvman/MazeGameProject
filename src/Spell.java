@@ -47,6 +47,14 @@ public class Spell implements MovableSprite {
 
 	@Override
 	public Image getImage() {
+		if (stage == 0) {
+			image = (new ImageIcon("resources/32_flame_1.png")).getImage();
+		} else if (stage == 1) {
+			image = (new ImageIcon("resources/32_flame_2.png")).getImage();
+		} else {
+			image = (new ImageIcon("resources/32_flame_3.png")).getImage();
+		}
+		
 		return image;
 	}
 	
@@ -59,14 +67,8 @@ public class Spell implements MovableSprite {
 		x += dx;
 		y += dy;
 		
-		stage = Math.max((x - initialX) / image.getWidth(null), (y - initialY) / image.getHeight(null));
-		if (stage == 0) {
-			image = (new ImageIcon("resources/32_flame_1.png")).getImage();
-		} else if (stage == 1) {
-			image = (new ImageIcon("resources/32_flame_2.png")).getImage();
-		} else {
-			image = (new ImageIcon("resources/32_flame_3.png")).getImage();
-		}
+		stage = Math.max(Math.abs(x - initialX) / image.getWidth(null), 
+						 Math.abs(y - initialY) / image.getHeight(null));
 	}
 	
 	public int getStage() {
