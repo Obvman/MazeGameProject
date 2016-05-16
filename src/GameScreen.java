@@ -51,11 +51,11 @@ public class GameScreen extends JPanel implements ActionListener {
 		GridBagConstraints gbcStatus = new GridBagConstraints();
 		GridBagConstraints gbcSide = new GridBagConstraints();
 		
-//		gbcStatus.insets = new Insets(5, 5, 5, 5);
+		gbcStatus.insets = new Insets(5,20,15,20);
 		
 		gbcMaze.fill = GridBagConstraints.BOTH;
 		gbcSide.fill = GridBagConstraints.BOTH;
-		gbcSide.fill = GridBagConstraints.BOTH;
+		gbcStatus.fill = GridBagConstraints.BOTH;
 		
 		gbcStatus.gridy = 0;
 		gbcStatus.gridx = 0;
@@ -72,7 +72,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbcMaze.weighty = 1.0;
 		
 		gbcSide.gridy = 1;
-		gbcSide.gridx = 10;
+		gbcSide.gridx = 11;
 		gbcSide.gridheight = 11;
 		gbcSide.gridwidth = 2;
 		gbcSide.weightx = 0.1;
