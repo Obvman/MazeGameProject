@@ -11,7 +11,7 @@ public class Maze {
 	public static int MAZE_SIZE_1 = 15 /*25*/;
 	public static int MAZE_SIZE_2 = 25 /*45*/;
 	public static int MAZE_CELL_SIZE = 32;
-	public static int DIFFICULTY = 10; // corresponds to number of monsters that spawn
+	public static int DIFFICULTY = 15; // corresponds to number of monsters that spawn
 
 	// types of tiles
 	public static int PATH_TILE = 0;
@@ -88,7 +88,7 @@ public class Maze {
 	public void updateSprites(ActionEvent e) {
 		int playerCellX = player.getX() / MAZE_CELL_SIZE;
 		int playerCellY = player.getY() / MAZE_CELL_SIZE;
-
+		
 		// check if player has been killed from monsters
 		for (Monster m: monsters) {
 			if (m.getBounds().intersects(player.getBounds())) {
@@ -118,7 +118,7 @@ public class Maze {
 
 		// update player position
 		if (isLegalMove(player, player.getDX(), player.getDY())) {
-			player.move();
+			player.manualMove(player.getDX(), player.getDY());
 		} else if (player.getDX() != 0 && player.getDY() != 0) {
 			// player is holding two arrow keys so check if just activating one of the two makes the move legal
 			if (isLegalMove(player, 0, player.getDY())) {
@@ -127,7 +127,7 @@ public class Maze {
 				player.manualMove(player.getDX(), 0); // move in X-axis direction only
 			}
 		}
-
+		
 		// update spell positions
 		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
 			Spell s = spellIter.next();
@@ -227,25 +227,21 @@ public class Maze {
 	}
 
 	private boolean isLegalMove(MovableSprite sprite, int dx, int dy) {
-		for (int i = 0; i < mazeGrid.length; i++) {
-			for (int j = 0; j < mazeGrid[i].length; j++) {
+		for (int i = 0; i < MAZE_SIZE_1; i++) {
+			for (int j = 0; j < MAZE_SIZE_2; j++) {
 				if (mazeGrid[i][j] == WALL_TILE) {
 					// wall 
-					int xIndex = j * MAZE_CELL_SIZE;
-					int yIndex = i * MAZE_CELL_SIZE;
-					Rectangle wallRect = new Rectangle(xIndex, yIndex, MAZE_CELL_SIZE, MAZE_CELL_SIZE);
+					Rectangle wallRect = new Rectangle(j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, MAZE_CELL_SIZE, MAZE_CELL_SIZE);
 
 					// sprite
-					int spriteWidth = sprite.getImage().getWidth(null);
-					int spriteHeight = sprite.getImage().getHeight(null);
-					Rectangle spriteRect = new Rectangle(sprite.getX(), sprite.getY(), spriteWidth, spriteHeight);
+					Rectangle spriteRect = sprite.getBounds();
 					spriteRect.translate(dx, dy);
 
 					if (wallRect.intersects(spriteRect) 
 							|| spriteRect.getX() < 0 
-							|| spriteRect.getX() >= mazeGrid[0].length * MAZE_CELL_SIZE - spriteWidth
+							|| spriteRect.getX() >= MAZE_SIZE_2 * MAZE_CELL_SIZE - spriteRect.getWidth()
 							|| spriteRect.getY() < 0 
-							|| spriteRect.getY() >= mazeGrid.length * MAZE_CELL_SIZE - spriteHeight) {
+							|| spriteRect.getY() >= MAZE_SIZE_1 * MAZE_CELL_SIZE - spriteRect.getHeight()) {
 						return false;
 					}
 				} 

@@ -10,18 +10,35 @@ public class Player implements MovableSprite {
 	private int y;
 	private int dx;
 	private int dy;
-	private int lastDX;
-	private int lastDY;
-	private Image image;
 	private LinkedList<Spell> spells;
 	private boolean alive;
 	
+	// character sprites
+	private Image lastImage;
+	private Image image_N;
+	private Image image_NE;
+	private Image image_E;
+	private Image image_SE;
+	private Image image_S;
+	private Image image_SW;
+	private Image image_W;
+	private Image image_NW;
+	
 	public Player() {
-		ImageIcon playerImage = new ImageIcon("resources/player_down.png");
-		image = playerImage.getImage();
 		spells = new LinkedList<Spell>();
 		alive = true;
-		lastDY = 1;
+		
+		// sprites
+		int scaledSize = (int)(2 * Maze.MAZE_CELL_SIZE) / 3;
+		image_N = new ImageIcon("resources/player_N.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		image_NE = new ImageIcon("resources/player_NE.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		image_E = new ImageIcon("resources/player_E.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		image_SE = new ImageIcon("resources/player_SE.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		image_S = new ImageIcon("resources/player_S.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		image_SW = new ImageIcon("resources/player_SW.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		image_W = new ImageIcon("resources/player_W.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		image_NW = new ImageIcon("resources/player_NW.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		lastImage = image_S; // initially face down
 	}
 	
 	@Override
@@ -46,28 +63,37 @@ public class Player implements MovableSprite {
     
 	@Override
     public Image getImage() {
-    	ImageIcon playerImage = null;
+		Image image = null;
+		
+		if (dx == 0 && dy == 0) {
+			return lastImage;
+		}
+		
+    	if (dx == 0 && dy < 0) {
+    		image =  image_N;
+    	} else if (dx > 0 && dy < 0) {
+    		image =  image_NE;
+    	} else if (dx > 0 && dy == 0) {
+    		image =  image_E;
+    	} else if (dx > 0 && dy > 0) {
+    		image =  image_SE;
+    	} else if (dx == 0 && dy > 0) {
+    		image =  image_S;
+    	} else if (dx < 0 && dy > 0) {
+    		image =  image_SW;
+    	} else if (dx < 0 && dy == 0) {
+    		image =  image_W;
+    	} else if (dx < 0 && dy < 0) {
+    		image =  image_NW;
+    	}
     	
-    	if (dx > 0) {
-    		playerImage = new ImageIcon("resources/player_right.png");
-    		image = playerImage.getImage();
-    	} else if (dx < 0) {
-    		playerImage = new ImageIcon("resources/player_left.png");
-    		image = playerImage.getImage();
-    	} else if (dy > 0) {
-    		playerImage = new ImageIcon("resources/player_down.png");
-    		image = playerImage.getImage();
-    	} else if (dy < 0) {
-    		playerImage = new ImageIcon("resources/player_up.png");
-    		image = playerImage.getImage();
-    	} 
-    	
+    	lastImage = image;
         return image;
     }
 	
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+		return new Rectangle(x, y, getImage().getWidth(null), getImage().getHeight(null));
 	}
 	
 	public LinkedList<Spell> getSpells() {
@@ -93,31 +119,22 @@ public class Player implements MovableSprite {
     	y += dy;
     }
 	
-	public void move() {
-		x += dx;
-		y += dy;
-	}
-	
 	public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
-        	lastDX = -1;
             dx = -1;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-        	lastDX = 1;
             dx = 1;
         }
 
         if (key == KeyEvent.VK_UP) {
-        	lastDY = -1;
         	dy = -1;
         }
 
         if (key == KeyEvent.VK_DOWN) {
-        	lastDY = 1;
         	dy = 1;
         }
     }
@@ -126,49 +143,46 @@ public class Player implements MovableSprite {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
-        	if (dy != 0) {
-        		lastDX = 0;
-        	} else {
-        		lastDY = 0;
-        	}
-        	
         	if (dx != 1) dx = 0;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-        	if (dy != 0) {
-        		lastDX = 0;
-        	} else {
-        		lastDY = 0;
-        	}
-        	
         	if (dx != -1) dx = 0;
         }
 
         if (key == KeyEvent.VK_UP) {
-        	if (dx != 0) { 
-        		lastDY = 0;
-        	} else {
-        		lastDX = 0;
-        	}
-        	
             if (dy != 1) dy = 0;
         }
 
         if (key == KeyEvent.VK_DOWN) {
-        	if (dx != 0) {
-        		lastDY = 0;
-        	} else {
-        		lastDX = 0;
-        	}
-        	
             if (dy != -1) dy = 0;
         }
         
         if (key == KeyEvent.VK_SPACE) {
         	if (spells.size() < 2) {
-        		int imageWidth = image.getWidth(null);
-            	int imageHeight = image.getHeight(null);
+        		// work out direction currently being faced
+        		int lastDX = 0;
+        		int lastDY = 1; // initially facing down
+        		if (lastImage == image_N) {
+        			lastDX = 0; lastDY  =-1;
+        		} else if (lastImage == image_NE) {
+        			lastDX = 1; lastDY = -1;
+        		} else if (lastImage == image_E) {
+        			lastDX = 1; lastDY = 0;
+        		} else if (lastImage == image_SE) {
+        			lastDX = 1; lastDY = 1;
+        		} else if (lastImage == image_S) {
+        			lastDX = 0; lastDY = 1;
+        		} else if (lastImage == image_SW) {
+        			lastDX = -1; lastDY = 1;
+        		} else if (lastImage == image_W) {
+        			lastDX = -1; lastDY = 0;
+        		} else if (lastImage == image_NW) {
+        			lastDX = -1; lastDY = -1;
+        		}
+        		
+        		int imageWidth = getImage().getWidth(null);
+            	int imageHeight = getImage().getHeight(null);
         		spells.add(new Spell(x + lastDX * imageWidth  - imageWidth/2, 
         							 y + lastDY * imageWidth - imageHeight/2, 2*lastDX, 2*lastDY));
         	}

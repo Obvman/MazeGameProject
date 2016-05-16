@@ -67,8 +67,7 @@ public class Spell implements MovableSprite {
 		x += dx;
 		y += dy;
 		
-		stage = Math.max(Math.abs(x - initialX) / image.getWidth(null), 
-						 Math.abs(y - initialY) / image.getHeight(null));
+		stage = (int)Math.sqrt(Math.pow(x - initialX, 2) + Math.pow(y - initialY, 2))/image.getWidth(null);
 	}
 	
 	public int getStage() {
