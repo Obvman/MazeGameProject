@@ -11,7 +11,7 @@ public class Maze {
 	public static int MAZE_SIZE_1 = 15 /*25*/;
 	public static int MAZE_SIZE_2 = 25 /*45*/;
 	public static int MAZE_CELL_SIZE = 32;
-	public static int DIFFICULTY = 15; // corresponds to number of monsters that spawn
+	public static int DIFFICULTY = 10; // corresponds to number of monsters that spawn
 
 	// types of tiles
 	public static int PATH_TILE = 0;

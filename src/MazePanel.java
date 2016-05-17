@@ -18,6 +18,8 @@ public class MazePanel extends JPanel implements ActionListener {
 	public MazePanel() {
 		maze = new Maze();
 
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
 		// tiles
 		pathTile = (new ImageIcon("resources/leon_path.png")).getImage();
 		wallTile = (new ImageIcon("resources/leon_wall_lava.png")).getImage();
@@ -26,14 +28,6 @@ public class MazePanel extends JPanel implements ActionListener {
 		keyTile = (new ImageIcon("resources/key_for_32.png")).getImage();
 
 		addKeyListener(new TAdapter());
-
-		// make this panel have focus
-		this.addComponentListener( new ComponentAdapter() {
-			@Override
-			public void componentShown( ComponentEvent e ) {
-				MazePanel.this.requestFocusInWindow();
-			}
-		});
 
 		timer = new Timer(10, this); // corresponds to game speed
 		timer.start();
@@ -44,15 +38,16 @@ public class MazePanel extends JPanel implements ActionListener {
 	}
 
 	public void setRunning(boolean isRunning) {
-		if (isRunning) {
+		if (isRunning && !timer.isRunning()) {
 			timer.start();
-		} else {
+		} else if (!isRunning && timer.isRunning()){
 			timer.stop();
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		requestFocusInWindow();
 		maze.updateSprites(e);
 		repaint();
 	}

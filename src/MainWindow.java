@@ -13,11 +13,12 @@ public class MainWindow extends JFrame {
 		
 		// configure the main window
 		setTitle("Maze Game");
-		setSize(1200, 600);
+		setSize(1200, 800);
 		setLocationRelativeTo(null);
 //		setResizable(false);
 //		setExtendedState(JFrame.MAXIMIZED_BOTH); // full screen
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		
 		// add the screens
 		screens.add(new MenuScreen(this), "Menu");

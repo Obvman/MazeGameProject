@@ -1,44 +1,42 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 @SuppressWarnings("serial")
 public class GameScreen extends JPanel implements ActionListener {
 
 	private MainWindow mainWindow;
-	private JPanel mazePanel;
 	
 	// panels making up the mazePanel
 	private Maze maze;
+	private JPanel mazePanel;
 	private MazePanel mazeGame;
 	private JPanel mazeScorePanel;
 	private JPanel mazeLostPanel;	
 	
-	// status bar components
-	JPanel statusBar;
+	// components to be updated dynamically
+	JButton nextLevelButton; // maze panel
+	JLabel lostLevelLabel; // maze panel
+	JLabel level; // status bar
+	JLabel time; // status bar
 	
-	// side menu bar
-	JPanel sideMenu;
-	
-	private float duration;
-	private int currLevel;
 	private Timer timer;
+	private double duration;
+	private int currLevel;
 
 	public GameScreen(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		
-		// use grid bag layout for consistency when resizing
-		this.setLayout(new GridBagLayout());
+		setLayout(new GridBagLayout()); 
 
-		// maze panel, status bar panel and side menu panel
 		initMazePanel();
 		initStatusBar();
 		initSideMenu();
 		
-		// initialise stats
+		// initial stats
 		currLevel = 1;
+		
+		// update frequency
 		timer = new Timer(30, this);
 		timer.start();
 		
@@ -47,19 +45,17 @@ public class GameScreen extends JPanel implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// refresh status bar
-		revalidate();
-		initStatusBar();
-		
+		// refresh timer component
+		time.setText("Time: " + (int)duration);
+			
 		if(e.getSource() == timer) {
 			if (maze.isGameLost()) {
-				timer.stop();
-				initMazeLostPanel();
+				mazeGame.setRunning(false);
 				switchToMazeLostPanel();
 			} else if (maze.isGameWon()) {
+				mazeGame.setRunning(false);
 				timer.stop();
 				currLevel++;
-				initMazeScorePanel();
 				switchToMazeFinishedPanel();
 			} else {
 				duration += (double)timer.getDelay()/1000;
@@ -67,49 +63,61 @@ public class GameScreen extends JPanel implements ActionListener {
 		}
 	}
 	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Image background = (new ImageIcon("resources/gameScreen_bg.jpg")).getImage(); // TODO: move into field so we dont reload
+	    g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+	}
+	
 	private void switchToMazePlayingPanel() {
+		level.setText("Level: " + currLevel); // update level JLabel
+		
+		// initialise new game
 		mazeGame = new MazePanel();
+		mazeGame.setOpaque(false);
 		mazePanel.add(mazeGame, "Playing");
 		maze = mazeGame.getMaze();
 		
 		CardLayout cl = (CardLayout) mazePanel.getLayout();
 		cl.show(mazePanel, "Playing");
-		
-		revalidate();
-		repaint();
 	}
 
 	private void switchToMazeFinishedPanel() {
+		nextLevelButton.setText("Continue to level " + currLevel);
 		CardLayout cl = (CardLayout) mazePanel.getLayout();
 		cl.show(mazePanel, "Finished");
 	}
 	
 	private void switchToMazeLostPanel() {
+		lostLevelLabel.setText("You died at level " + currLevel);
 		CardLayout cl = (CardLayout) mazePanel.getLayout();
 		cl.show(mazePanel, "Lost");
 	}
 	
 	private void initMazePanel() {
 		mazePanel = new JPanel(new CardLayout());
+		mazePanel.setOpaque(false);
+		Dimension size = new Dimension(Maze.MAZE_CELL_SIZE * Maze.MAZE_SIZE_2, Maze.MAZE_CELL_SIZE * Maze.MAZE_SIZE_1);
+		mazePanel.setPreferredSize(size);
 		initMazeScorePanel();
 		initMazeLostPanel();
 		
-		// initialise maze panel layout
+		// maze panel layout configuration
 		GridBagConstraints gbcMaze = new GridBagConstraints();
-		gbcMaze.fill = GridBagConstraints.BOTH;
+		gbcMaze.insets = new Insets((int)(mainWindow.getHeight() * 0.1),0,0,0);
 		gbcMaze.gridy = 1;
-		gbcMaze.gridx = 0;
-		gbcMaze.gridheight = 10;
-		gbcMaze.gridwidth = 10;
 		gbcMaze.weightx = 1.0;
-		gbcMaze.weighty = 1.0;
+		gbcMaze.weighty = 0;
 		
-		this.add(mazePanel, gbcMaze);	
+		add(mazePanel, gbcMaze);
 	}
 
 	private void initMazeScorePanel() {
 		mazeScorePanel = new JPanel();
-		JButton nextLevelButton = new JButton("Continue to level " + currLevel);
+		mazeScorePanel.setOpaque(false);
+		
+		nextLevelButton = new JButton("Continue to level " + currLevel);
 		nextLevelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -117,7 +125,7 @@ public class GameScreen extends JPanel implements ActionListener {
 				timer.start();
 			}
 		});
-		mazeScorePanel.add(nextLevelButton);
+		
 		
 		JButton menuButton = new JButton("Back to Main Menu");
 		menuButton.addActionListener(new ActionListener() {
@@ -126,15 +134,18 @@ public class GameScreen extends JPanel implements ActionListener {
 				mainWindow.switchToMenu();
 			}
 		});
-		mazeScorePanel.add(menuButton);
 		
+		mazeScorePanel.add(nextLevelButton);
+		mazeScorePanel.add(menuButton);
 		mazePanel.add(mazeScorePanel, "Finished");
 	}
 	
 	private void initMazeLostPanel() {
 		mazeLostPanel = new JPanel();
-		JLabel levelLabel = new JLabel("You died at level " + currLevel);
-		mazeLostPanel.add(levelLabel);
+		mazeLostPanel.setOpaque(false);
+		
+		lostLevelLabel = new JLabel("You died at level " + currLevel);
+		
 		
 		JButton startButton = new JButton("Start Again");
 		startButton.addActionListener(new ActionListener() {
@@ -143,7 +154,7 @@ public class GameScreen extends JPanel implements ActionListener {
 				mainWindow.switchToGame();
 			}
 		});
-		mazeLostPanel.add(startButton);
+		
 		
 		JButton menuButton = new JButton("Back to Main Menu");
 		menuButton.addActionListener(new ActionListener() {
@@ -152,13 +163,16 @@ public class GameScreen extends JPanel implements ActionListener {
 				mainWindow.switchToMenu();
 			}
 		});
-		mazeLostPanel.add(menuButton);
 		
+		mazeLostPanel.add(lostLevelLabel);
+		mazeLostPanel.add(startButton);
+		mazeLostPanel.add(menuButton);
 		mazePanel.add(mazeLostPanel, "Lost");
 	}
 
 	private void initStatusBar() {
-		statusBar = new JPanel();
+		JPanel statusBar = new JPanel();
+		statusBar.setOpaque(false);
 		statusBar.setLayout(new BorderLayout());
 		statusBar.setPreferredSize(new Dimension(0, 40)); // check
 		
@@ -173,19 +187,22 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbcStatus.weighty = 0.01;
 
 		// score
-		JLabel level = new JLabel("Level: " + currLevel);
-		statusBar.add(level, BorderLayout.WEST);
+		level = new JLabel("Level: " + currLevel);
+		level.setForeground(Color.WHITE);
 
 		// time
-		JLabel time = new JLabel("Time: " + (int)duration);
-		statusBar.add(time, BorderLayout.CENTER);
+		time = new JLabel("Time: " + (int)duration);
+		time.setForeground(Color.WHITE);
 		time.setHorizontalAlignment(JLabel.CENTER);
 
-		this.add(statusBar, gbcStatus);
+		statusBar.add(level, BorderLayout.WEST);
+		statusBar.add(time, BorderLayout.CENTER);
+		add(statusBar, gbcStatus);
 	}
 
 	private void initSideMenu() {
-		sideMenu = new JPanel();
+		JPanel sideMenu = new JPanel();
+		sideMenu.setOpaque(false);
 		GroupLayout groupLayout = new GroupLayout(sideMenu);
 		sideMenu.setLayout(groupLayout);
 		
@@ -198,7 +215,8 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbcSide.gridwidth = 2;
 		gbcSide.weightx = 0.1;
 		gbcSide.weighty = 0.45;
-		this.add(sideMenu, gbcSide);
+		
+		add(sideMenu, gbcSide);
 
 		// to check
 		groupLayout.setAutoCreateContainerGaps(true);
@@ -252,6 +270,5 @@ public class GameScreen extends JPanel implements ActionListener {
 		);
 
 		groupLayout.linkSize(pauseButton, menuButton); // keep size of buttons consistent
-
 	}
 }

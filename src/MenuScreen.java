@@ -19,10 +19,8 @@ public class MenuScreen extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Image background = (new ImageIcon("resources/background.jpeg")).getImage();
-		int x = (this.getWidth() - background.getWidth(null)) / 2;
-	    int y = (this.getHeight() - background.getHeight(null)) / 2;
-	    g.drawImage(background, x, y, null);
+		Image background = (new ImageIcon("resources/gameScreen_bg.jpg")).getImage(); // TODO: move into field so we dont reload
+	    g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
 	}
 	
 	private void initMenu() {
@@ -33,7 +31,11 @@ public class MenuScreen extends JPanel {
         
 		// add the buttons
 		// start button
-		JButton startButton = new JButton("Start Game");
+		JButton startButton = new JButton(new ImageIcon("resources/start_game.png"));
+		startButton.setOpaque(false);
+		startButton.setContentAreaFilled(false);
+		startButton.setMargin(new Insets(-3, -3, -3, -3));
+		startButton.setFocusPainted(false);
 		startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		startButton.setToolTipText("Start a new game");
 		startButton.addActionListener(new ActionListener() {
@@ -45,7 +47,11 @@ public class MenuScreen extends JPanel {
 		});
 		
 		// tutorial button
-		JButton tutorialButton = new JButton("Tutorial");
+		JButton tutorialButton = new JButton(new ImageIcon("resources/tutorial.png"));
+		tutorialButton.setOpaque(false);
+		tutorialButton.setContentAreaFilled(false);
+		tutorialButton.setMargin(new Insets(-3, -3, -3, -3));
+		tutorialButton.setFocusPainted(false);
 		tutorialButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tutorialButton.setToolTipText("Displays instructions on how to play");
 		tutorialButton.addActionListener(new ActionListener() {
@@ -57,7 +63,11 @@ public class MenuScreen extends JPanel {
 		});
 		
 		// exit button
-		JButton exitButton = new JButton("Exit");
+		JButton exitButton = new JButton(new ImageIcon("resources/quit.png"));
+		exitButton.setOpaque(false);
+		exitButton.setContentAreaFilled(false);
+		exitButton.setMargin(new Insets(-3, -3, -3, -3));
+		exitButton.setFocusPainted(false);
 		exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		exitButton.setToolTipText("Exit to desktop");
 		exitButton.addActionListener(new ActionListener() {
@@ -69,9 +79,9 @@ public class MenuScreen extends JPanel {
 		});
 		
 		buttonPanel.add(startButton);
-		buttonPanel.add(Box.createVerticalStrut(20));
+		buttonPanel.add(Box.createVerticalStrut(10));
 		buttonPanel.add(tutorialButton);
-		buttonPanel.add(Box.createVerticalStrut(20));
+		buttonPanel.add(Box.createVerticalStrut(10));
 		buttonPanel.add(exitButton);
 		add(buttonPanel);
 	}

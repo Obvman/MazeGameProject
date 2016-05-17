@@ -121,7 +121,6 @@ public class Player implements MovableSprite {
 	
 	public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-
         if (key == KeyEvent.VK_LEFT) {
             dx = -1;
         }
