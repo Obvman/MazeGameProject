@@ -16,6 +16,9 @@ public class GameScreen extends JPanel implements ActionListener {
 	private JPanel mazeScorePanel;
 	private JPanel mazeLostPanel;
 	
+	private GridBagConstraints gbc;
+	
+	
 	// status bar components
 	JPanel statusBar;
 	
@@ -74,6 +77,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbcSide.weightx = 0.1;
 		gbcSide.weighty = 0.45;
 		
+		gbc = gbcStatus;
 		this.add(mazePanel, gbcMaze);
 		this.add(statusBar, gbcStatus);
 		this.add(sideMenu, gbcSide);
@@ -88,29 +92,24 @@ public class GameScreen extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		updateComponents();
+		// refresh status bar
+		revalidate();
+		initStatusBar();
 		
 		if(e.getSource() == timer) {
 			if (maze.isGameLost()) {
 				timer.stop();
+				initMazeLostPanel();
 				switchToMazeLostPanel();
 			} else if (maze.isGameWon()) {
 				timer.stop();
 				currLevel++;
+				initMazeScorePanel();
 				switchToMazeFinishedPanel();
 			} else {
 				duration += (double)timer.getDelay()/1000;
 			}
 		}
-	}
-	
-	private void updateComponents() {
-		// update status bar
-		initStatusBar();
-		initMazeScorePanel();
-		initMazeLostPanel();
-		
-		statusBar.repaint();
 	}
 	
 	private void switchToMazePlayingPanel() {
@@ -137,7 +136,7 @@ public class GameScreen extends JPanel implements ActionListener {
 
 	private void initMazeScorePanel() {
 		mazeScorePanel = new JPanel();
-		JButton nextLevelButton = new JButton("Continue to level " + (currLevel+1));
+		JButton nextLevelButton = new JButton("Continue to level " + currLevel);
 		nextLevelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -202,7 +201,8 @@ public class GameScreen extends JPanel implements ActionListener {
 		// hints remaining
 		JLabel hintsRemaining = new JLabel("Hints Remaining: ");
 		statusBar.add(hintsRemaining, BorderLayout.EAST);
-
+		
+		this.add(statusBar, gbc);
 	}
 
 	private void initSideMenu() {
