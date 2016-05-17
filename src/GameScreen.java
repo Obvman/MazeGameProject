@@ -181,10 +181,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		statusBar.add(time, BorderLayout.CENTER);
 		time.setHorizontalAlignment(JLabel.CENTER);
 
-		// hints remaining
-		JLabel hintsRemaining = new JLabel("Hints Remaining: ");
-		statusBar.add(hintsRemaining, BorderLayout.EAST);
-		
 		this.add(statusBar, gbcStatus);
 	}
 
@@ -207,17 +203,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		// to check
 		groupLayout.setAutoCreateContainerGaps(true);
 		groupLayout.setAutoCreateGaps(true);
-
-		// hint button
-		JButton hintButton = new JButton("Hint");
-		hintButton.setFocusable(false);
-		hintButton.setToolTipText("Reveals a hint");
-		hintButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Hahaha we don't give you hints");
-			}
-		});
 
 		// pause button
 		// final modifier to allow modification of the button (see action listener)
@@ -254,7 +239,6 @@ public class GameScreen extends JPanel implements ActionListener {
 
 		groupLayout.setHorizontalGroup(groupLayout.createSequentialGroup()
 				.addGroup(groupLayout.createParallelGroup()
-						.addComponent(hintButton)
 						.addComponent(pauseButton)
 						.addComponent(menuButton)
 				)
@@ -262,13 +246,12 @@ public class GameScreen extends JPanel implements ActionListener {
 
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
 				.addGroup(groupLayout.createSequentialGroup()
-						.addComponent(hintButton)
 						.addComponent(pauseButton)
 						.addComponent(menuButton)
 				)
 		);
 
-		groupLayout.linkSize(hintButton, pauseButton, menuButton); // keep size of buttons consistent
+		groupLayout.linkSize(pauseButton, menuButton); // keep size of buttons consistent
 
 	}
 }
