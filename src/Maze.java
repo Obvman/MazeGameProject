@@ -8,8 +8,8 @@ import javax.swing.*;
 public class Maze {
 	// MAZE CONSTANTS
 	// maze configuration
-	public static int MAZE_SIZE_1 = 9 /*25*/;
-	public static int MAZE_SIZE_2 = 9 /*45*/;
+	public static int MAZE_SIZE_1 = 15 /*25*/;
+	public static int MAZE_SIZE_2 = 25 /*45*/;
 	public static int MAZE_CELL_SIZE = 32;
 	public static int DIFFICULTY = 15; // corresponds to number of monsters that spawn
 
@@ -235,7 +235,7 @@ public class Maze {
 
 					// sprite
 					Rectangle spriteRect = sprite.getBounds();
-					spriteRect.translate(2*dx, 2*dy);
+					spriteRect.translate(dx, dy);
 
 					if (wallRect.intersects(spriteRect) 
 							|| spriteRect.getX() < 0 

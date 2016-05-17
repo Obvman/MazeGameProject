@@ -14,10 +14,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	private Maze maze;
 	private MazePanel mazeGame;
 	private JPanel mazeScorePanel;
-	private JPanel mazeLostPanel;
-	
-	private GridBagConstraints gbc;
-	
+	private JPanel mazeLostPanel;	
 	
 	// status bar components
 	JPanel statusBar;
@@ -35,52 +32,10 @@ public class GameScreen extends JPanel implements ActionListener {
 		// use grid bag layout for consistency when resizing
 		this.setLayout(new GridBagLayout());
 
-		// maze panel
-		mazePanel = new JPanel(new CardLayout());
-		//add(mazePanel);
-		initMazeScorePanel();
-		initMazeLostPanel();
-		
-		// status bar panel and side menu panel
+		// maze panel, status bar panel and side menu panel
+		initMazePanel();
 		initStatusBar();
 		initSideMenu();
-		
-		// initialise layout
-		GridBagConstraints gbcMaze = new GridBagConstraints();
-		GridBagConstraints gbcStatus = new GridBagConstraints();
-		GridBagConstraints gbcSide = new GridBagConstraints();
-		
-		gbcStatus.insets = new Insets(5,20,15,20);
-		
-		gbcMaze.fill = GridBagConstraints.BOTH;
-		gbcSide.fill = GridBagConstraints.BOTH;
-		gbcStatus.fill = GridBagConstraints.BOTH;
-		
-		gbcStatus.gridy = 0;
-		gbcStatus.gridx = 0;
-		gbcStatus.gridheight = 1;
-		gbcStatus.gridwidth = 10;
-		gbcStatus.weightx = 0.5;
-		gbcStatus.weighty = 0.01;
-		
-		gbcMaze.gridy = 1;
-		gbcMaze.gridx = 0;
-		gbcMaze.gridheight = 10;
-		gbcMaze.gridwidth = 10;
-		gbcMaze.weightx = 1.0;
-		gbcMaze.weighty = 1.0;
-		
-		gbcSide.gridy = 1;
-		gbcSide.gridx = 11;
-		gbcSide.gridheight = 11;
-		gbcSide.gridwidth = 2;
-		gbcSide.weightx = 0.1;
-		gbcSide.weighty = 0.45;
-		
-		gbc = gbcStatus;
-		this.add(mazePanel, gbcMaze);
-		this.add(statusBar, gbcStatus);
-		this.add(sideMenu, gbcSide);
 		
 		// initialise stats
 		currLevel = 1;
@@ -89,7 +44,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		switchToMazePlayingPanel();
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// refresh status bar
@@ -132,6 +87,24 @@ public class GameScreen extends JPanel implements ActionListener {
 	private void switchToMazeLostPanel() {
 		CardLayout cl = (CardLayout) mazePanel.getLayout();
 		cl.show(mazePanel, "Lost");
+	}
+	
+	private void initMazePanel() {
+		mazePanel = new JPanel(new CardLayout());
+		initMazeScorePanel();
+		initMazeLostPanel();
+		
+		// initialise maze panel layout
+		GridBagConstraints gbcMaze = new GridBagConstraints();
+		gbcMaze.fill = GridBagConstraints.BOTH;
+		gbcMaze.gridy = 1;
+		gbcMaze.gridx = 0;
+		gbcMaze.gridheight = 10;
+		gbcMaze.gridwidth = 10;
+		gbcMaze.weightx = 1.0;
+		gbcMaze.weighty = 1.0;
+		
+		this.add(mazePanel, gbcMaze);	
 	}
 
 	private void initMazeScorePanel() {
@@ -188,6 +161,16 @@ public class GameScreen extends JPanel implements ActionListener {
 		statusBar = new JPanel();
 		statusBar.setLayout(new BorderLayout());
 		statusBar.setPreferredSize(new Dimension(0, 40)); // check
+		
+		GridBagConstraints gbcStatus = new GridBagConstraints();
+		gbcStatus.insets = new Insets(5,20,15,20);
+		gbcStatus.fill = GridBagConstraints.BOTH;
+		gbcStatus.gridy = 0;
+		gbcStatus.gridx = 0;
+		gbcStatus.gridheight = 1;
+		gbcStatus.gridwidth = 10;
+		gbcStatus.weightx = 0.5;
+		gbcStatus.weighty = 0.01;
 
 		// score
 		JLabel level = new JLabel("Level: " + currLevel);
@@ -202,13 +185,24 @@ public class GameScreen extends JPanel implements ActionListener {
 		JLabel hintsRemaining = new JLabel("Hints Remaining: ");
 		statusBar.add(hintsRemaining, BorderLayout.EAST);
 		
-		this.add(statusBar, gbc);
+		this.add(statusBar, gbcStatus);
 	}
 
 	private void initSideMenu() {
 		sideMenu = new JPanel();
 		GroupLayout groupLayout = new GroupLayout(sideMenu);
 		sideMenu.setLayout(groupLayout);
+		
+		// set parameters for sizing and positioning in main window
+		GridBagConstraints gbcSide = new GridBagConstraints();
+		gbcSide.fill = GridBagConstraints.BOTH;
+		gbcSide.gridy = 1;
+		gbcSide.gridx = 11;
+		gbcSide.gridheight = 11;
+		gbcSide.gridwidth = 2;
+		gbcSide.weightx = 0.1;
+		gbcSide.weighty = 0.45;
+		this.add(sideMenu, gbcSide);
 
 		// to check
 		groupLayout.setAutoCreateContainerGaps(true);
