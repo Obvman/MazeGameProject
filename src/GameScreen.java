@@ -145,7 +145,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeLostPanel.setOpaque(false);
 		
 		lostLevelLabel = new JLabel("You died at level " + currLevel);
-		
+		lostLevelLabel.setForeground(Color.WHITE);
 		
 		JButton startButton = new JButton("Start Again");
 		startButton.addActionListener(new ActionListener() {
