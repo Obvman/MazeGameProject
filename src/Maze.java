@@ -11,7 +11,7 @@ public class Maze {
 	public static int MAZE_SIZE_1 = 15 /*25*/;
 	public static int MAZE_SIZE_2 = 25 /*45*/;
 	public static int MAZE_CELL_SIZE = 32;
-	public static int DIFFICULTY = 10; // corresponds to number of monsters that spawn
+
 
 	// types of tiles
 	public static int PATH_TILE = 0;
@@ -47,9 +47,23 @@ public class Maze {
 		// player
 		player = new Player();
 
-		// monsters
 		monsters = new LinkedList<Monster>();
-		for (int i = 0; i < Maze.DIFFICULTY; i++) {
+	}
+
+	public int[][] getGrid() {
+		return mazeGrid;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public LinkedList<Monster> getMonsters() {
+		return monsters;
+	}
+
+	public void spawnMonsters(int numMonsters) {
+		for (int i = 0; i < numMonsters; i++) {
 			boolean placed = false;
 			while (!placed) {
 				int monsterX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
@@ -65,18 +79,6 @@ public class Maze {
 		}
 	}
 
-	public int[][] getGrid() {
-		return mazeGrid;
-	}
-
-	public Player getPlayer() {
-		return player;
-	}
-
-	public LinkedList<Monster> getMonsters() {
-		return monsters;
-	}
-
 	public boolean isGameLost() {
 		return !player.isAlive();
 	}
@@ -88,7 +90,7 @@ public class Maze {
 	public void updateSprites(ActionEvent e) {
 		int playerCellX = player.getX() / MAZE_CELL_SIZE;
 		int playerCellY = player.getY() / MAZE_CELL_SIZE;
-		
+
 		// check if player has been killed from monsters
 		for (Monster m: monsters) {
 			if (m.getBounds().intersects(player.getBounds())) {
@@ -127,7 +129,7 @@ public class Maze {
 				player.manualMove(player.getDX(), 0); // move in X-axis direction only
 			}
 		}
-		
+
 		// update spell positions
 		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
 			Spell s = spellIter.next();
@@ -161,12 +163,12 @@ public class Maze {
 			int monsterCellY = m.getY() / MAZE_CELL_SIZE;
 
 			double distance = Math.sqrt(Math.pow(monsterCellX-playerCellX,2) 
-										+ Math.pow(monsterCellY-playerCellY, 2));
-			
+					+ Math.pow(monsterCellY-playerCellY, 2));
+
 			if (distance > Math.sqrt(Math.pow(MAZE_SIZE_1, 2) + Math.pow(MAZE_SIZE_2, 2))/3) {
 				// random movement
 				// TODO: improve algorithm
-				
+
 				if (isLegalMove(m, m.getDX(), m.getDY()) && !(m.getDX() == 0 && m.getDY() == 0)) {
 					// continue in straight line
 					m.manualMove(m.getDX(), m.getDY());
@@ -181,10 +183,10 @@ public class Maze {
 				}
 			} else {
 				// chase player
-				
+
 				// TODO: fix coordinates order is reversed
 				boolean[][] pathToPlayer = solveMaze(monsterCellY, monsterCellX, playerCellY, playerCellX);
-				
+
 				int nextCellX = monsterCellX;
 				int nextCellY = monsterCellY;
 				if (withinMaze(monsterCellY + 1, monsterCellX) && pathToPlayer[monsterCellY + 1][monsterCellX]) {
@@ -196,7 +198,7 @@ public class Maze {
 				} else {
 					nextCellX += 1;
 				}
-				
+
 				if (nextCellX != monsterCellX) {
 					// move horizontally
 					int dx = nextCellX > monsterCellX ? 1 : -1;
@@ -250,7 +252,7 @@ public class Maze {
 
 		return true;
 	}
-	
+
 	public boolean[][] solveMaze(int startX, int startY, int goalX, int goalY) {
 		boolean[][] visited = new boolean[MAZE_SIZE_1][MAZE_SIZE_2];
 		boolean[][] solution = new boolean[MAZE_SIZE_1][MAZE_SIZE_2];
