@@ -9,7 +9,15 @@ import java.util.Random;
 public class MazeGenerateDfs implements MazeGenerationStrategy {
 
 	public int[][] generateMaze(int mazeSize1, int mazeSize2, int[][] maze) {
-		Node currNode = new Node(0, 0);
+		int midX = mazeSize1/2;
+		if ((midX % 2) == 1){
+			midX = midX +1;
+		}
+		int midY = mazeSize2/2;
+		if ((midY % 2) == 1){
+			midY = midY +1;
+		}
+		Node currNode = new Node(midX, midY);
 		maze = insertWalls(mazeSize1, mazeSize2, maze);
 		LinkedList<Node> visited = new LinkedList<Node>();
 		LinkedList<Node> curr = new LinkedList<Node>();
