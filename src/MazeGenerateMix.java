@@ -23,20 +23,20 @@ public class MazeGenerateMix implements MazeGenerationStrategy {
 			}
 			switch (i) {
 				case 0:
-					newHole = new Random().nextInt(midX+1);
-					this.myMaze[newHole][midY] = Maze.PATH_TILE;
+					newHole = new Random().nextInt(midX/2);
+					this.myMaze[2*newHole][midY] = Maze.PATH_TILE;
 					break;
 				case 1:
-					newHole = new Random().nextInt(midX+1);
-					this.myMaze[newHole+midX+1][midY] = Maze.PATH_TILE;
+					newHole = new Random().nextInt(midX/2);
+					this.myMaze[2*newHole+midX+1][midY] = Maze.PATH_TILE;
 					break;
 				case 2:
-					newHole = new Random().nextInt(midY+1);
-					this.myMaze[midX][newHole] = Maze.PATH_TILE;
+					newHole = new Random().nextInt(midY/2);
+					this.myMaze[midX][2*newHole] = Maze.PATH_TILE;
 					break;
 				case 3:
-					newHole = new Random().nextInt(midY+1);
-					this.myMaze[midX][newHole+midY+1] = Maze.PATH_TILE;
+					newHole = new Random().nextInt(midY/2);
+					this.myMaze[midX][2*newHole+midY+1] = Maze.PATH_TILE;
 					break;
 			}
 		}
