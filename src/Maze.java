@@ -8,8 +8,9 @@ import javax.swing.*;
 public class Maze {
 	// MAZE CONSTANTS
 	// maze configuration
+	//***The input for MazeGenerateMix has to be 2^n-1***
 	public static int MAZE_SIZE_1 = 15 /*25*/;
-	public static int MAZE_SIZE_2 = 25 /*45*/;
+	public static int MAZE_SIZE_2 = 31 /*45*/;
 	public static int MAZE_CELL_SIZE = 32;
 
 
