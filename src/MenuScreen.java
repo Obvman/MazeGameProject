@@ -20,9 +20,7 @@ public class MenuScreen extends JPanel {
 	    g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
 	}
 	
-	public void updatePadding() {
-		int paddingTop = (int)(mainWindow.getHeight() *  0.2);
-		int paddingSide = (int)(mainWindow.getWidth() * 0.2);
+	public void setPadding(int paddingTop, int paddingSide) {
 		setBorder(BorderFactory.createEmptyBorder(paddingTop, paddingSide, 0, paddingSide));
 	}
 	

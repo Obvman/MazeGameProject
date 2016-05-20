@@ -238,8 +238,7 @@ public class GameScreen extends JPanel implements ActionListener {
 				if (timer.isRunning()) {
 					pauseButton.setText("Unpause");
 					timer.stop();
-					setEnabled(false);
-//					mazePlaying.setRunning(false);
+					mazePlaying.setRunning(false);
 				} else {
 					pauseButton.setText("Pause");
 					timer.start();

@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -220,7 +221,7 @@ public class Maze {
 
 					// sprite
 					Rectangle spriteRect = sprite.getBounds();
-					spriteRect.translate(2*dx, 2*dy); // TODO: remove hack to prevent getting stuck in wall
+					spriteRect.translate(dx, dy);
 
 					if (wallRect.intersects(spriteRect) 
 							|| spriteRect.getX() < 0 

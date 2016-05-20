@@ -34,7 +34,7 @@ public class MainWindow extends JFrame {
 		addComponentListener(new ComponentAdapter() {
 		    @Override
 		    public void componentResized( ComponentEvent e ) {
-		    	menu.updatePadding();
+		    	menu.setPadding((int)(getHeight() * 0.2), (int)(getWidth() * 0.2));
 		    	setLocationRelativeTo(null);
 		    }
 		} );

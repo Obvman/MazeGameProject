@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import javax.swing.*;
 
-public class Player implements MovableSprite {
+public class Player implements MovableSprite, ActionListener {
 	private double x;
 	private double y;
 	private int dx;
@@ -14,31 +14,55 @@ public class Player implements MovableSprite {
 	private boolean alive;
 	
 	// character sprites
-	private Image lastImage;
-	private Image image_N;
-	private Image image_NE;
-	private Image image_E;
-	private Image image_SE;
-	private Image image_S;
-	private Image image_SW;
-	private Image image_W;
-	private Image image_NW;
+	private Image[] image_N;
+	private Image[] image_NE;
+	private Image[] image_E;
+	private Image[] image_SE;
+	private Image[] image_S;
+	private Image[] image_SW;
+	private Image[] image_W;
+	private Image[] image_NW;
+	private Image[] lastImage;
+	private int scaledHeight = 3/4 * Maze.MAZE_CELL_SIZE;
+	
+	private Timer timer;
+	private int spriteCounter = 0;
 	
 	public Player() {
 		spells = new LinkedList<Spell>();
 		alive = true;
 		
 		// sprites
-		int scaledSize = (3 * Maze.MAZE_CELL_SIZE) / 4;
-		image_N = new ImageIcon("resources/player_N.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-		image_NE = new ImageIcon("resources/player_NE.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-		image_E = new ImageIcon("resources/player_E.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-		image_SE = new ImageIcon("resources/player_SE.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-		image_S = new ImageIcon("resources/player_S.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-		image_SW = new ImageIcon("resources/player_SW.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-		image_W = new ImageIcon("resources/player_W.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-		image_NW = new ImageIcon("resources/player_NW.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-		lastImage = image_S; // initially face down
+		scaledHeight = (3 * Maze.MAZE_CELL_SIZE) / 4;
+		
+		image_N = new Image[6];
+		image_NE = new Image[6];
+		image_E = new Image[6];
+		image_SE = new Image[6];
+		image_S = new Image[6];
+		image_SW = new Image[6];
+		image_W = new Image[6];
+		image_NW = new Image[6];
+		
+		for (int i = 0; i < 6; i++) {
+			image_N[i] = new ImageIcon("resources/player/playerN" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+			image_NE[i] = new ImageIcon("resources/player/playerNE" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+			image_E[i] = new ImageIcon("resources/player/playerE" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+			image_SE[i] = new ImageIcon("resources/player/playerSE" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+			image_S[i] = new ImageIcon("resources/player/playerS" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+			image_SW[i] = new ImageIcon("resources/player/playerSW" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+			image_W[i] = new ImageIcon("resources/player/playerW" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+			image_NW[i] = new ImageIcon("resources/player/playerNW" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+		}
+		lastImage = image_S;
+		
+		timer = new Timer(200, this); 
+		timer.start();
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		spriteCounter = (spriteCounter + 1) % 6;
 	}
 	
 	@Override
@@ -63,10 +87,13 @@ public class Player implements MovableSprite {
     
 	@Override
     public Image getImage() {
-		Image image = null;
+		Image[] image = null;
 		
 		if (dx == 0 && dy == 0) {
-			return lastImage;
+			timer.stop();
+			return lastImage[spriteCounter];
+		} else {
+			timer.start();
 		}
 		
     	if (dx == 0 && dy < 0) {
@@ -88,12 +115,12 @@ public class Player implements MovableSprite {
     	}
     	
     	lastImage = image;
-        return image;
+        return image[spriteCounter];
     }
 	
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(getX(), getY(), getImage().getWidth(null), getImage().getHeight(null));
+		return new Rectangle(getX(), getY(), scaledHeight, scaledHeight);
 	}
 	
 	public LinkedList<Spell> getSpells() {
@@ -187,6 +214,4 @@ public class Player implements MovableSprite {
         	}
         }
     }
-
-	
 }
