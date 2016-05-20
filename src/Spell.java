@@ -7,8 +7,8 @@ public class Spell implements MovableSprite {
 
 	private int initialX;
 	private int initialY;
-	private int x;
-	private int y;
+	double x;
+	double y;
 	private int dx;
 	private int dy;
 	private Image image1;
@@ -25,20 +25,21 @@ public class Spell implements MovableSprite {
 		this.dx = dx;
 		this.dy = dy;
 		
-		image1 = (new ImageIcon("resources/32_flame_1.png")).getImage();
-		image2 = (new ImageIcon("resources/32_flame_2.png")).getImage();
-		image3 = (new ImageIcon("resources/32_flame_3.png")).getImage();
+		int scaledSize = (3 * Maze.MAZE_CELL_SIZE) / 4;
+		image1 = (new ImageIcon("resources/32_flame_1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		image2 = (new ImageIcon("resources/32_flame_2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		image3 = (new ImageIcon("resources/32_flame_3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 		
 	}
 	
 	@Override
 	public int getX() {
-		return x;
+		return (int)x;
 	}
 
 	@Override
 	public int getY() {
-		return y;
+		return (int)y;
 	}
 
 	@Override
@@ -64,12 +65,12 @@ public class Spell implements MovableSprite {
 	
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, getImage().getWidth(null), getImage().getHeight(null));
+		return new Rectangle(getX(), getY(), getImage().getWidth(null), getImage().getHeight(null));
 	}
 	
 	public void updatePosition() {
-		x += dx;
-		y += dy;
+		x += dx * (double)Maze.MAZE_CELL_SIZE/32;
+		y += dy * (double)Maze.MAZE_CELL_SIZE/32;
 		
 		stage = (int)Math.sqrt(Math.pow(x - initialX, 2) + Math.pow(y - initialY, 2))/getImage().getWidth(null);
 	}

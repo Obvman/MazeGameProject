@@ -128,7 +128,6 @@ public class Maze {
 				player.manualMove(player.getDX(), 0); // move in X-axis direction only
 			}
 		}
-
 		// update spell positions
 		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
 			Spell s = spellIter.next();

@@ -66,7 +66,7 @@ public class MenuScreen extends JPanel {
 		});
 		
 		// options button
-		JButton optionsButton = new JButton("Options");
+		JButton optionsButton = new JButton(new ImageIcon("resources/options.png"));
 		optionsButton.setOpaque(false);
 		optionsButton.setContentAreaFilled(false);
 		optionsButton.setMargin(new Insets(0, 0, 0, 0));

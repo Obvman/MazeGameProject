@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import javax.swing.*;
 
 public class Player implements MovableSprite {
-	private int x;
-	private int y;
+	private double x;
+	private double y;
 	private int dx;
 	private int dy;
 	private LinkedList<Spell> spells;
@@ -29,7 +29,7 @@ public class Player implements MovableSprite {
 		alive = true;
 		
 		// sprites
-		int scaledSize = (int)(2 * Maze.MAZE_CELL_SIZE) / 3;
+		int scaledSize = (3 * Maze.MAZE_CELL_SIZE) / 4;
 		image_N = new ImageIcon("resources/player_N.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 		image_NE = new ImageIcon("resources/player_NE.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 		image_E = new ImageIcon("resources/player_E.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
@@ -43,12 +43,12 @@ public class Player implements MovableSprite {
 	
 	@Override
 	public int getX() {
-        return x;
+        return (int)x;
     }
 
 	@Override
     public int getY() {
-        return y;
+        return (int)y;
     }
 
 	@Override
@@ -93,7 +93,7 @@ public class Player implements MovableSprite {
 	
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, getImage().getWidth(null), getImage().getHeight(null));
+		return new Rectangle(getX(), getY(), getImage().getWidth(null), getImage().getHeight(null));
 	}
 	
 	public LinkedList<Spell> getSpells() {
@@ -115,8 +115,8 @@ public class Player implements MovableSprite {
 	
 	@Override
     public void manualMove(int dx, int dy) {
-    	x += dx;
-    	y += dy;
+    	x += dx * (double)Maze.MAZE_CELL_SIZE/32;
+    	y += dy * (double)Maze.MAZE_CELL_SIZE/32;
     }
 	
 	public void keyPressed(KeyEvent e) {
@@ -182,8 +182,8 @@ public class Player implements MovableSprite {
         		
         		int imageWidth = getImage().getWidth(null);
             	int imageHeight = getImage().getHeight(null);
-        		spells.add(new Spell(x + lastDX * imageWidth  - imageWidth/4, 
-        							 y + lastDY * imageWidth - imageHeight/2, 2*lastDX, 2*lastDY));
+        		spells.add(new Spell(getX() + lastDX * imageWidth, 
+        							 getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY));
         	}
         }
     }
