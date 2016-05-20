@@ -1,0 +1,69 @@
+import java.awt.*;
+import javax.swing.*;
+
+public class TileGenerator {
+	private Image pathTile;
+	private Image wallTile;
+	private Image startTile;
+	private Image endTile;
+	private Image keyImage;
+	
+	// for connecting wall tiles for enhanced graphics
+	private Image wallTileN;
+	private Image wallTileW;
+	private Image wallTileS;
+	private Image wallTileE;
+	
+	
+
+	public TileGenerator() {
+		int cellSize = Maze.MAZE_CELL_SIZE;
+		
+		pathTile = (new ImageIcon("resources/leon_path.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		wallTile = (new ImageIcon("resources/leon_wall_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		startTile = (new ImageIcon("resources/leon_open_door.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		endTile = (new ImageIcon("resources/leon_closed_door.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		keyImage = (new ImageIcon("resources/key_for_32.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		
+		wallTileN = (new ImageIcon("resources/leon_wall_top_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		wallTileW = (new ImageIcon("resources/leon_wall_left_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		wallTileS = (new ImageIcon("resources/leon_wall_bottom_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		wallTileE = (new ImageIcon("resources/leon_wall_right_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+	}
+
+	public Image getPathTile() {
+		return pathTile;
+	}
+
+	public Image getWallTile() {
+		return wallTile;
+	}
+
+	public Image getStartTile() {
+		return startTile;
+	}
+
+	public Image getEndTile() {
+		return endTile;
+	}
+
+	public Image getKeyImage() {
+		return keyImage;
+	}
+	
+	public Image getWallTileN() {
+		return wallTileN;
+	}
+	
+	public Image getWallTileW() {
+		return wallTileW;
+	}
+	
+	public Image getWallTileS() {
+		return wallTileS;
+	}
+	
+	public Image getWallTileE() {
+		return wallTileE;
+	}
+}
