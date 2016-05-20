@@ -21,17 +21,28 @@ public class Maze {
 
 	// GAME CONFIGURATION
 	// maze and characters
-	private MazeGenerator mazeGenerator;
 	private int[][] mazeGrid;
 	private Player player;
 	private LinkedList<Monster> monsters;
 	private boolean keyAcquired;
 
 	public Maze() {
-		// maze
-		mazeGenerator = new MazeGenerator();
-		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2); // TODO: place this somewhere else
-
+		// maze initialize
+		this.mazeGrid = new int[MAZE_SIZE_1][MAZE_SIZE_2];
+		for (int row = 0; row < MAZE_SIZE_1; row++) {
+			for (int col = 0; col < MAZE_SIZE_2; col++) {
+				this.mazeGrid[row][col] = PATH_TILE;
+			}
+		}
+		
+		// TODO: generate maze according to difficulty using if...else...
+		// atm it is independent to difficulty level
+		MazeGenerationStrategy s = new MazeGenerateDfs(); 
+		this.mazeGrid = s.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2, this.mazeGrid);
+		this.mazeGrid[0][0] = START_TILE;
+		this.mazeGrid[MAZE_SIZE_1 - 1][MAZE_SIZE_2 - 1] = END_TILE;
+		
+		
 		// determine where key tile should go
 		// TODO: make sure it is not within a radius of start and end tile
 		while (true) {
