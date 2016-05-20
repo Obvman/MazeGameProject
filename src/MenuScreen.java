@@ -34,7 +34,7 @@ public class MenuScreen extends JPanel {
 		JButton startButton = new JButton(new ImageIcon("resources/start_game.png"));
 		startButton.setOpaque(false);
 		startButton.setContentAreaFilled(false);
-		startButton.setMargin(new Insets(-3, -3, -3, -3));
+		startButton.setMargin(new Insets(0, 0, 0, 0));
 		startButton.setFocusPainted(false);
 		startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		startButton.setToolTipText("Start a new game");
@@ -50,7 +50,7 @@ public class MenuScreen extends JPanel {
 		JButton tutorialButton = new JButton(new ImageIcon("resources/tutorial.png"));
 		tutorialButton.setOpaque(false);
 		tutorialButton.setContentAreaFilled(false);
-		tutorialButton.setMargin(new Insets(-3, -3, -3, -3));
+		tutorialButton.setMargin(new Insets(0, 0, 0, 0));
 		tutorialButton.setFocusPainted(false);
 		tutorialButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tutorialButton.setToolTipText("Displays instructions on how to play");
@@ -66,7 +66,7 @@ public class MenuScreen extends JPanel {
 		JButton exitButton = new JButton(new ImageIcon("resources/quit.png"));
 		exitButton.setOpaque(false);
 		exitButton.setContentAreaFilled(false);
-		exitButton.setMargin(new Insets(-3, -3, -3, -3));
+		exitButton.setMargin(new Insets(0, 0, 0, 0));
 		exitButton.setFocusPainted(false);
 		exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		exitButton.setToolTipText("Exit to desktop");
