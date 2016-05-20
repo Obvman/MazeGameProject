@@ -2,6 +2,7 @@ import java.util.Random;
 
 public class MazeGenerateMix implements MazeGenerationStrategy {
 	private int[][] myMaze; 
+	
 	@Override
 	public int[][] generateMaze(int mazeSize1, int mazeSize2, int[][] maze) {
 		this.myMaze = maze;

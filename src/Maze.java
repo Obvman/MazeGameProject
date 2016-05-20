@@ -8,18 +8,16 @@ import javax.swing.*;
 public class Maze {
 	// MAZE CONSTANTS
 	// maze configuration
-	//***The input for MazeGenerateMix has to be 2^n-1***
-	public static int MAZE_SIZE_1 = 15 /*25*/;
-	public static int MAZE_SIZE_2 = 31 /*45*/;
-	public static int MAZE_CELL_SIZE = 32;
-
+	public static final int MAZE_SIZE_1 = 15 /*25*/;
+	public static final int MAZE_SIZE_2 = 25 /*45*/;
+	public static final int MAZE_CELL_SIZE = 32;
 
 	// types of tiles
-	public static int PATH_TILE = 0;
-	public static int WALL_TILE = 1;
-	public static int START_TILE = 2;
-	public static int END_TILE = 3;
-	public static int KEY_TILE = 4;
+	public static final int PATH_TILE = 0;
+	public static final int WALL_TILE = 1;
+	public static final int START_TILE = 2;
+	public static final int END_TILE = 3;
+	public static final int KEY_TILE = 4;
 
 	// GAME CONFIGURATION
 	// maze and characters
@@ -135,22 +133,7 @@ public class Maze {
 		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
 			Spell s = spellIter.next();
 
-			// prevent spell from going out of maze
-			int spellX = s.getX();
-			if (s.getDX() > 0) {
-				spellX += s.getImage().getWidth(null);
-			} else if (s.getDX() < 0) {
-				spellX -= s.getImage().getWidth(null);
-			}
-
-			int spellY = s.getY();
-			if (s.getDY() > 0) {
-				spellY += s.getImage().getHeight(null);
-			} else if (s.getDY() < 0) {
-				spellY -= s.getImage().getHeight(null);
-			}
-
-			if (!withinMaze(spellY/MAZE_CELL_SIZE, spellX/MAZE_CELL_SIZE)) {
+			if (!withinMaze(s.getY()/MAZE_CELL_SIZE, s.getX()/MAZE_CELL_SIZE)) {
 				spellIter.remove();
 			} else {
 				s.updatePosition();

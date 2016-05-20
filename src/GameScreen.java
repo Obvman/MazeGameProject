@@ -15,10 +15,10 @@ public class GameScreen extends JPanel implements ActionListener {
 	private Maze maze;
 	
 	// components to be updated dynamically
-	JButton nextLevelButton; // part of maze panel
-	JLabel lostLevelLabel; // part of maze panel
-	JLabel levelLabel; // part of status bar
-	JLabel timeLabel; // part of status bar
+	private JButton nextLevelButton; // part of maze panel
+	private JLabel lostLevelLabel; // part of maze panel
+	private JLabel levelLabel; // part of status bar
+	private JLabel timeLabel; // part of status bar
 	
 	private Timer timer;
 	private double duration;
@@ -51,7 +51,6 @@ public class GameScreen extends JPanel implements ActionListener {
 			timeLabel.setText("Time elapsed: " + (int)duration + "s");
 		}
 		
-			
 		if(e.getSource() == timer) {
 			if (maze.isGameLost()) {
 				mazePlaying.setRunning(false);
@@ -122,7 +121,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeWon = new JPanel();
 		mazeWon.setOpaque(false);
 		
-		nextLevelButton = new JButton("Continue to levelLabel " + level);
+		nextLevelButton = new JButton("Continue to level " + level);
 		nextLevelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -149,7 +148,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeLost = new JPanel();
 		mazeLost.setOpaque(false);
 		
-		lostLevelLabel = new JLabel("You died at levelLabel " + level);
+		lostLevelLabel = new JLabel("You died at level " + level);
 		lostLevelLabel.setForeground(Color.WHITE);
 		
 		JButton startButton = new JButton("Start Again");
@@ -239,7 +238,8 @@ public class GameScreen extends JPanel implements ActionListener {
 				if (timer.isRunning()) {
 					pauseButton.setText("Unpause");
 					timer.stop();
-					mazePlaying.setRunning(false);
+					setEnabled(false);
+//					mazePlaying.setRunning(false);
 				} else {
 					pauseButton.setText("Pause");
 					timer.start();
@@ -275,5 +275,13 @@ public class GameScreen extends JPanel implements ActionListener {
 		);
 
 		groupLayout.linkSize(pauseButton, menuButton); // keep size of buttons consistent
+	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+	    super.setEnabled(enabled);
+	    for (Component component : getComponents()) {
+	        component.setEnabled(enabled);
+	    }
 	}
 }

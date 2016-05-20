@@ -21,7 +21,7 @@ public class MazeGenerator {
 					this.maze[row][col] = Maze.PATH_TILE;
 				}
 			}
-			MazeGenerationStrategy s = new MazeGenerateMix();
+			MazeGenerationStrategy s = new MazeGenerateDfs(); // TODO: fix this. it is not correct strategy pattern
 			this.maze = s.generateMaze(mazeSize1, mazeSize2, this.maze);
 		}
 

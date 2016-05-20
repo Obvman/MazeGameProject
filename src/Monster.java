@@ -7,11 +7,19 @@ public class Monster implements MovableSprite {
 	private int y;
 	private int dx;
 	private int dy;
-	private Image image;
+	private Image image_N;
+	private Image image_W;
+	private Image image_S;
+	private Image image_E;
 	
 	public Monster() {
-		ImageIcon monsterImage = new ImageIcon("resources/monster_down.png");
-		image = monsterImage.getImage();
+		dy = 1;
+		
+		int scaledSize = (int)(2 * Maze.MAZE_CELL_SIZE) / 3;
+		image_N = new ImageIcon("resources/monster_up.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		image_W = new ImageIcon("resources/monster_left.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		image_S = new ImageIcon("resources/monster_down.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+		image_E = new ImageIcon("resources/monster_right.png").getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 	}
 
 	@Override
@@ -37,28 +45,22 @@ public class Monster implements MovableSprite {
 	
 	@Override
     public Image getImage() {
-    	ImageIcon monsterImage = null;
-    	
-    	if (dx > 0) {
-    		monsterImage = new ImageIcon("resources/monster_right.png");
-    		image = monsterImage.getImage();
-    	} else if (dx < 0) {
-    		monsterImage = new ImageIcon("resources/monster_left.png");
-    		image = monsterImage.getImage();
-    	} else if (dy > 0) {
-    		monsterImage = new ImageIcon("resources/monster_down.png");
-    		image = monsterImage.getImage();
-    	} else if (dy < 0) {
-    		monsterImage = new ImageIcon("resources/monster_up.png");
-    		image = monsterImage.getImage();
+    	if (dx == 0 && dy < 0) {
+    		return image_N;
+    	} else if (dx < 0 && dy == 0) {
+    		return image_W;
+    	} else if (dx == 0 && dy > 0) {
+    		return image_S;
+    	} else if (dx > 0 && dy == 0) {
+    		return image_E;
     	}
     	
-        return image;
-    }
+    	return null;
+	}
 	
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+		return new Rectangle(x, y, getImage().getWidth(null), getImage().getHeight(null));
 	}
 
 	@Override

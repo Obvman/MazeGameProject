@@ -9,9 +9,6 @@ public class MenuScreen extends JPanel {
 	private MainWindow mainWindow;
 	
 	public MenuScreen(MainWindow mainWindow) {
-		int paddingTop = (int)(mainWindow.getHeight() *  0.2);
-		int paddingSide = (int)(mainWindow.getWidth() * 0.2);
-		setBorder(BorderFactory.createEmptyBorder(paddingTop, paddingSide, 0, paddingSide));
 		this.mainWindow = mainWindow;
 		initMenu();
 	}
@@ -21,6 +18,12 @@ public class MenuScreen extends JPanel {
 		super.paintComponent(g);
 		Image background = (new ImageIcon("resources/gameScreen_bg.jpg")).getImage(); // TODO: move into field so we dont reload
 	    g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+	}
+	
+	public void updatePadding() {
+		int paddingTop = (int)(mainWindow.getHeight() *  0.2);
+		int paddingSide = (int)(mainWindow.getWidth() * 0.2);
+		setBorder(BorderFactory.createEmptyBorder(paddingTop, paddingSide, 0, paddingSide));
 	}
 	
 	private void initMenu() {
@@ -62,6 +65,22 @@ public class MenuScreen extends JPanel {
 			}
 		});
 		
+		// options button
+		JButton optionsButton = new JButton("Options");
+		optionsButton.setOpaque(false);
+		optionsButton.setContentAreaFilled(false);
+		optionsButton.setMargin(new Insets(0, 0, 0, 0));
+		optionsButton.setFocusPainted(false);
+		optionsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		optionsButton.setToolTipText("Configure game settings");
+		optionsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// display tutorial
+				mainWindow.switchToOptions();
+			}
+		});
+		
 		// exit button
 		JButton exitButton = new JButton(new ImageIcon("resources/quit.png"));
 		exitButton.setOpaque(false);
@@ -81,6 +100,8 @@ public class MenuScreen extends JPanel {
 		buttonPanel.add(startButton);
 		buttonPanel.add(Box.createVerticalStrut(10));
 		buttonPanel.add(tutorialButton);
+		buttonPanel.add(Box.createVerticalStrut(10));
+		buttonPanel.add(optionsButton);
 		buttonPanel.add(Box.createVerticalStrut(10));
 		buttonPanel.add(exitButton);
 		add(buttonPanel);

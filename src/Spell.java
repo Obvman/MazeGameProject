@@ -11,17 +11,23 @@ public class Spell implements MovableSprite {
 	private int y;
 	private int dx;
 	private int dy;
-	private Image image;
+	private Image image1;
+	private Image image2;
+	private Image image3;
 	private int stage; 
 
 	public Spell(int startX, int startY, int dx, int dy) {
 		initialX = startX;
 		initialY = startY;
+		
 		x = startX;
 		y = startY;
 		this.dx = dx;
 		this.dy = dy;
-		image = (new ImageIcon("resources/32_flame_1.png")).getImage();
+		
+		image1 = (new ImageIcon("resources/32_flame_1.png")).getImage();
+		image2 = (new ImageIcon("resources/32_flame_2.png")).getImage();
+		image3 = (new ImageIcon("resources/32_flame_3.png")).getImage();
 		
 	}
 	
@@ -48,26 +54,24 @@ public class Spell implements MovableSprite {
 	@Override
 	public Image getImage() {
 		if (stage == 0) {
-			image = (new ImageIcon("resources/32_flame_1.png")).getImage();
+			return image1;
 		} else if (stage == 1) {
-			image = (new ImageIcon("resources/32_flame_2.png")).getImage();
+			return image2;
 		} else {
-			image = (new ImageIcon("resources/32_flame_3.png")).getImage();
+			return image3;
 		}
-		
-		return image;
 	}
 	
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+		return new Rectangle(x, y, getImage().getWidth(null), getImage().getHeight(null));
 	}
 	
 	public void updatePosition() {
 		x += dx;
 		y += dy;
 		
-		stage = (int)Math.sqrt(Math.pow(x - initialX, 2) + Math.pow(y - initialY, 2))/image.getWidth(null);
+		stage = (int)Math.sqrt(Math.pow(x - initialX, 2) + Math.pow(y - initialY, 2))/getImage().getWidth(null);
 	}
 	
 	public int getStage() {

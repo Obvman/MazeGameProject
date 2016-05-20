@@ -5,30 +5,15 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class MazePanel extends JPanel implements ActionListener {
 	private Maze maze;
+	private TileGenerator tileGenerator;
 	private Timer timer; 
 
-	// images of tiles
-	// TODO: create a tile generator class
-	private Image pathTile;
-	private Image wallTile;
-	private Image startTile;
-	private Image endTile;
-	private Image keyTile;
-
 	public MazePanel() {
-		maze = new Maze();
-
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
-		// tiles
-		pathTile = (new ImageIcon("resources/leon_path.png")).getImage();
-		wallTile = (new ImageIcon("resources/leon_wall_lava.png")).getImage();
-		startTile = (new ImageIcon("resources/leon_open_door.png")).getImage();
-		endTile = (new ImageIcon("resources/leon_closed_door.png")).getImage();
-		keyTile = (new ImageIcon("resources/key_for_32.png")).getImage();
-
 		addKeyListener(new TAdapter());
-
+		
+		maze = new Maze();
+		tileGenerator = new TileGenerator();
 		timer = new Timer(10, this); // corresponds to game speed
 		timer.start();
 	}
@@ -59,37 +44,40 @@ public class MazePanel extends JPanel implements ActionListener {
 		int[][] mazeGrid = maze.getGrid();
 		for (int i = 0; i < Maze.MAZE_SIZE_1; i++) {
 			for (int j = 0; j < Maze.MAZE_SIZE_2; j++) {
+				
+				int x = j * Maze.MAZE_CELL_SIZE;
+				int y = i * Maze.MAZE_CELL_SIZE;
+				
 				Image tile = null;
 
-				if (mazeGrid[i][j] == Maze.PATH_TILE) tile = pathTile;
-				else if (mazeGrid[i][j] == Maze.WALL_TILE) tile = wallTile;
-				else if (mazeGrid[i][j] == Maze.START_TILE) tile = startTile;
-				else if (mazeGrid[i][j] == Maze.END_TILE) tile = endTile;
-				else tile = pathTile;
+				if (mazeGrid[i][j] == Maze.PATH_TILE) tile = tileGenerator.getPathTile();
+				else if (mazeGrid[i][j] == Maze.WALL_TILE) tile = tileGenerator.getWallTile();
+				else if (mazeGrid[i][j] == Maze.START_TILE) tile = tileGenerator.getStartTile();
+				else if (mazeGrid[i][j] == Maze.END_TILE) tile = tileGenerator.getEndTile();
+				else tile = tileGenerator.getPathTile();
 
 				// key
-				g.drawImage(tile, j * Maze.MAZE_CELL_SIZE, i * Maze.MAZE_CELL_SIZE, this);
+				g.drawImage(tile, x, y, this);
 				if (mazeGrid[i][j] == Maze.KEY_TILE) {
-					g.drawImage(keyTile, j * Maze.MAZE_CELL_SIZE, i * Maze.MAZE_CELL_SIZE, this);
+					g.drawImage(tileGenerator.getKeyImage(), x, y, this);
 				}
 
+				// create the illusion of connected wall tiles
 				if (mazeGrid[i][j] == Maze.WALL_TILE) {
-					// check whether there are adjacent wall tiles for improved graphics
-					if (withinMaze(i, j-1) && mazeGrid[i][j-1] == Maze.WALL_TILE) {
-						tile = (new ImageIcon("resources/leon_wall_left_cover_lava.png")).getImage();
-						g.drawImage(tile, j * Maze.MAZE_CELL_SIZE, i * Maze.MAZE_CELL_SIZE, this);
+					if (withinMaze(j, i-1) && mazeGrid[i-1][j] == Maze.WALL_TILE) {
+						g.drawImage(tileGenerator.getWallTileN(), x, y, this);
 					}
-					if (withinMaze(i-1, j) && mazeGrid[i-1][j] == Maze.WALL_TILE) {
-						tile = (new ImageIcon("resources/leon_wall_top_cover_lava.png")).getImage();
-						g.drawImage(tile, j * Maze.MAZE_CELL_SIZE, i * Maze.MAZE_CELL_SIZE, this);
+					
+					if (withinMaze(j-1, i) && mazeGrid[i][j-1] == Maze.WALL_TILE) {
+						g.drawImage(tileGenerator.getWallTileW(), x, y, this);
 					}
-					if (withinMaze(i, j+1) && mazeGrid[i][j+1] == Maze.WALL_TILE) {
-						tile = (new ImageIcon("resources/leon_wall_right_cover_lava.png")).getImage();
-						g.drawImage(tile, j * Maze.MAZE_CELL_SIZE, i * Maze.MAZE_CELL_SIZE, this);
+					
+					if (withinMaze(j, i+1) && mazeGrid[i+1][j] == Maze.WALL_TILE) {
+						g.drawImage(tileGenerator.getWallTileS(), x, y, this);
 					}
-					if (withinMaze(i+1, j) && mazeGrid[i+1][j] == Maze.WALL_TILE) {
-						tile = (new ImageIcon("resources/leon_wall_bottom_cover_lava.png")).getImage();
-						g.drawImage(tile, j * Maze.MAZE_CELL_SIZE, i * Maze.MAZE_CELL_SIZE, this);
+					
+					if (withinMaze(j+1, i) && mazeGrid[i][j+1] == Maze.WALL_TILE) {
+						g.drawImage(tileGenerator.getWallTileE(), x, y, this);
 					}
 				}
 			}
@@ -111,7 +99,7 @@ public class MazePanel extends JPanel implements ActionListener {
 	}
 
 	private boolean withinMaze(int x, int y) {
-		return x >= 0 && y >= 0 && x < Maze.MAZE_SIZE_1 && y < Maze.MAZE_SIZE_2;
+		return x >= 0 && y >= 0 && x < Maze.MAZE_SIZE_2 && y < Maze.MAZE_SIZE_1;
 	}
 
 	private class TAdapter extends KeyAdapter {

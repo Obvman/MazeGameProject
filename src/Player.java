@@ -182,7 +182,7 @@ public class Player implements MovableSprite {
         		
         		int imageWidth = getImage().getWidth(null);
             	int imageHeight = getImage().getHeight(null);
-        		spells.add(new Spell(x + lastDX * imageWidth  - imageWidth/2, 
+        		spells.add(new Spell(x + lastDX * imageWidth  - imageWidth/4, 
         							 y + lastDY * imageWidth - imageHeight/2, 2*lastDX, 2*lastDY));
         	}
         }
