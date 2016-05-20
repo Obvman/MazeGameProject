@@ -1,0 +1,8 @@
+#! /bin/sh
+
+rm -rf ./classFiles
+mkdir classFiles
+
+javac -d ./classFiles ./src/*.java
+
+echo "done"
