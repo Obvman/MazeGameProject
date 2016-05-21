@@ -1,8 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Player implements MovableSprite, ActionListener {
@@ -14,45 +18,45 @@ public class Player implements MovableSprite, ActionListener {
 	private boolean alive;
 	
 	// character sprites
-	private Image[] image_N;
-	private Image[] image_NE;
-	private Image[] image_E;
-	private Image[] image_SE;
-	private Image[] image_S;
-	private Image[] image_SW;
-	private Image[] image_W;
-	private Image[] image_NW;
-	private Image[] lastImage;
+	private BufferedImage[] image_N;
+	private BufferedImage[] image_NE;
+	private BufferedImage[] image_E;
+	private BufferedImage[] image_SE;
+	private BufferedImage[] image_S;
+	private BufferedImage[] image_SW;
+	private BufferedImage[] image_W;
+	private BufferedImage[] image_NW;
+	private BufferedImage[] lastImage;
 	private int scaledHeight = 3/4 * Maze.MAZE_CELL_SIZE;
 	
 	private Timer timer;
 	private int spriteCounter = 0;
 	
-	public Player() {
+	public Player() throws IOException {
 		spells = new LinkedList<Spell>();
 		alive = true;
 		
 		// sprites
 		scaledHeight = (3 * Maze.MAZE_CELL_SIZE) / 4;
 		
-		image_N = new Image[6];
-		image_NE = new Image[6];
-		image_E = new Image[6];
-		image_SE = new Image[6];
-		image_S = new Image[6];
-		image_SW = new Image[6];
-		image_W = new Image[6];
-		image_NW = new Image[6];
+		image_N = new BufferedImage[6];
+		image_NE = new BufferedImage[6];
+		image_E = new BufferedImage[6];
+		image_SE = new BufferedImage[6];
+		image_S = new BufferedImage[6];
+		image_SW = new BufferedImage[6];
+		image_W = new BufferedImage[6];
+		image_NW = new BufferedImage[6];
 		
 		for (int i = 0; i < 6; i++) {
-			image_N[i] = new ImageIcon("resources/player/playerN" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
-			image_NE[i] = new ImageIcon("resources/player/playerNE" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
-			image_E[i] = new ImageIcon("resources/player/playerE" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
-			image_SE[i] = new ImageIcon("resources/player/playerSE" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
-			image_S[i] = new ImageIcon("resources/player/playerS" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
-			image_SW[i] = new ImageIcon("resources/player/playerSW" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
-			image_W[i] = new ImageIcon("resources/player/playerW" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
-			image_NW[i] = new ImageIcon("resources/player/playerNW" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+			image_N[i] = getScaledImage(ImageIO.read(new File("resources/player/playerN" + (i+1) + ".png")), scaledHeight, scaledHeight);
+			image_NE[i] = getScaledImage(ImageIO.read(new File("resources/player/playerNE" + (i+1) + ".png")), scaledHeight, scaledHeight);
+			image_E[i] = getScaledImage(ImageIO.read(new File("resources/player/playerE" + (i+1) + ".png")), scaledHeight, scaledHeight);
+			image_SE[i] = getScaledImage(ImageIO.read(new File("resources/player/playerSE" + (i+1) + ".png")), scaledHeight, scaledHeight);
+			image_S[i] = getScaledImage(ImageIO.read(new File("resources/player/playerS" + (i+1) + ".png")), scaledHeight, scaledHeight);
+			image_SW[i] = getScaledImage(ImageIO.read(new File("resources/player/playerSW" + (i+1) + ".png")), scaledHeight, scaledHeight);
+			image_W[i] = getScaledImage(ImageIO.read(new File("resources/player/playerW" + (i+1) + ".png")), scaledHeight, scaledHeight);
+			image_NW[i] = getScaledImage(ImageIO.read(new File("resources/player/playerNW" + (i+1) + ".png")), scaledHeight, scaledHeight);
 		}
 		lastImage = image_S;
 		
@@ -91,8 +95,8 @@ public class Player implements MovableSprite, ActionListener {
 	}
 	
 	@Override
-    public Image getImage() {
-		Image[] image = null;
+    public BufferedImage getImage() {
+		BufferedImage[] image = null;
 		
 		if (dx == 0 && dy == 0) {
 			timer.stop();
@@ -221,5 +225,25 @@ public class Player implements MovableSprite, ActionListener {
         							 getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY));
         	}
         }
+    }
+    
+    private BufferedImage getScaledImage(BufferedImage src, int w, int h){
+        int finalw = w;
+        int finalh = h;
+        double factor = 1.0d;
+        if(src.getWidth() > src.getHeight()){
+            factor = ((double)src.getHeight()/(double)src.getWidth());
+            finalh = (int)(finalw * factor);                
+        }else{
+            factor = ((double)src.getWidth()/(double)src.getHeight());
+            finalw = (int)(finalh * factor);
+        }   
+
+        BufferedImage resizedImg = new BufferedImage(finalw, finalh, BufferedImage.TRANSLUCENT);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(src, 0, 0, finalw, finalh, null);
+        g2.dispose();
+        return resizedImg;
     }
 }
