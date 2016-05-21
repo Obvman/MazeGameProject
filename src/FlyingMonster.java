@@ -2,25 +2,49 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class FlyingMonster extends Monster implements MovableSprite {
+public class FlyingMonster extends Monster implements MovableSprite, ActionListener {
 	private double x;
 	private double y;
 	private int dx;
 	private int dy;
-	private Image image_N;
-	private Image image_W;
-	private Image image_S;
-	private Image image_E;
+	
+	private Image[] image_N;
+	private Image[] image_W;
+	private Image[] image_S;
+	private Image[] image_E;
+	private int scaledHeight;
+	
+	private Timer timer;
+	private Timer timer2;
+	private int spriteCounter = 0;
 	
 	public FlyingMonster() {
-		dy = 1;
+		scaledHeight = Maze.MAZE_CELL_SIZE;
 		
-		// todo: make everything 32x32 for easier control
-		int scaleFactor = (2 * Maze.MAZE_CELL_SIZE) / 2;
-		image_N = new ImageIcon("resources/flyingMonsterN.png").getImage().getScaledInstance(scaleFactor, scaleFactor, Image.SCALE_SMOOTH);
-		image_W = new ImageIcon("resources/flyingMonsterW.png").getImage().getScaledInstance(scaleFactor, scaleFactor, Image.SCALE_SMOOTH);
-		image_S = new ImageIcon("resources/flyingMonsterS.png").getImage().getScaledInstance(scaleFactor, scaleFactor, Image.SCALE_SMOOTH);
-		image_E = new ImageIcon("resources/flyingMonsterE.png").getImage().getScaledInstance(scaleFactor, scaleFactor, Image.SCALE_SMOOTH);
+		image_N = new Image [4];
+		image_W = new Image [4];
+		image_S = new Image [4];
+		image_E = new Image [4];
+		for (int i = 0; i < 4; i++) {
+			image_N[i] = new ImageIcon("resources/dragon/dragonN" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+			image_W[i] = new ImageIcon("resources/dragon/dragonW" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+			image_S[i] = new ImageIcon("resources/dragon/dragonS" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+			image_E[i] = new ImageIcon("resources/dragon/dragonE" + (i+1) + ".png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+		}
+		
+		timer = new Timer(300, this); 
+		timer.start();
+		timer2 = new Timer(2000, this);
+		timer2.start();
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		spriteCounter = (spriteCounter + 1) % 4;
+		
+		if (e.getSource() == timer2) {
+			randomiseDirection();
+		}
 	}
 
 	@Override
@@ -43,25 +67,31 @@ public class FlyingMonster extends Monster implements MovableSprite {
 		return dy;
 	}
     
+	@Override
+	public boolean canFly() {
+		return true;
+	}
 	
 	@Override
     public Image getImage() {
+		Image[] image = image_W;
+		
     	if (dx == 0 && dy < 0) {
-    		return image_N;
+    		image = image_N;
     	} else if (dx < 0 && dy == 0) {
-    		return image_W;
+    		image = image_W;
     	} else if (dx == 0 && dy > 0) {
-    		return image_S;
+    		image = image_S;
     	} else if (dx > 0 && dy == 0) {
-    		return image_E;
+    		image = image_E;
     	}
     	
-    	return null;
+    	return image[spriteCounter];
 	}
 	
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(getX(), getY(), getImage().getWidth(null), getImage().getHeight(null));
+		return new Rectangle(getX(), getY(), scaledHeight, scaledHeight);
 	}
 
 	@Override

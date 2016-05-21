@@ -11,16 +11,17 @@ public class Monster implements MovableSprite {
 	private Image image_W;
 	private Image image_S;
 	private Image image_E;
+	private int scaledHeight;
 	
 	public Monster() {
 		dy = 1;
 		
-		// todo: make everything 32x32 for easier control
-		int scaleFactor = (2 * Maze.MAZE_CELL_SIZE) / 3;
-		image_N = new ImageIcon("resources/monster_up.png").getImage().getScaledInstance(scaleFactor, scaleFactor, Image.SCALE_SMOOTH);
-		image_W = new ImageIcon("resources/monster_left.png").getImage().getScaledInstance(scaleFactor, scaleFactor, Image.SCALE_SMOOTH);
-		image_S = new ImageIcon("resources/monster_down.png").getImage().getScaledInstance(scaleFactor, scaleFactor, Image.SCALE_SMOOTH);
-		image_E = new ImageIcon("resources/monster_right.png").getImage().getScaledInstance(scaleFactor, scaleFactor, Image.SCALE_SMOOTH);
+		scaledHeight = Maze.MAZE_CELL_SIZE * 3/4;
+		
+		image_N = new ImageIcon("resources/monster_up.png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+		image_W = new ImageIcon("resources/monster_left.png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+		image_S = new ImageIcon("resources/monster_down.png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+		image_E = new ImageIcon("resources/monster_right.png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
 	}
 
 	@Override
@@ -43,6 +44,10 @@ public class Monster implements MovableSprite {
 		return dy;
 	}
     
+	@Override
+	public boolean canFly() {
+		return false;
+	}
 	
 	@Override
     public Image getImage() {
@@ -61,15 +66,15 @@ public class Monster implements MovableSprite {
 	
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(getX(), getY(), getImage().getWidth(null), getImage().getHeight(null));
+		return new Rectangle(getX(), getY(), scaledHeight, scaledHeight);
 	}
 
 	@Override
     public void manualMove(int dx, int dy) {
 		this.dx = dx;
 		this.dy = dy;
-    	x += dx * (double)Maze.MAZE_CELL_SIZE/32;
-    	y += dy * (double)Maze.MAZE_CELL_SIZE/32;
+    	x += dx * (double)Maze.MAZE_CELL_SIZE/32 * 0.5;
+    	y += dy * (double)Maze.MAZE_CELL_SIZE/32 * 0.5;
     }
 	
 	// picks a random STRAIGHT line motion

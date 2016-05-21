@@ -10,7 +10,7 @@ public class Maze {
 	// MAZE CONSTANTS
 	// maze configuration
 	public static final int MAZE_SIZE_1 = 15 /*25*/;
-	public static final int MAZE_SIZE_2 = 25 /*45*/;
+	public static final int MAZE_SIZE_2 = 35 /*45*/;
 	public static final int MAZE_CELL_SIZE = 32;
 
 	// types of tiles
@@ -74,14 +74,15 @@ public class Maze {
 	}
 
 	public void spawnMonsters(int numMonsters) {
-		for (int i = 0; i < numMonsters; i++) {
+		for (int i = 0; i < numMonsters*5; i++) {
 			boolean placed = false;
 			while (!placed) {
 				int monsterX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
 				int monsterY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
 
 				if (monsterX > 5 && monsterY > 5 && mazeGrid[monsterY][monsterX] == PATH_TILE) {
-					Monster m = new Monster();
+					
+					Monster m = Math.random() > 0.5 ? new FlyingMonster() : new Monster();
 					m.setPosition(monsterX * MAZE_CELL_SIZE, monsterY * MAZE_CELL_SIZE);
 					monsters.add(m);
 					placed = true;
@@ -160,7 +161,7 @@ public class Maze {
 			double distance = Math.sqrt(Math.pow(monsterCellX-playerCellX,2) 
 					+ Math.pow(monsterCellY-playerCellY, 2));
 
-			if (distance > Math.sqrt(Math.pow(MAZE_SIZE_1, 2) + Math.pow(MAZE_SIZE_2, 2))/3) {
+			if (distance > Math.sqrt(Math.pow(MAZE_SIZE_1, 2) + Math.pow(MAZE_SIZE_2, 2))/2 || m.canFly()) {
 				// random movement
 				// TODO: improve algorithm
 
@@ -176,9 +177,7 @@ public class Maze {
 						}
 					}
 				}
-			} else {
-				// chase player
-
+			} else if (!m.canFly()) {
 				// TODO: fix coordinates order is reversed
 				boolean[][] pathToPlayer = solveMaze(monsterCellY, monsterCellX, playerCellY, playerCellX);
 
@@ -224,21 +223,25 @@ public class Maze {
 	}
 
 	private boolean isLegalMove(MovableSprite sprite, int dx, int dy) {
+		Rectangle spriteRect = sprite.getBounds();
+		spriteRect.translate(dx, dy);
+		
+		if (spriteRect.getX() < 0 || spriteRect.getX() >= MAZE_SIZE_2 * MAZE_CELL_SIZE - spriteRect.getWidth()
+			|| spriteRect.getY() < 0 || spriteRect.getY() >= MAZE_SIZE_1 * MAZE_CELL_SIZE - spriteRect.getHeight()) {
+			return false;
+		}
+		
+		if (sprite.canFly()) {
+			return true;
+		}
+		
 		for (int i = 0; i < MAZE_SIZE_1; i++) {
 			for (int j = 0; j < MAZE_SIZE_2; j++) {
 				if (mazeGrid[i][j] == WALL_TILE) {
 					// wall 
 					Rectangle wallRect = new Rectangle(j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, MAZE_CELL_SIZE, MAZE_CELL_SIZE);
 
-					// sprite
-					Rectangle spriteRect = sprite.getBounds();
-					spriteRect.translate(dx, dy);
-
-					if (wallRect.intersects(spriteRect) 
-							|| spriteRect.getX() < 0 
-							|| spriteRect.getX() >= MAZE_SIZE_2 * MAZE_CELL_SIZE - spriteRect.getWidth()
-							|| spriteRect.getY() < 0 
-							|| spriteRect.getY() >= MAZE_SIZE_1 * MAZE_CELL_SIZE - spriteRect.getHeight()) {
+					if (wallRect.intersects(spriteRect)) {
 						return false;
 					}
 				} 

@@ -34,12 +34,12 @@ public class GameScreen extends JPanel implements ActionListener {
 		initSideBar();
 		
 		// update frequency
-		timer = new Timer(30, this);
+		timer = new Timer(200, this);
 		timer.start();
 		duration = 1;
 		level = 1;
 		
-		switchToMazePlayingPanel();
+		switchToMazePlaying();
 	}
 	
 	@Override
@@ -54,12 +54,12 @@ public class GameScreen extends JPanel implements ActionListener {
 		if(e.getSource() == timer) {
 			if (maze.isGameLost()) {
 				mazePlaying.setRunning(false);
-				switchTomazeLost();
+				switchToMazeLost();
 			} else if (maze.isGameWon()) {
 				mazePlaying.setRunning(false);
 				timer.stop();
 				level++;
-				switchToMazeFinishedPanel();
+				switchToMazeWon();
 			} else {
 				duration += (double)timer.getDelay()/1000;
 			}
@@ -73,7 +73,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	    g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
 	}
 	
-	private void switchToMazePlayingPanel() {
+	private void switchToMazePlaying() {
 		levelLabel.setText("Current level: " + level); // update levelLabel JLabel
 		
 		// initialise new game
@@ -87,13 +87,13 @@ public class GameScreen extends JPanel implements ActionListener {
 		cl.show(mazePanels, "Playing");
 	}
 
-	private void switchToMazeFinishedPanel() {
+	private void switchToMazeWon() {
 		nextLevelButton.setText("Continue to level " + level);
 		CardLayout cl = (CardLayout) mazePanels.getLayout();
-		cl.show(mazePanels, "Finished");
+		cl.show(mazePanels, "Won");
 	}
 	
-	private void switchTomazeLost() {
+	private void switchToMazeLost() {
 		lostLevelLabel.setText("You died at level " + level);
 		CardLayout cl = (CardLayout) mazePanels.getLayout();
 		cl.show(mazePanels, "Lost");
@@ -125,7 +125,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		nextLevelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				switchToMazePlayingPanel();
+				switchToMazePlaying();
 				timer.start();
 			}
 		});
@@ -141,7 +141,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		mazeWon.add(nextLevelButton);
 		mazeWon.add(menuButton);
-		mazePanels.add(mazeWon, "Finished");
+		mazePanels.add(mazeWon, "Won");
 	}
 	
 	private void initMazeLost() {
@@ -191,11 +191,11 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbcStatus.weighty = 0.01;
 
 		// score
-		levelLabel = new JLabel("levelLabel: " + level);
+		levelLabel = new JLabel();
 		levelLabel.setForeground(Color.WHITE);
 
 		// timeLabel
-		timeLabel = new JLabel("timeLabel: " + (int)duration);
+		timeLabel = new JLabel();
 		timeLabel.setForeground(Color.WHITE);
 		timeLabel.setHorizontalAlignment(JLabel.CENTER);
 

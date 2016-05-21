@@ -86,13 +86,21 @@ public class Player implements MovableSprite, ActionListener {
 	}
     
 	@Override
+	public boolean canFly() {
+		return false;
+	}
+	
+	@Override
     public Image getImage() {
 		Image[] image = null;
 		
 		if (dx == 0 && dy == 0) {
 			timer.stop();
 			return lastImage[spriteCounter];
-		} else {
+		}
+		
+		if (!timer.isRunning()) {
+			spriteCounter = (spriteCounter + 1) % 6;
 			timer.start();
 		}
 		
