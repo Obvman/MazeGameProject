@@ -1,5 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Monster implements MovableSprite {
@@ -7,21 +12,21 @@ public class Monster implements MovableSprite {
 	private double y;
 	private int dx;
 	private int dy;
-	private Image image_N;
-	private Image image_W;
-	private Image image_S;
-	private Image image_E;
+	private BufferedImage image_N;
+	private BufferedImage image_W;
+	private BufferedImage image_S;
+	private BufferedImage image_E;
 	private int scaledHeight;
 	
-	public Monster() {
+	public Monster() throws IOException {
 		dy = 1;
 		
 		scaledHeight = Maze.MAZE_CELL_SIZE * 3/4;
 		
-		image_N = new ImageIcon("resources/monster_up.png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
-		image_W = new ImageIcon("resources/monster_left.png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
-		image_S = new ImageIcon("resources/monster_down.png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
-		image_E = new ImageIcon("resources/monster_right.png").getImage().getScaledInstance(-1, scaledHeight, Image.SCALE_SMOOTH);
+		image_N = getScaledImage(ImageIO.read(new File("resources/monster_up.png")), scaledHeight, scaledHeight);
+		image_W = getScaledImage(ImageIO.read(new File("resources/monster_left.png")), scaledHeight, scaledHeight);
+		image_S = getScaledImage(ImageIO.read(new File("resources/monster_down.png")), scaledHeight, scaledHeight);
+		image_E = getScaledImage(ImageIO.read(new File("resources/monster_right.png")), scaledHeight, scaledHeight);
 	}
 
 	@Override
@@ -98,5 +103,24 @@ public class Monster implements MovableSprite {
 		this.y = y;
 	}
 
+	 private BufferedImage getScaledImage(BufferedImage src, int w, int h){
+		int finalw = w;
+		int finalh = h;
+		double factor = 1.0d;
+		if(src.getWidth() > src.getHeight()){
+			factor = ((double)src.getHeight()/(double)src.getWidth());
+	        finalh = (int)(finalw * factor);                
+	    }else{
+	        factor = ((double)src.getWidth()/(double)src.getHeight());
+	        finalw = (int)(finalh * factor);
+	    }   
+
+		BufferedImage resizedImg = new BufferedImage(finalw, finalh, BufferedImage.TRANSLUCENT);
+	    Graphics2D g2 = resizedImg.createGraphics();
+	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	    g2.drawImage(src, 0, 0, finalw, finalh, null);
+	    g2.dispose();
+	    return resizedImg;
+	 }
 	
 }

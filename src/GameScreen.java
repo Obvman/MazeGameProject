@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+
 import javax.swing.*;
 
 @SuppressWarnings("serial")
@@ -81,7 +83,12 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazePlaying.setOpaque(false);
 		mazePanels.add(mazePlaying, "Playing");
 		maze = mazePlaying.getMaze();
-		maze.spawnMonsters(level*3);
+		try {
+			maze.spawnMonsters(level*3);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		CardLayout cl = (CardLayout) mazePanels.getLayout();
 		cl.show(mazePanels, "Playing");

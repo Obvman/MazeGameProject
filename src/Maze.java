@@ -45,7 +45,12 @@ public class Maze {
 		}
 
 		// player
-		player = new Player();
+		try {
+			player = new Player();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		monsters = new LinkedList<Monster>();
 	}
@@ -62,7 +67,7 @@ public class Maze {
 		return monsters;
 	}
 
-	public void spawnMonsters(int numMonsters) {
+	public void spawnMonsters(int numMonsters) throws IOException {
 		for (int i = 0; i < numMonsters*5; i++) {
 			boolean placed = false;
 			while (!placed) {
