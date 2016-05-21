@@ -15,6 +15,7 @@ public class Player implements MovableSprite, ActionListener {
 	private int dx;
 	private int dy;
 	private LinkedList<Spell> spells;
+	private int spellType;
 	private boolean alive;
 
 	// character sprites
@@ -32,8 +33,9 @@ public class Player implements MovableSprite, ActionListener {
 	private Timer timer;
 	private int spriteCounter = 0;
 
-	public Player()  {
+	public Player(int spellType)  {
 		spells = new LinkedList<Spell>();
+		this.spellType = spellType;
 		alive = true;
 
 		// sprites
@@ -228,8 +230,17 @@ public class Player implements MovableSprite, ActionListener {
 
 				int imageWidth = getImage().getWidth(null);
 				int imageHeight = getImage().getHeight(null);
-				spells.add(new Spell(getX() + lastDX * imageWidth, 
-						getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY));
+				
+				if (spellType == 1) {
+					spells.add(new WaterSpell(getX() + lastDX * imageWidth, 
+							getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY));
+				} else if (spellType == 2) {
+					spells.add(new FireSpell(getX() + lastDX * imageWidth, 
+							getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY));
+				} else if (spellType == 3) {
+					spells.add(new AirSpell(getX() + lastDX * imageWidth, 
+							getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY));
+				}
 			}
 		}
 	}

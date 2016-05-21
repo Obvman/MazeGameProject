@@ -8,11 +8,11 @@ public class MazePanel extends JPanel implements ActionListener {
 	private TileGenerator tileGenerator;
 	private Timer timer; 
 
-	public MazePanel(int level, int difficulty) {
+	public MazePanel(int level, int difficulty, int spellType) {
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		addKeyListener(new TAdapter());
 		
-		maze = new Maze(level, difficulty);
+		maze = new Maze(level, difficulty, spellType);
 		tileGenerator = new TileGenerator();
 		timer = new Timer(10, this); // corresponds to game speed
 		timer.start();

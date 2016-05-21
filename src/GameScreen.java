@@ -7,6 +7,8 @@ public class GameScreen extends JPanel implements ActionListener {
 
 	private MainWindow mainWindow;
 	
+	private JPanel spellSelect;
+	
 	// maze panel component
 	private JPanel mazePanels; // maze panel controller
 	private MazePanel mazePlaying;
@@ -27,15 +29,17 @@ public class GameScreen extends JPanel implements ActionListener {
 	private int level;
 	private int difficulty;
 	private int totalScore;
+	private int spellType;
 
 	public GameScreen(MainWindow mainWindow, int difficulty) {
 		this.mainWindow = mainWindow;
 		
 		setLayout(new GridBagLayout()); 
 
-		initMazePanels();
-		initStatusBar();
-		initSideBar();
+		initSpellSelect();
+//		initMazePanels();
+//		initStatusBar();
+//		initSideBar();
 		
 		// update frequency
 		timer = new Timer(200, this);
@@ -43,7 +47,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		level = 1;
 		this.difficulty = difficulty;
 		
-		switchToMazePlaying();
+		
 	}
 	
 	@Override
@@ -84,7 +88,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		levelLabel.setText("Current level: " + level); 
 		
 		// initialise new game
-		mazePlaying = new MazePanel(level, difficulty);
+		mazePlaying = new MazePanel(level, difficulty, spellType);
 		maze = mazePlaying.getMaze();
 		mazePlaying.setOpaque(false);
 		
@@ -122,6 +126,84 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbcMaze.weightx = 1;
 		
 		add(mazePanels, gbcMaze);
+	}
+	
+	private void initSpellSelect() {
+		spellSelect = new JPanel(new GridBagLayout());
+		spellSelect.setOpaque(false);
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		add(spellSelect, gbc);
+		
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.weighty = 0.5;
+		JLabel chooseLabel = new JLabel("CHOOSE YOUR FACTION...");
+		chooseLabel.setForeground(Color.ORANGE);
+		chooseLabel.setFont(new Font("Calibri", Font.BOLD, 16));
+		chooseLabel.setHorizontalAlignment(JLabel.CENTER);
+		spellSelect.add(chooseLabel, gbc);
+		
+		gbc.weighty = 1;
+		gbc.gridy = 1;
+		gbc.fill = GridBagConstraints.BOTH;
+		
+		int scaledSize = mainWindow.getWidth() / 3;
+		
+		JButton water = new JButton(getScaledImageIcon(new ImageIcon("resources/element-icon-water.png"), scaledSize, scaledSize));
+		water.setContentAreaFilled(false);
+		water.setFocusPainted(false);
+		water.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GameScreen.this.spellType = 1;
+				initMazePanels();
+				initStatusBar();
+				initSideBar();
+				spellSelect.setVisible(false);
+				switchToMazePlaying();
+			}
+			
+		});
+		gbc.gridx = 0;
+		spellSelect.add(water, gbc);
+		
+		JButton fire = new JButton(getScaledImageIcon(new ImageIcon("resources/element-icon-fire.png"), scaledSize, scaledSize));
+		fire.setContentAreaFilled(false);
+		fire.setFocusPainted(false);
+		fire.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GameScreen.this.spellType = 2;
+				initMazePanels();
+				initStatusBar();
+				initSideBar();
+				spellSelect.setVisible(false);
+				switchToMazePlaying();
+			}
+		});
+		gbc.gridx = 1;
+		spellSelect.add(fire, gbc);
+		
+		JButton air = new JButton(getScaledImageIcon(new ImageIcon("resources/element-icon-air.png"), scaledSize, scaledSize));
+		air.setContentAreaFilled(false);
+		air.setFocusPainted(false);
+		air.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GameScreen.this.spellType = 3;
+				initMazePanels();
+				initStatusBar();
+				initSideBar();
+				spellSelect.setVisible(false);
+				switchToMazePlaying();
+			}
+			
+		});
+		gbc.gridx = 2;
+		spellSelect.add(air, gbc);
 	}
 
 	private void initMazeWon() {
@@ -178,7 +260,6 @@ public class GameScreen extends JPanel implements ActionListener {
 				mainWindow.switchToGame();
 			}
 		});
-		
 		
 		JButton menuButton = new JButton("Back to Main Menu");
 		menuButton.addActionListener(new ActionListener() {
@@ -297,11 +378,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		groupLayout.linkSize(pauseButton, menuButton); // keep size of buttons consistent
 	}
 	
-	@Override
-	public void setEnabled(boolean enabled) {
-	    super.setEnabled(enabled);
-	    for (Component component : getComponents()) {
-	        component.setEnabled(enabled);
-	    }
+	private ImageIcon getScaledImageIcon(ImageIcon img, int width, int height) {
+		Image image = img.getImage();
+		Image newimg = image.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+		return new ImageIcon(newimg);
 	}
 }

@@ -37,7 +37,7 @@ public class Maze {
 	private int numMonstersKilled;
 	private int numGemsCollected;
 
-	public Maze(int level, int difficulty) {
+	public Maze(int level, int difficulty, int spellType) {
 		// the determine the height and width based on the level
 		// TODO: clean this 
 		// TODO: figure out maximum size given the window size
@@ -49,14 +49,14 @@ public class Maze {
 			MAZE_SIZE_2 = 45;
 		}
 		
-//		MAZE_SIZE_1 = 25;
-//		MAZE_SIZE_2 = 45;
+		MAZE_SIZE_1 = 11;
+		MAZE_SIZE_2 = 11;
 		
 		// maze
 		mazeGenerator = new MazeGenerateDfs();
 		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2); // TODO: place this somewhere else
 
-		player = new Player();
+		player = new Player(spellType);
 		
 		// place key
 		// TODO: make sure it is not within a radius of start and end tile

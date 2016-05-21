@@ -29,7 +29,6 @@ public class MenuScreen extends JPanel {
 		// add the buttons
 		// start button
 		JButton startButton = new JButton(new ImageIcon("resources/start_game.png"));
-		startButton.setOpaque(false);
 		startButton.setContentAreaFilled(false);
 		startButton.setMargin(new Insets(0, 0, 0, 0));
 		startButton.setFocusPainted(false);
@@ -45,7 +44,6 @@ public class MenuScreen extends JPanel {
 		
 		// tutorial button
 		JButton tutorialButton = new JButton(new ImageIcon("resources/tutorial.png"));
-		tutorialButton.setOpaque(false);
 		tutorialButton.setContentAreaFilled(false);
 		tutorialButton.setMargin(new Insets(0, 0, 0, 0));
 		tutorialButton.setFocusPainted(false);
@@ -61,7 +59,6 @@ public class MenuScreen extends JPanel {
 		
 		// options button
 		JButton optionsButton = new JButton(new ImageIcon("resources/options.png"));
-		optionsButton.setOpaque(false);
 		optionsButton.setContentAreaFilled(false);
 		optionsButton.setMargin(new Insets(0, 0, 0, 0));
 		optionsButton.setFocusPainted(false);
