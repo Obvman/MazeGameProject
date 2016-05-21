@@ -49,8 +49,8 @@ public class Maze {
 			MAZE_SIZE_2 = 45;
 		}
 		
-		MAZE_SIZE_1 = 11;
-		MAZE_SIZE_2 = 11;
+//		MAZE_SIZE_1 = 25;
+//		MAZE_SIZE_2 = 45;
 		
 		// maze
 		mazeGenerator = new MazeGenerateDfs();
@@ -81,18 +81,7 @@ public class Maze {
 		}
 		
 
-<<<<<<< HEAD
 		// place monsters
-=======
-		// player
-		try {
-			player = new Player();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
->>>>>>> 4f30fdc0334d52eff9bbaf47d50eecbfaf7150c0
 		monsters = new LinkedList<Monster>();
 		for (int i = 0; i < level*3*difficulty; i++) {
 			boolean placed = false;
@@ -135,24 +124,6 @@ public class Maze {
 		return 100 * getNumMonstersKilled() + 50 * getNumGemsCollected();
 	}
 
-	public void spawnMonsters(int numMonsters) throws IOException {
-		for (int i = 0; i < numMonsters*5; i++) {
-			boolean placed = false;
-			while (!placed) {
-				int monsterX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
-				int monsterY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
-
-				if (monsterX > 5 && monsterY > 5 && mazeGrid[monsterY][monsterX] == PATH_TILE) {
-					
-					Monster m = Math.random() > 0.5 ? new FlyingMonster() : new Monster();
-					m.setPosition(monsterX * MAZE_CELL_SIZE, monsterY * MAZE_CELL_SIZE);
-					monsters.add(m);
-					placed = true;
-				}
-			}
-		}
-	}
-    
 	public boolean isGameLost() {
 		return !player.isAlive();
 	}

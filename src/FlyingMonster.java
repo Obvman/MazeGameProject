@@ -12,41 +12,48 @@ public class FlyingMonster extends Monster implements MovableSprite, ActionListe
 	private double y;
 	private int dx;
 	private int dy;
-	
+
 	private BufferedImage[] image_N;
 	private BufferedImage[] image_W;
 	private BufferedImage[] image_S;
 	private BufferedImage[] image_E;
 	private int scaledHeight;
-	
+
 	private Timer timer;
 	private Timer timer2;
 	private int spriteCounter = 0;
-	
-	public FlyingMonster() throws IOException {
+
+	public FlyingMonster() {
 		scaledHeight = Maze.MAZE_CELL_SIZE;
-		
+
 		image_N = new BufferedImage [4];
 		image_W = new BufferedImage [4];
 		image_S = new BufferedImage [4];
 		image_E = new BufferedImage [4];
-		for (int i = 0; i < 4; i++) {
-			image_N[i] = getScaledImage(ImageIO.read(new File("resources/dragon/dragonN" + (i+1) + ".png")), scaledHeight, scaledHeight);
-			image_W[i] = getScaledImage(ImageIO.read(new File("resources/dragon/dragonW" + (i+1) + ".png")), scaledHeight, scaledHeight);
-			image_S[i] = getScaledImage(ImageIO.read(new File("resources/dragon/dragonS" + (i+1) + ".png")), scaledHeight, scaledHeight);
-			image_E[i] = getScaledImage(ImageIO.read(new File("resources/dragon/dragonE" + (i+1) + ".png")), scaledHeight, scaledHeight);
+
+		try {
+			for (int i = 0; i < 4; i++) {
+				image_N[i] = getScaledImage(ImageIO.read(new File("resources/dragon/dragonN" + (i+1) + ".png")), scaledHeight, scaledHeight);
+				image_W[i] = getScaledImage(ImageIO.read(new File("resources/dragon/dragonW" + (i+1) + ".png")), scaledHeight, scaledHeight);
+				image_S[i] = getScaledImage(ImageIO.read(new File("resources/dragon/dragonS" + (i+1) + ".png")), scaledHeight, scaledHeight);
+				image_E[i] = getScaledImage(ImageIO.read(new File("resources/dragon/dragonE" + (i+1) + ".png")), scaledHeight, scaledHeight);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
+
+
 		timer = new Timer(300, this); 
 		timer.start();
 		timer2 = new Timer(2000, this);
 		timer2.start();
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		spriteCounter = (spriteCounter + 1) % 4;
-		
+
 		if (e.getSource() == timer2) {
 			randomiseDirection();
 		}
@@ -54,59 +61,59 @@ public class FlyingMonster extends Monster implements MovableSprite, ActionListe
 
 	@Override
 	public int getX() {
-        return (int)x;
-    }
+		return (int)x;
+	}
 
 	@Override
-    public int getY() {
-        return (int)y;
-    }
+	public int getY() {
+		return (int)y;
+	}
 
 	@Override
-    public int getDX() {
+	public int getDX() {
 		return dx;
 	}
-	
+
 	@Override
 	public int getDY() {
 		return dy;
 	}
-    
+
 	@Override
 	public boolean canFly() {
 		return true;
 	}
-	
+
 	@Override
-    public Image getImage() {
+	public Image getImage() {
 		Image[] image = image_W;
-		
-    	if (dx == 0 && dy < 0) {
-    		image = image_N;
-    	} else if (dx < 0 && dy == 0) {
-    		image = image_W;
-    	} else if (dx == 0 && dy > 0) {
-    		image = image_S;
-    	} else if (dx > 0 && dy == 0) {
-    		image = image_E;
-    	}
-    	
-    	return image[spriteCounter];
+
+		if (dx == 0 && dy < 0) {
+			image = image_N;
+		} else if (dx < 0 && dy == 0) {
+			image = image_W;
+		} else if (dx == 0 && dy > 0) {
+			image = image_S;
+		} else if (dx > 0 && dy == 0) {
+			image = image_E;
+		}
+
+		return image[spriteCounter];
 	}
-	
+
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), scaledHeight, scaledHeight);
 	}
 
 	@Override
-    public void manualMove(int dx, int dy) {
+	public void manualMove(int dx, int dy) {
 		this.dx = dx;
 		this.dy = dy;
-    	x += dx * (double)Maze.MAZE_CELL_SIZE/32;
-    	y += dy * (double)Maze.MAZE_CELL_SIZE/32;
-    }
-	
+		x += dx * (double)Maze.MAZE_CELL_SIZE/32;
+		y += dy * (double)Maze.MAZE_CELL_SIZE/32;
+	}
+
 	// picks a random STRAIGHT line motion
 	public void randomiseDirection() {
 		Double rand = Math.random();
@@ -122,30 +129,30 @@ public class FlyingMonster extends Monster implements MovableSprite, ActionListe
 			dy = -1;
 		}
 	}
-	
+
 	public void setPosition (int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	 private BufferedImage getScaledImage(BufferedImage src, int w, int h){
+	private BufferedImage getScaledImage(BufferedImage src, int w, int h){
 		int finalw = w;
 		int finalh = h;
 		double factor = 1.0d;
 		if(src.getWidth() > src.getHeight()){
 			factor = ((double)src.getHeight()/(double)src.getWidth());
-	        finalh = (int)(finalw * factor);                
-	    }else{
-	        factor = ((double)src.getWidth()/(double)src.getHeight());
-	        finalw = (int)(finalh * factor);
-	    }   
+			finalh = (int)(finalw * factor);                
+		}else{
+			factor = ((double)src.getWidth()/(double)src.getHeight());
+			finalw = (int)(finalh * factor);
+		}   
 
 		BufferedImage resizedImg = new BufferedImage(finalw, finalh, BufferedImage.TRANSLUCENT);
-	    Graphics2D g2 = resizedImg.createGraphics();
-	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	    g2.drawImage(src, 0, 0, finalw, finalh, null);
-	    g2.dispose();
-	    return resizedImg;
-	 }
-	
+		Graphics2D g2 = resizedImg.createGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2.drawImage(src, 0, 0, finalw, finalh, null);
+		g2.dispose();
+		return resizedImg;
+	}
+
 }

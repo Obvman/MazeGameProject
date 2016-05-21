@@ -18,15 +18,19 @@ public class Monster implements MovableSprite {
 	private BufferedImage image_E;
 	private int scaledHeight;
 	
-	public Monster() throws IOException {
+	public Monster() {
 		dy = 1;
 		
 		scaledHeight = Maze.MAZE_CELL_SIZE * 3/4;
 		
-		image_N = getScaledImage(ImageIO.read(new File("resources/monster_up.png")), scaledHeight, scaledHeight);
-		image_W = getScaledImage(ImageIO.read(new File("resources/monster_left.png")), scaledHeight, scaledHeight);
-		image_S = getScaledImage(ImageIO.read(new File("resources/monster_down.png")), scaledHeight, scaledHeight);
-		image_E = getScaledImage(ImageIO.read(new File("resources/monster_right.png")), scaledHeight, scaledHeight);
+		try {
+			image_E = getScaledImage(ImageIO.read(new File("resources/monster_right.png")), scaledHeight, scaledHeight);
+			image_N = getScaledImage(ImageIO.read(new File("resources/monster_up.png")), scaledHeight, scaledHeight);
+			image_W = getScaledImage(ImageIO.read(new File("resources/monster_left.png")), scaledHeight, scaledHeight);
+			image_S = getScaledImage(ImageIO.read(new File("resources/monster_down.png")), scaledHeight, scaledHeight);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
