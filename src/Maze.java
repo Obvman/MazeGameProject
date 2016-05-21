@@ -22,7 +22,7 @@ public class Maze {
 
 	// GAME CONFIGURATION
 	// maze and characters
-	private MazeGenerator mazeGenerator;
+	private MazeGenerationStrategy mazeGenerator;
 	private int[][] mazeGrid;
 	private Player player;
 	private LinkedList<Monster> monsters;
@@ -30,7 +30,7 @@ public class Maze {
 
 	public Maze() {
 		// maze
-		mazeGenerator = new MazeGenerator();
+		mazeGenerator = new MazeGenerateDfs();
 		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2); // TODO: place this somewhere else
 
 		// determine where key tile should go
