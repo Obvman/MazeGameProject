@@ -4,8 +4,13 @@ public class MazeGenerateMix implements MazeGenerationStrategy {
 	private int[][] myMaze; 
 	
 	@Override
-	public int[][] generateMaze(int mazeSize1, int mazeSize2, int[][] maze) {
-		this.myMaze = maze;
+	public int[][] generateMaze(int mazeSize1, int mazeSize2) {
+		this.myMaze = new int[mazeSize1][mazeSize2];
+		for (int row = 0; row < mazeSize1; row++) {
+			for (int col = 0; col < mazeSize2; col++) {
+				this.myMaze[row][col] = Maze.PATH_TILE;
+			}
+		}
 		//insert 2 walls right in the middle of the maze
 		int midX = mazeSize1/2;
 		for(int i = 0; i<mazeSize2; i++){
@@ -47,19 +52,16 @@ public class MazeGenerateMix implements MazeGenerationStrategy {
 		mazeTranslate(midX+1, mazeSize1-1, midY+1, mazeSize2-1);
 		mazeTranslate(0, midX-1, midY+1, mazeSize2-1);
 		
+		this.myMaze[0][0] = Maze.START_TILE;
+		this.myMaze[mazeSize1 - 1][mazeSize2 - 1] = Maze.END_TILE;
+		
 		return myMaze;
 	}
 	
 	private void mazeTranslate(int xstart, int xend, int ystart, int yend){
 		int mazeSize1 = xend-xstart+1;
 		int mazeSize2 = yend-ystart+1;
-		int[][] cell = new int[mazeSize1][mazeSize2];
-		for (int row = 0; row < mazeSize1; row++) {
-			for (int col = 0; col < mazeSize2; col++) {
-				cell[row][col] = Maze.PATH_TILE;
-			}
-		}
-		cell = new MazeGenerateDfs().generateMaze(mazeSize1,mazeSize2,cell);
+		int[][] cell = new MazeGenerateDfs().generateMaze(mazeSize1,mazeSize2);
 		for (int i = 0; i<mazeSize1; i++){
 			for(int j = 0; j<mazeSize2; j++){
 				this.myMaze[i+xstart][j+ystart] = cell[i][j];

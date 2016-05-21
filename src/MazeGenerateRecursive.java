@@ -5,8 +5,21 @@ import java.util.Random;
  */
 public class MazeGenerateRecursive implements MazeGenerationStrategy {
 
-	public int[][] generateMaze(int mazeSize1, int mazeSize2, int[][] maze) {
-		return generateMazeRecursive(0, mazeSize1, 0, mazeSize2, maze);
+	public int[][] generateMaze(int mazeSize1, int mazeSize2) {
+		int[][] maze = new int[mazeSize1][mazeSize2]; 
+		maze = new int[mazeSize1][mazeSize2];
+
+		for (int row = 0; row < mazeSize1; row++) {
+			for (int col = 0; col < mazeSize2; col++) {
+				maze[row][col] = Maze.PATH_TILE;
+			}
+		}
+		maze = generateMazeRecursive(0, mazeSize1, 0, mazeSize2, maze);
+		// set start, end, and key tile
+		maze[0][0] = Maze.START_TILE;
+		maze[mazeSize1 - 1][mazeSize2 - 1] = Maze.END_TILE;
+		
+		return maze;
 	}
 	
 	private int[][] generateMazeRecursive(int xStart, int xEnd, int yStart, int yEnd, int[][] maze) {
