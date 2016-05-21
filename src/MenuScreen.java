@@ -16,12 +16,8 @@ public class MenuScreen extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Image background = (new ImageIcon("resources/gameScreen_bg.jpg")).getImage(); // TODO: move into field so we dont reload
+		Image background = (new ImageIcon("resources/gameScreen_bg_new.jpg")).getImage(); // TODO: move into field so we dont reload
 	    g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
-	}
-	
-	public void setPadding(int paddingTop, int paddingSide) {
-		setBorder(BorderFactory.createEmptyBorder(paddingTop, paddingSide, 0, paddingSide));
 	}
 	
 	private void initMenu() {

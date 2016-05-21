@@ -10,47 +10,55 @@ public class Maze {
 	// MAZE CONSTANTS
 	// maze configuration
 	
-	public static final int MAZE_CELL_SIZE = 32;
+	public static final int MAZE_CELL_SIZE = 28;
 
+	// TODO: enum?
 	// types of tiles
 	public static final int PATH_TILE = 0;
 	public static final int WALL_TILE = 1;
 	public static final int START_TILE = 2;
 	public static final int END_TILE = 3;
 	public static final int KEY_TILE = 4;
+	public static final int GEM_TILE = 5;
 
 	// GAME CONFIGURATION
 	// maze and characters
 	
 	private int MAZE_SIZE_1;
     private int MAZE_SIZE_2;
-	private int difficulty;
     
 	private MazeGenerationStrategy mazeGenerator;
 	private int[][] mazeGrid;
 	private Player player;
 	private LinkedList<Monster> monsters;
 	private boolean keyAcquired;
+	
+	// game stats
+	private int numMonstersKilled;
+	private int numGemsCollected;
 
 	public Maze(int level, int difficulty) {
 		// the determine the height and width based on the level
 		// TODO: clean this 
 		// TODO: figure out maximum size given the window size
 		if (level < 3) {
-			MAZE_SIZE_1 = 19 - 2 * (4 - level);
-			MAZE_SIZE_2 = 25 - 2 * (4 - level);
+			MAZE_SIZE_1 = 25 - 2 * (3 - level);
+			MAZE_SIZE_2 = 45 - 4 * (3 - level);
 		} else {
-			MAZE_SIZE_1 = 15;
-			MAZE_SIZE_2 = 27;
+			MAZE_SIZE_1 = 25;
+			MAZE_SIZE_2 = 45;
 		}
 		
-		this.difficulty = difficulty;
+		MAZE_SIZE_1 = 11;
+		MAZE_SIZE_2 = 11;
 		
 		// maze
 		mazeGenerator = new MazeGenerateDfs();
 		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2); // TODO: place this somewhere else
 
-		// determine where key tile should go
+		player = new Player();
+		
+		// place key
 		// TODO: make sure it is not within a radius of start and end tile
 		while (true) {
 			int keyX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
@@ -60,10 +68,20 @@ public class Maze {
 				break;
 			}
 		}
+		
+		// place gems
+		int numGemsPlaced = 0;
+		while (numGemsPlaced < (MAZE_SIZE_1 * MAZE_SIZE_2)/50) {
+			int gemX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
+			int gemY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
+			if (mazeGrid[gemY][gemX] == PATH_TILE) {
+				mazeGrid[gemY][gemX] = GEM_TILE;
+				numGemsPlaced++;
+			}
+		}
+		
 
-		// player
-		player = new Player();
-
+		// place monsters
 		monsters = new LinkedList<Monster>();
 		for (int i = 0; i < level*3*difficulty; i++) {
 			boolean placed = false;
@@ -93,6 +111,18 @@ public class Maze {
 	public LinkedList<Monster> getMonsters() {
 		return monsters;
 	}
+	
+	public int getNumMonstersKilled() {
+		return numMonstersKilled;
+	}
+	
+	public int getNumGemsCollected() {
+		return numGemsCollected;
+	}
+	
+	public int getScore() {
+		return 100 * getNumMonstersKilled() + 50 * getNumGemsCollected();
+	}
 
 	public boolean isGameLost() {
 		return !player.isAlive();
@@ -120,6 +150,7 @@ public class Maze {
 			for (Iterator<Monster> monsterIter = monsters.iterator(); monsterIter.hasNext(); ) {
 				Monster m = monsterIter.next();
 				if (s.getBounds().intersects(m.getBounds())) {
+					numMonstersKilled++;
 					spellIter.remove();
 					monsterIter.remove();
 					break;
@@ -127,9 +158,17 @@ public class Maze {
 			}
 		}
 
+		// TODO: make it smoother pickup
+		
 		// check if key picked up
 		if (mazeGrid[playerCellY][playerCellX] == KEY_TILE) {
 			keyAcquired = true;
+			mazeGrid[playerCellY][playerCellX] = PATH_TILE;
+		}
+		
+		// check if gem picked up
+		if (mazeGrid[playerCellY][playerCellX] == GEM_TILE) {
+			numGemsCollected++;
 			mazeGrid[playerCellY][playerCellX] = PATH_TILE;
 		}
 
@@ -154,7 +193,6 @@ public class Maze {
 				s.updatePosition();
 			}
 		}
-
 
 		// update monster positions
 		for (Monster m : monsters) {
@@ -214,6 +252,8 @@ public class Maze {
 						// stuck so left
 						m.manualMove(-1, 0);
 					}
+				} else {
+					m.manualMove(-1, -1);
 				}
 			}
 		}

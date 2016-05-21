@@ -17,13 +17,16 @@ public class GameScreen extends JPanel implements ActionListener {
 	// components to be updated dynamically
 	private JButton nextLevelButton; // part of maze panel
 	private JLabel lostLevelLabel; // part of maze panel
+	
 	private JLabel levelLabel; // part of status bar
+	private JLabel scoreLabel; // part of status bar
 	private JLabel timeLabel; // part of status bar
 	
 	private Timer timer;
 	private double duration;
 	private int level;
 	private int difficulty;
+	private int totalScore;
 
 	public GameScreen(MainWindow mainWindow, int difficulty) {
 		this.mainWindow = mainWindow;
@@ -36,7 +39,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		// update frequency
 		timer = new Timer(200, this);
-		timer.start();
 		duration = 1;
 		level = 1;
 		this.difficulty = difficulty;
@@ -52,6 +54,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		} else {
 			timeLabel.setText("Time elapsed: " + (int)duration + "s");
 		}
+		
+		// refresh score component
+		scoreLabel.setText("Round Score: " + maze.getScore());
 		
 		if(e.getSource() == timer) {
 			if (maze.isGameLost()) {
@@ -76,7 +81,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 	
 	private void switchToMazePlaying() {
-		levelLabel.setText("Current level: " + level); // update levelLabel JLabel
+		levelLabel.setText("Current level: " + level); 
 		
 		// initialise new game
 		mazePlaying = new MazePanel(level, difficulty);
@@ -88,17 +93,20 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		mazePanels.add(mazePlaying, "Playing");
 		
+		timer.start();
 		CardLayout cl = (CardLayout) mazePanels.getLayout();
 		cl.show(mazePanels, "Playing");
 	}
 
 	private void switchToMazeWon() {
+		initMazeWon();
 		nextLevelButton.setText("Continue to level " + level);
 		CardLayout cl = (CardLayout) mazePanels.getLayout();
 		cl.show(mazePanels, "Won");
 	}
 	
 	private void switchToMazeLost() {
+		initMazeLost();
 		lostLevelLabel.setText("You died at level " + level);
 		CardLayout cl = (CardLayout) mazePanels.getLayout();
 		cl.show(mazePanels, "Lost");
@@ -107,32 +115,42 @@ public class GameScreen extends JPanel implements ActionListener {
 	private void initMazePanels() {
 		mazePanels = new JPanel(new CardLayout());
 		mazePanels.setOpaque(false);
-		initMazeWon();
-		initMazeLost();
 		
 		// maze panel layout configuration
 		GridBagConstraints gbcMaze = new GridBagConstraints();
-		gbcMaze.insets = new Insets((int)(mainWindow.getHeight() * 0.1),0,0,0);
 		gbcMaze.gridy = 1;
-		gbcMaze.weightx = 1.0;
-		gbcMaze.weighty = 0;
+		gbcMaze.weightx = 1;
 		
 		add(mazePanels, gbcMaze);
 	}
 
 	private void initMazeWon() {
 		mazeWon = new JPanel();
+		mazeWon.setLayout(new BoxLayout(mazeWon, BoxLayout.Y_AXIS));
 		mazeWon.setOpaque(false);
+		
+		JLabel numMonstersKilled = new JLabel("Monsters killed this round: " + maze.getNumMonstersKilled());
+		numMonstersKilled.setForeground(Color.WHITE);
+		mazeWon.add(numMonstersKilled);
+		
+		JLabel numGemsCollected = new JLabel("Gems collected this round: " + maze.getNumGemsCollected());
+		numGemsCollected.setForeground(Color.WHITE);
+		mazeWon.add(numGemsCollected);
+		
+		totalScore += maze.getScore();
+		
+		JLabel score = new JLabel("Total score: " + totalScore);
+		score.setForeground(Color.WHITE);
+		mazeWon.add(score);
 		
 		nextLevelButton = new JButton("Continue to level " + level);
 		nextLevelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				switchToMazePlaying();
-				timer.start();
 			}
 		});
-		
+		mazeWon.add(nextLevelButton);
 		
 		JButton menuButton = new JButton("Back to Main Menu");
 		menuButton.addActionListener(new ActionListener() {
@@ -141,9 +159,8 @@ public class GameScreen extends JPanel implements ActionListener {
 				mainWindow.switchToMenu();
 			}
 		});
-		
-		mazeWon.add(nextLevelButton);
 		mazeWon.add(menuButton);
+		
 		mazePanels.add(mazeWon, "Won");
 	}
 	
@@ -180,30 +197,30 @@ public class GameScreen extends JPanel implements ActionListener {
 	private void initStatusBar() {
 		JPanel statusBar = new JPanel();
 		statusBar.setOpaque(false);
-		statusBar.setLayout(new BorderLayout());
+		statusBar.setLayout(new BoxLayout(statusBar, BoxLayout.X_AXIS));
 		statusBar.setPreferredSize(new Dimension(0, 40)); // check
 		
 		GridBagConstraints gbcStatus = new GridBagConstraints();
 		gbcStatus.insets = new Insets(5,20,15,20);
 		gbcStatus.fill = GridBagConstraints.BOTH;
-		gbcStatus.gridy = 0;
-		gbcStatus.gridx = 0;
-		gbcStatus.gridheight = 1;
-		gbcStatus.gridwidth = 10;
-		gbcStatus.weightx = 0.5;
-		gbcStatus.weighty = 0.01;
 
-		// score
+		// level
 		levelLabel = new JLabel();
 		levelLabel.setForeground(Color.WHITE);
-
-		// timeLabel
+		
+		// score
+		scoreLabel = new JLabel();
+		scoreLabel.setForeground(Color.WHITE);
+		
+		// time
 		timeLabel = new JLabel();
 		timeLabel.setForeground(Color.WHITE);
-		timeLabel.setHorizontalAlignment(JLabel.CENTER);
 
-		statusBar.add(levelLabel, BorderLayout.WEST);
-		statusBar.add(timeLabel, BorderLayout.CENTER);
+		statusBar.add(levelLabel);
+		statusBar.add(Box.createGlue());
+		statusBar.add(scoreLabel);
+		statusBar.add(Box.createGlue());
+		statusBar.add(timeLabel);
 		add(statusBar, gbcStatus);
 	}
 
@@ -212,6 +229,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		sideBar.setOpaque(false);
 		GroupLayout groupLayout = new GroupLayout(sideBar);
 		sideBar.setLayout(groupLayout);
+		sideBar.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		
 		// set parameters for sizing and positioning in main window
 		GridBagConstraints gbcSide = new GridBagConstraints();

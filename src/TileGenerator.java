@@ -14,7 +14,8 @@ public class TileGenerator {
 	private Image wallTileS;
 	private Image wallTileE;
 	
-	
+	// for gems
+	private Image[] gemImages;
 
 	public TileGenerator() {
 		int cellSize = Maze.MAZE_CELL_SIZE;
@@ -29,6 +30,11 @@ public class TileGenerator {
 		wallTileW = (new ImageIcon("resources/leon_wall_left_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
 		wallTileS = (new ImageIcon("resources/leon_wall_bottom_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
 		wallTileE = (new ImageIcon("resources/leon_wall_right_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		
+		gemImages = new Image[40];
+		for (int i = 0; i < 40; i++) {
+			gemImages[i] = (new ImageIcon("resources/gems/gems-" + i + ".png")).getImage().getScaledInstance(cellSize*2/3, cellSize*2/3, Image.SCALE_SMOOTH);
+		}
 	}
 
 	public Image getPathTile() {
@@ -65,5 +71,16 @@ public class TileGenerator {
 	
 	public Image getWallTileE() {
 		return wallTileE;
+	}
+	
+	/**
+	 * Returns a random gem tile image based on the coordinates of the tile
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public Image getGemImage(int x, int y) {
+		// return a random gem
+		return gemImages[(x*31+y*67) % gemImages.length];
 	}
 }

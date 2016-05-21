@@ -60,6 +60,8 @@ public class MazePanel extends JPanel implements ActionListener {
 				g.drawImage(tile, x, y, this);
 				if (mazeGrid[i][j] == Maze.KEY_TILE) {
 					g.drawImage(tileGenerator.getKeyImage(), x, y, this);
+				} else if (mazeGrid[i][j] == Maze.GEM_TILE) {
+					g.drawImage(tileGenerator.getGemImage(x, y), x, y, this);
 				}
 
 				// create the illusion of connected wall tiles
@@ -82,7 +84,7 @@ public class MazePanel extends JPanel implements ActionListener {
 				}
 			}
 		}
-
+		
 		// paint the player
 		Player player = maze.getPlayer();
 		g.drawImage(player.getImage(), player.getX(), player.getY(), this);

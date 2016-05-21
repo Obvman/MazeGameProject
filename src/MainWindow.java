@@ -17,12 +17,8 @@ public class MainWindow extends JFrame {
 		options = new OptionsScreen(this);
 		screens.add(options, "Options");
 		
-		// menu screen
-		menu = new MenuScreen(this);
-		screens.add(menu, "Menu");
-		
 		// configure the main window
-		setTitle("Maze Game");
+		setTitle("Exiled Maze");
 		setSize(options.getResolution());
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -33,12 +29,14 @@ public class MainWindow extends JFrame {
 		addComponentListener(new ComponentAdapter() {
 		    @Override
 		    public void componentResized( ComponentEvent e ) {
-		    	menu.setPadding((int)(getHeight() * 0.2), (int)(getWidth() * 0.2));
+		    	menu.setBorder(BorderFactory.createEmptyBorder((int)(getHeight() * 0.5), (int)(getWidth() * 0.5), 0, (int)(getWidth() * 0.5)));
 		    	setLocationRelativeTo(null);
 		    }
 		} );
 		
-		
+		// menu screen
+		menu = new MenuScreen(this);
+		screens.add(menu, "Menu");
 		
 		switchToMenu(); // starting screen
 	}
