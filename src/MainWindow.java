@@ -9,7 +9,6 @@ public class MainWindow extends JFrame {
 	private MenuScreen menu;
 	private OptionsScreen options; // used to control game settings
 	
-	
 	public MainWindow() {
 		screens = new JPanel(new CardLayout());
 		add(screens);
@@ -46,7 +45,7 @@ public class MainWindow extends JFrame {
 	
 	public void switchToGame() {
 		// create a game with the options chosen in the OptionsScreen (or default if none chosen)
-		screens.add(new GameScreen(this), "Game");
+		screens.add(new GameScreen(this, options.getDifficulty()), "Game");
 		CardLayout cl = (CardLayout) screens.getLayout();
 		cl.show(screens, "Game");
 	}

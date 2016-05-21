@@ -23,8 +23,9 @@ public class GameScreen extends JPanel implements ActionListener {
 	private Timer timer;
 	private double duration;
 	private int level;
+	private int difficulty;
 
-	public GameScreen(MainWindow mainWindow) {
+	public GameScreen(MainWindow mainWindow, int difficulty) {
 		this.mainWindow = mainWindow;
 		
 		setLayout(new GridBagLayout()); 
@@ -38,6 +39,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		timer.start();
 		duration = 1;
 		level = 1;
+		this.difficulty = difficulty;
 		
 		switchToMazePlaying();
 	}
@@ -77,11 +79,14 @@ public class GameScreen extends JPanel implements ActionListener {
 		levelLabel.setText("Current level: " + level); // update levelLabel JLabel
 		
 		// initialise new game
-		mazePlaying = new MazePanel();
-		mazePlaying.setOpaque(false);
-		mazePanels.add(mazePlaying, "Playing");
+		mazePlaying = new MazePanel(level, difficulty);
 		maze = mazePlaying.getMaze();
-		maze.spawnMonsters(level*3);
+		mazePlaying.setOpaque(false);
+		
+		Dimension size = new Dimension(Maze.MAZE_CELL_SIZE * maze.getGrid()[0].length, Maze.MAZE_CELL_SIZE * maze.getGrid().length);
+		mazePanels.setPreferredSize(size);
+		
+		mazePanels.add(mazePlaying, "Playing");
 		
 		CardLayout cl = (CardLayout) mazePanels.getLayout();
 		cl.show(mazePanels, "Playing");
@@ -102,8 +107,6 @@ public class GameScreen extends JPanel implements ActionListener {
 	private void initMazePanels() {
 		mazePanels = new JPanel(new CardLayout());
 		mazePanels.setOpaque(false);
-		Dimension size = new Dimension(Maze.MAZE_CELL_SIZE * Maze.MAZE_SIZE_2, Maze.MAZE_CELL_SIZE * Maze.MAZE_SIZE_1);
-		mazePanels.setPreferredSize(size);
 		initMazeWon();
 		initMazeLost();
 		
