@@ -8,11 +8,11 @@ public class MazePanel extends JPanel implements ActionListener {
 	private TileGenerator tileGenerator;
 	private Timer timer; 
 
-	public MazePanel() {
+	public MazePanel(int level, int difficulty) {
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		addKeyListener(new TAdapter());
 		
-		maze = new Maze();
+		maze = new Maze(level, difficulty);
 		tileGenerator = new TileGenerator();
 		timer = new Timer(10, this); // corresponds to game speed
 		timer.start();
@@ -42,8 +42,8 @@ public class MazePanel extends JPanel implements ActionListener {
 		super.paintComponent(g);
 
 		int[][] mazeGrid = maze.getGrid();
-		for (int i = 0; i < Maze.MAZE_SIZE_1; i++) {
-			for (int j = 0; j < Maze.MAZE_SIZE_2; j++) {
+		for (int i = 0; i < mazeGrid.length; i++) {
+			for (int j = 0; j < mazeGrid[i].length; j++) {
 				
 				int x = j * Maze.MAZE_CELL_SIZE;
 				int y = i * Maze.MAZE_CELL_SIZE;
@@ -99,7 +99,7 @@ public class MazePanel extends JPanel implements ActionListener {
 	}
 
 	private boolean withinMaze(int x, int y) {
-		return x >= 0 && y >= 0 && x < Maze.MAZE_SIZE_2 && y < Maze.MAZE_SIZE_1;
+		return x >= 0 && y >= 0 && x < maze.getGrid()[0].length && y < maze.getGrid().length;
 	}
 
 	private class TAdapter extends KeyAdapter {

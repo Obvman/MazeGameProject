@@ -9,8 +9,7 @@ import javax.swing.*;
 public class Maze {
 	// MAZE CONSTANTS
 	// maze configuration
-	public static final int MAZE_SIZE_1 = 15 /*25*/;
-	public static final int MAZE_SIZE_2 = 35 /*45*/;
+	
 	public static final int MAZE_CELL_SIZE = 32;
 
 	// types of tiles
@@ -22,13 +21,31 @@ public class Maze {
 
 	// GAME CONFIGURATION
 	// maze and characters
+	
+	private int MAZE_SIZE_1;
+    private int MAZE_SIZE_2;
+	private int difficulty;
+    
 	private MazeGenerationStrategy mazeGenerator;
 	private int[][] mazeGrid;
 	private Player player;
 	private LinkedList<Monster> monsters;
 	private boolean keyAcquired;
 
-	public Maze() {
+	public Maze(int level, int difficulty) {
+		// the determine the height and width based on the level
+		// TODO: clean this 
+		// TODO: figure out maximum size given the window size
+		if (level < 3) {
+			MAZE_SIZE_1 = 19 - 2 * (4 - level);
+			MAZE_SIZE_2 = 25 - 2 * (4 - level);
+		} else {
+			MAZE_SIZE_1 = 15;
+			MAZE_SIZE_2 = 27;
+		}
+		
+		this.difficulty = difficulty;
+		
 		// maze
 		mazeGenerator = new MazeGenerateDfs();
 		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2); // TODO: place this somewhere else
@@ -38,7 +55,7 @@ public class Maze {
 		while (true) {
 			int keyX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
 			int keyY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
-			if (mazeGrid[keyY][keyX] == PATH_TILE) {
+			if (keyX > 0.33 * MAZE_SIZE_2 && keyY > 0.33 * MAZE_SIZE_1 && mazeGrid[keyY][keyX] == PATH_TILE) {
 				mazeGrid[keyY][keyX] = KEY_TILE;
 				break;
 			}
@@ -53,6 +70,21 @@ public class Maze {
 		}
 
 		monsters = new LinkedList<Monster>();
+		for (int i = 0; i < level*3*difficulty; i++) {
+			boolean placed = false;
+			while (!placed) {
+				int monsterX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
+				int monsterY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
+				
+				double distance = Math.sqrt(monsterX*monsterX + monsterY*monsterY);
+				if (distance > 0.33 * MAZE_SIZE_2 && mazeGrid[monsterY][monsterX] == PATH_TILE) {
+					Monster m = Math.random() > 0.5 ? new FlyingMonster() : new Monster();
+					m.setPosition(monsterX * MAZE_CELL_SIZE, monsterY * MAZE_CELL_SIZE);
+					monsters.add(m);
+					placed = true;
+				}
+			}
+		}
 	}
 
 	public int[][] getGrid() {
@@ -84,7 +116,7 @@ public class Maze {
 			}
 		}
 	}
-
+    
 	public boolean isGameLost() {
 		return !player.isAlive();
 	}
@@ -152,10 +184,8 @@ public class Maze {
 			int monsterCellX = m.getX() / MAZE_CELL_SIZE;
 			int monsterCellY = m.getY() / MAZE_CELL_SIZE;
 
-			double distance = Math.sqrt(Math.pow(monsterCellX-playerCellX,2) 
-					+ Math.pow(monsterCellY-playerCellY, 2));
-
-			if (distance > Math.sqrt(Math.pow(MAZE_SIZE_1, 2) + Math.pow(MAZE_SIZE_2, 2))/2 || m.canFly()) {
+			if ((Math.abs(monsterCellX-playerCellX) > 0.25 * MAZE_SIZE_2 
+					&& Math.abs(monsterCellY-playerCellY) > 0.25 * MAZE_SIZE_1) || m.canFly()) {
 				// random movement
 				// TODO: improve algorithm
 
