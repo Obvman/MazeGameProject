@@ -8,7 +8,14 @@ import java.util.Random;
  */
 public class MazeGenerateDfs implements MazeGenerationStrategy {
 
-	public int[][] generateMaze(int mazeSize1, int mazeSize2, int[][] maze) {
+	public int[][] generateMaze(int mazeSize1, int mazeSize2) {
+		int[][] maze = new int[mazeSize1][mazeSize2];
+		for (int row = 0; row < mazeSize1; row++) {
+			for (int col = 0; col < mazeSize2; col++) {
+				maze[row][col] = Maze.PATH_TILE;
+			}
+		}
+		
 		int midX = mazeSize1/2;
 		if ((midX % 2) == 1){
 			midX = midX +1;
@@ -55,6 +62,9 @@ public class MazeGenerateDfs implements MazeGenerationStrategy {
 				currNode = curr.pop();
 			}
 		}
+		
+		maze[0][0] = Maze.START_TILE;
+		maze[mazeSize1 - 1][mazeSize2 - 1] = Maze.END_TILE;
 		return maze;
 	}
 	
