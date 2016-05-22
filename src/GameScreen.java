@@ -39,9 +39,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		setLayout(new GridBagLayout()); 
 
 		initSpellSelect();
-		initMazePanels();
-		initStatusBar();
-		initSideBar();
+//		initMazePanels();
+//		initStatusBar();
+//		initSideBar();
 		
 		// update frequency
 		timer = new Timer(200, this);
@@ -121,17 +121,17 @@ public class GameScreen extends JPanel implements ActionListener {
 		cl.show(mazePanels, "Lost");
 	}
 	
-//	private void switchToPauseOverlay() {
-//		initPauseOverlay();
-//		CardLayout cl = (CardLayout) mazePanels.getLayout();
-//		cl.show(mazePanels, "Pause");
-//	}
+	private void switchToPauseOverlay() {
+		initPauseOverlay();
+		CardLayout cl = (CardLayout) mazePanels.getLayout();
+		cl.show(mazePanels, "Pause");
+	}
 	
-//	private void switchFromPauseOverlay() {
-//		mazePanels.remove(pauseOverlay);
-//		revalidate();
-//		repaint();
-//	}
+	private void switchFromPauseOverlay() {
+		mazePanels.remove(pauseOverlay);
+		revalidate();
+		repaint();
+	}
 	
 	private void initMazePanels() {
 		mazePanels = new JPanel(new CardLayout());
@@ -300,15 +300,15 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazePanels.add(mazeLost, "Lost");
 	}
 	
-//	private void initPauseOverlay() {
-//		pauseOverlay = new JPanel();
-//		pauseOverlay.setOpaque(false);
-//		
-//		JLabel pauseLabel = new JLabel("Paused");
-//		pauseOverlay.add(pauseLabel);
-//		
-//		mazePanels.add(pauseOverlay, "Pause");
-//	}
+	private void initPauseOverlay() {
+		pauseOverlay = new JPanel();
+		pauseOverlay.setOpaque(false);
+		
+		JLabel pauseLabel = new JLabel("Paused");
+		pauseOverlay.add(pauseLabel);
+		
+		mazePanels.add(pauseOverlay, "Pause");
+	}
 
 	private void initStatusBar() {
 		JPanel statusBar = new JPanel();
@@ -383,13 +383,13 @@ public class GameScreen extends JPanel implements ActionListener {
 					pauseButton.setIcon(new ImageIcon("resources/unpause.png"));
 					timer.stop();
 					mazePlaying.setRunning(false);
-//					switchToPauseOverlay();
+					switchToPauseOverlay();
 					
 				} else {
 					pauseButton.setIcon(new ImageIcon("resources/pause.png"));
 					timer.start();
 					mazePlaying.setRunning(true);;
-//					switchFromPauseOverlay();
+					switchFromPauseOverlay();
 				}
 			}
 		});
