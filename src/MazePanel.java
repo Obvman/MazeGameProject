@@ -7,6 +7,7 @@ public class MazePanel extends JPanel implements ActionListener {
 	private Maze maze;
 	private TileGenerator tileGenerator;
 	private Timer timer; 
+	private Timer monsterSpawnTimer;
 
 	public MazePanel(int level, int difficulty, int spellType) {
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -16,6 +17,15 @@ public class MazePanel extends JPanel implements ActionListener {
 		tileGenerator = new TileGenerator();
 		timer = new Timer(10, this); // corresponds to game speed
 		timer.start();
+		ActionListener monsterSpawnListener = new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                for (Portal p : maze.getPortals()) {
+                	if (p.canSpawnMonster()) p.spawnMonster();
+                }
+            }
+        };
+		monsterSpawnTimer = new Timer(7000, monsterSpawnListener);
+		monsterSpawnTimer.start();
 	}
 
 	public Maze getMaze() {
