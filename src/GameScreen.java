@@ -58,10 +58,12 @@ public class GameScreen extends JPanel implements ActionListener {
 
 	public void gamePause() {
 		timer.stop();
+		if (mazePlaying != null) mazePlaying.setRunning(false);
 	}
 
 	public void gameResume() {
 		timer.start();
+		if (mazePlaying != null) mazePlaying.setRunning(true);
 	}
 
 	public void switchToSpellSelect() {
@@ -109,20 +111,18 @@ public class GameScreen extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (maze.isGameWon()) {
 			gamePause();
-			mazePlaying.setRunning(false);
 			switchToMazeWon();
 		} else if (maze.isGameLost()) {
 			gamePause();
-			mazePlaying.setRunning(false);
 			switchToMazeLost();
 		} else {
 			duration += (double)timer.getDelay()/1000;
 
 			// update status bar
 			if (maze.isKeyAcquired()) {
-				objective.setText("Objective: Get to the key!");
-			} else {
 				objective.setText("Objective: Unlock the door and escape!");
+			} else {
+				objective.setText("Objective: Get to the key!");
 			}
 			monstersSlain.setText("Monsters slain: " + maze.getNumMonstersKilled());
 			gemsCollected.setText("Gems collected: " + maze.getNumGemsCollected());
@@ -472,5 +472,4 @@ public class GameScreen extends JPanel implements ActionListener {
 	private Icon getScaledImageIcon(ImageIcon img, int width, int height) {
 		return new ImageIcon(img.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
-
 }
