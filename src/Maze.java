@@ -49,8 +49,8 @@ public class Maze {
 			MAZE_SIZE_2 = 45;
 		}
 		
-//		MAZE_SIZE_1 = 11;
-//		MAZE_SIZE_2 = 11;
+		MAZE_SIZE_1 = 11;
+		MAZE_SIZE_2 = 11;
 		
 		// maze
 		mazeGenerator = new MazeGenerateDfs();

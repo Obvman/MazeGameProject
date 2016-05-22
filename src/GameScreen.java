@@ -110,14 +110,12 @@ public class GameScreen extends JPanel implements ActionListener {
 
 	private void switchToMazeWon() {
 		initMazeWon();
-		nextLevelButton.setText("Continue to level " + level);
 		CardLayout cl = (CardLayout) mazePanels.getLayout();
 		cl.show(mazePanels, "Won");
 	}
 	
 	private void switchToMazeLost() {
 		initMazeLost();
-		lostLevelLabel.setText("You died at level " + level);
 		CardLayout cl = (CardLayout) mazePanels.getLayout();
 		cl.show(mazePanels, "Lost");
 	}
@@ -231,7 +229,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		score.setForeground(Color.WHITE);
 		mazeWon.add(score);
 		
-		nextLevelButton = new JButton("Continue to level " + level);
+		nextLevelButton = new JButton(new ImageIcon("resources/next_level.png"));
+		nextLevelButton.setContentAreaFilled(false);
+		nextLevelButton.setMargin(new Insets(0, 0, 0, 0));
 		nextLevelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -240,7 +240,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		});
 		mazeWon.add(nextLevelButton);
 		
-		JButton menuButton = new JButton("Back to Main Menu");
+		JButton menuButton = new JButton(new ImageIcon("resources/main_menu.png"));
+		menuButton.setContentAreaFilled(false);
+		menuButton.setMargin(new Insets(0, 0, 0, 0));
 		menuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -259,7 +261,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		lostLevelLabel = new JLabel("You died at level " + level);
 		lostLevelLabel.setForeground(Color.WHITE);
 		
-		JButton startButton = new JButton("Start Again");
+		JButton startButton = new JButton(new ImageIcon("resources/start_again.png"));
+		startButton.setContentAreaFilled(false);
+		startButton.setMargin(new Insets(0, 0, 0, 0));
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -267,7 +271,9 @@ public class GameScreen extends JPanel implements ActionListener {
 			}
 		});
 		
-		JButton menuButton = new JButton("Back to Main Menu");
+		JButton menuButton = new JButton(new ImageIcon("resources/main_menu.png"));
+		menuButton.setContentAreaFilled(false);
+		menuButton.setMargin(new Insets(0, 0, 0, 0));
 		menuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -341,7 +347,9 @@ public class GameScreen extends JPanel implements ActionListener {
 
 		// pause button
 		// final modifier to allow modification of the button (see action listener)
-		final JButton pauseButton = new JButton("Pause");
+		final JButton pauseButton = new JButton(new ImageIcon("resources/pause.png"));
+		pauseButton.setContentAreaFilled(false);
+		pauseButton.setMargin(new Insets(0, 0, 0, 0));
 		pauseButton.setFocusable(false);
 		pauseButton.setToolTipText("Pause/unpause the game and timer");
 		pauseButton.addActionListener(new ActionListener() {
@@ -349,11 +357,11 @@ public class GameScreen extends JPanel implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (timer.isRunning()) {
-					pauseButton.setText("Unpause");
+					pauseButton.setIcon(new ImageIcon("resources/pause.png"));
 					timer.stop();
 					mazePlaying.setRunning(false);
 				} else {
-					pauseButton.setText("Pause");
+					pauseButton.setIcon(new ImageIcon("resources/pause.png"));
 					timer.start();
 					mazePlaying.setRunning(true);;
 				}
@@ -361,7 +369,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		});
 
 		// menu button
-		JButton menuButton = new JButton("Back to Main Menu");
+		JButton menuButton = new JButton(new ImageIcon("resources/main_menu.png"));
+		menuButton.setContentAreaFilled(false);
+		menuButton.setMargin(new Insets(0, 0, 0, 0));
 		menuButton.setFocusable(false);
 		menuButton.setToolTipText("Return back to the main menu");
 		menuButton.addActionListener(new ActionListener() {
