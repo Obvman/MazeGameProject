@@ -1,4 +1,5 @@
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.File;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
@@ -47,5 +48,9 @@ public class Portal {
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	public Rectangle getBounds() {
+		return new Rectangle(getX(), getY(), Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE);
 	}
 }

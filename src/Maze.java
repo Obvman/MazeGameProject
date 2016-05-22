@@ -164,8 +164,8 @@ public class Maze {
 			}
 		}
 
-		// check whether spells have killed monsters
 		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
+			// check whether spells have killed monsters
 			Spell s = spellIter.next();
 			for (Iterator<Monster> monsterIter = monsters.iterator(); monsterIter.hasNext(); ) {
 				Monster m = monsterIter.next();
@@ -176,7 +176,19 @@ public class Maze {
 					break;
 				}
 			}
+			// TODO: do this not duplicated-ly
+			// check whether spells have killed portals
+			for (Iterator<Portal> portalIter = portals.iterator(); portalIter.hasNext(); ) {
+				Portal p = portalIter.next();
+				if (s.getBounds().intersects(p.getBounds())) {
+					spellIter.remove();
+					portalIter.remove();
+					portals.remove(p);
+					break;
+				}
+			}
 		}
+		
 
 		// TODO: make it smoother pickup
 		
