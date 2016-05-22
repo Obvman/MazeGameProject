@@ -87,11 +87,18 @@ public class Maze {
 		
 		// Place portals
 		portals = new LinkedList<Portal>();
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < Math.floor(level * 1.5); i++) {
 			boolean placed = false;
 			while (!placed) {
 				int portalX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
 				int portalY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
+				for (Portal existing : portals) {
+					// Must be at least 1 tile away from another portal
+					if (Math.abs(existing.getX() - portalX) < ((1 / MAZE_SIZE_1) * MAZE_CELL_SIZE)
+						&& Math.abs(existing.getY() - portalY) < ((1 / MAZE_SIZE_1) * MAZE_CELL_SIZE)) {
+							break;
+						}
+				}
 				if (portalX > 0.4 * MAZE_SIZE_2 && portalY > 0.2 * MAZE_SIZE_2 &&
 						mazeGrid[portalY][portalX] == PATH_TILE) {
 					Portal p = new Portal(level * 5);
