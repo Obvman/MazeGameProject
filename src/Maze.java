@@ -104,6 +104,10 @@ public class Maze {
 		}
 	}
 	
+	public void addMonster(Monster m) {
+		this.monsters.add(m);
+	}
+	
 	public LinkedList<Portal> getPortals() {
 		return this.portals;
 	}
