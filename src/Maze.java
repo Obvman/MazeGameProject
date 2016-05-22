@@ -20,6 +20,7 @@ public class Maze {
 	public static final int END_TILE = 3;
 	public static final int KEY_TILE = 4;
 	public static final int GEM_TILE = 5;
+	public static final int PORTAL_TILE = 6;
 
 	// GAME CONFIGURATION
 	// maze and characters
@@ -31,6 +32,7 @@ public class Maze {
 	private int[][] mazeGrid;
 	private Player player;
 	private LinkedList<Monster> monsters;
+	private LinkedList<Portal> portals;
 	private boolean keyAcquired;
 	
 	// game stats
@@ -83,7 +85,7 @@ public class Maze {
 
 		// place monsters
 		monsters = new LinkedList<Monster>();
-		for (int i = 0; i < level*3*difficulty; i++) {
+		/*for (int i = 0; i < level*3*difficulty; i++) {
 			boolean placed = false;
 			while (!placed) {
 				int monsterX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
@@ -94,6 +96,22 @@ public class Maze {
 					Monster m = Math.random() > 0.5 ? new FlyingMonster() : new Monster();
 					m.setPosition(monsterX * MAZE_CELL_SIZE, monsterY * MAZE_CELL_SIZE);
 					monsters.add(m);
+					placed = true;
+				}
+			}
+		}*/
+		portals = new LinkedList<Portal>();
+		for (int i = 0; i < 2; i++) {
+			boolean placed = false;
+			while (!placed) {
+				int portalX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
+				int portalY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
+				if (portalX > 0.4 * MAZE_SIZE_2 && portalY > 0.2 * MAZE_SIZE_2 &&
+						mazeGrid[portalY][portalX] == PATH_TILE) {
+					Portal p = new Portal(3);
+					p.setPosition(portalX * MAZE_CELL_SIZE, portalY * MAZE_CELL_SIZE);
+					mazeGrid[portalY][portalX] = PORTAL_TILE;
+					portals.add(p);
 					placed = true;
 				}
 			}
