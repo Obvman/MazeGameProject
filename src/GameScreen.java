@@ -14,6 +14,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	private MazePanel mazePlaying;
 	private JPanel mazeWon;
 	private JPanel mazeLost;	
+	private JPanel pauseOverlay;
 	private Maze maze;
 	
 	// components to be updated dynamically
@@ -38,9 +39,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		setLayout(new GridBagLayout()); 
 
 		initSpellSelect();
-//		initMazePanels();
-//		initStatusBar();
-//		initSideBar();
+		initMazePanels();
+		initStatusBar();
+		initSideBar();
 		
 		// update frequency
 		timer = new Timer(200, this);
@@ -119,6 +120,18 @@ public class GameScreen extends JPanel implements ActionListener {
 		CardLayout cl = (CardLayout) mazePanels.getLayout();
 		cl.show(mazePanels, "Lost");
 	}
+	
+//	private void switchToPauseOverlay() {
+//		initPauseOverlay();
+//		CardLayout cl = (CardLayout) mazePanels.getLayout();
+//		cl.show(mazePanels, "Pause");
+//	}
+	
+//	private void switchFromPauseOverlay() {
+//		mazePanels.remove(pauseOverlay);
+//		revalidate();
+//		repaint();
+//	}
 	
 	private void initMazePanels() {
 		mazePanels = new JPanel(new CardLayout());
@@ -286,6 +299,16 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeLost.add(menuButton);
 		mazePanels.add(mazeLost, "Lost");
 	}
+	
+//	private void initPauseOverlay() {
+//		pauseOverlay = new JPanel();
+//		pauseOverlay.setOpaque(false);
+//		
+//		JLabel pauseLabel = new JLabel("Paused");
+//		pauseOverlay.add(pauseLabel);
+//		
+//		mazePanels.add(pauseOverlay, "Pause");
+//	}
 
 	private void initStatusBar() {
 		JPanel statusBar = new JPanel();
@@ -319,7 +342,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		statusBar.add(timeLabel);
 		statusBar.add(Box.createGlue());
 		statusBar.add(objectLabel);
-		add(statusBar, gbcStatus);
+		this.add(statusBar, gbcStatus);
 	}
 
 	private void initSideBar() {
@@ -339,7 +362,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbcSide.weightx = 0.1;
 		gbcSide.weighty = 0.45;
 		
-		add(sideBar, gbcSide);
+		this.add(sideBar, gbcSide);
 
 		// to check
 		groupLayout.setAutoCreateContainerGaps(true);
@@ -360,12 +383,13 @@ public class GameScreen extends JPanel implements ActionListener {
 					pauseButton.setIcon(new ImageIcon("resources/unpause.png"));
 					timer.stop();
 					mazePlaying.setRunning(false);
-					// switch to pause overlay
+//					switchToPauseOverlay();
+					
 				} else {
 					pauseButton.setIcon(new ImageIcon("resources/pause.png"));
 					timer.start();
 					mazePlaying.setRunning(true);;
-					// switch from pause overlay
+//					switchFromPauseOverlay();
 				}
 			}
 		});
@@ -384,6 +408,7 @@ public class GameScreen extends JPanel implements ActionListener {
 			}
 		});
 
+		// display buttons vertically
 		groupLayout.setHorizontalGroup(groupLayout.createSequentialGroup()
 				.addGroup(groupLayout.createParallelGroup()
 						.addComponent(pauseButton)
