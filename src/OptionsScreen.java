@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class OptionsScreen extends JPanel {
 	private MainWindow mainWindow;
 	
@@ -29,6 +30,7 @@ public class OptionsScreen extends JPanel {
 		initResolutionPicker();
 		initDifficultyPicker();
 		initConfirmation();
+		repaint();
 	}
 
 	public Dimension getResolution() {
@@ -39,15 +41,24 @@ public class OptionsScreen extends JPanel {
 		return difficulty;
 	}
 	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Image background = (new ImageIcon("resources/gameScreen_bg.jpg")).getImage(); // TODO: move into field so we dont reload
+	    g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+	}
+	
 	private void initResolutionPicker() {
 		// resolution picker (dropdown list)
 		JPanel resolutionPicker = new JPanel(new GridBagLayout());
+		resolutionPicker.setOpaque(false);
 		add(resolutionPicker);
 		 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(10, 0, 10, 0);
 		
 		JLabel resolutionLabel = new JLabel("Resolution: ");
+		resolutionLabel.setForeground(Color.WHITE);
 		
 		String[] resolutions = { "1920x1080", "1600x900", "1366x768" };
 		JComboBox resolutionCB = new JComboBox(resolutions);
@@ -70,13 +81,17 @@ public class OptionsScreen extends JPanel {
 	private void initDifficultyPicker() {
 		// resolution picker (dropdown list)
 		JPanel difficultyPicker = new JPanel();
+		difficultyPicker.setOpaque(false);
 		add(difficultyPicker);
 		 
 		JLabel difficultyLabel = new JLabel("Difficulty: ");
+		difficultyLabel.setForeground(Color.WHITE);
 		
 		ButtonGroup group = new ButtonGroup();
 		
 		JRadioButton easyButton = new JRadioButton("Easy");
+		easyButton.setForeground(Color.WHITE);
+		easyButton.setOpaque(false);
 		easyButton.setMnemonic(KeyEvent.VK_B);
 		easyButton.setActionCommand("Easy");
 		easyButton.addActionListener(new ActionListener() {
@@ -89,6 +104,8 @@ public class OptionsScreen extends JPanel {
 		});
 		
 		JRadioButton mediumButton = new JRadioButton("Medium");
+		mediumButton.setForeground(Color.WHITE);
+		mediumButton.setOpaque(false);
 		mediumButton.setMnemonic(KeyEvent.VK_B);
 		mediumButton.setActionCommand("Medium");
 		mediumButton.setSelected(true);
@@ -102,6 +119,8 @@ public class OptionsScreen extends JPanel {
 		});
 		
 		JRadioButton hardButton = new JRadioButton("Hard");
+		hardButton.setForeground(Color.WHITE);
+		hardButton.setOpaque(false);
 		hardButton.setMnemonic(KeyEvent.VK_B);
 		hardButton.setActionCommand("Hard");
 		hardButton.addActionListener(new ActionListener() {
@@ -125,11 +144,12 @@ public class OptionsScreen extends JPanel {
 	
 	private void initConfirmation() {
 		JPanel confirmation = new JPanel();
-		
+		confirmation.setOpaque(false);
 		// confirm 
-		JButton confirmButton = new JButton("Confirm");
+		JButton confirmButton = new JButton(new ImageIcon("resources/confirm.png"));
+		confirmButton.setContentAreaFilled(false);
+		confirmButton.setMargin(new Insets(0, 0, 0, 0));
 		confirmButton.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// update the settings
@@ -144,16 +164,16 @@ public class OptionsScreen extends JPanel {
 		confirmation.add(confirmButton);
 		
 		// cancel
-		JButton cancelButton = new JButton("Cancel");
+		JButton cancelButton = new JButton(new ImageIcon("resources/cancel.png"));
+		cancelButton.setContentAreaFilled(false);
+		cancelButton.setMargin(new Insets(0, 0, 0, 0));
 		cancelButton.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				OptionsScreen.this.mainWindow.switchToMenu();
 			}
 		});
 		confirmation.add(cancelButton);
-		
 		
 		add(confirmation);
 	}
