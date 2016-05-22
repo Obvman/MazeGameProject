@@ -100,10 +100,7 @@ public class Maze {
 		}
 	}
 	
-	public boolean getKey(){
-		return keyAcquired;
-	}
-
+	
 	public int[][] getGrid() {
 		return mazeGrid;
 	}
@@ -114,6 +111,10 @@ public class Maze {
 
 	public LinkedList<Monster> getMonsters() {
 		return monsters;
+	}
+	
+	public boolean isKeyAcquired(){
+		return keyAcquired;
 	}
 	
 	public int getNumMonstersKilled() {
