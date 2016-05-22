@@ -116,6 +116,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	
 	private void switchToMazeLost() {
 		initMazeLost();
+		lostLevelLabel.setText("<html><body><center><p style=\"font-size:15\">LEVEL " + level + "</p><p style=\"font-size:15;\">YOU DIED</p></center></body></html>");
 		CardLayout cl = (CardLayout) mazePanels.getLayout();
 		cl.show(mazePanels, "Lost");
 	}
@@ -255,11 +256,16 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 	
 	private void initMazeLost() {
-		mazeLost = new JPanel();
+		mazeLost = new JPanel(new BorderLayout());
 		mazeLost.setOpaque(false);
+		JPanel wordPanel = new JPanel();
+		wordPanel.setOpaque(false);
+		JPanel ButtonPanel = new JPanel();
+		ButtonPanel.setOpaque(false);
 		
-		lostLevelLabel = new JLabel("You died at level " + level);
-		lostLevelLabel.setForeground(Color.WHITE);
+		lostLevelLabel = new JLabel();
+		lostLevelLabel.setForeground(Color.RED);
+		lostLevelLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 12));
 		
 		JButton startButton = new JButton(new ImageIcon("resources/start_again.png"));
 		startButton.setContentAreaFilled(false);
@@ -281,9 +287,11 @@ public class GameScreen extends JPanel implements ActionListener {
 			}
 		});
 		
-		mazeLost.add(lostLevelLabel);
-		mazeLost.add(startButton);
-		mazeLost.add(menuButton);
+		wordPanel.add(lostLevelLabel);
+		ButtonPanel.add(startButton);
+		ButtonPanel.add(menuButton);
+		mazeLost.add(wordPanel, BorderLayout.NORTH);
+		mazeLost.add(ButtonPanel, BorderLayout.CENTER);
 		mazePanels.add(mazeLost, "Lost");
 	}
 
