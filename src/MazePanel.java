@@ -103,11 +103,17 @@ public class MazePanel extends JPanel implements ActionListener {
 		for (Spell s : player.getSpells()) {
 			g.drawImage(s.getImage(), s.getX(), s.getY(), this);
 		}
+		
+		// paint the portals
+		for (Portal p : maze.getPortals()) {
+			g.drawImage(p.getImage(), p.getX(), p.getY(), this);
+		}
 
 		// paint the monsters
 		for (Monster m : maze.getMonsters()) {
 			g.drawImage(m.getImage(), m.getX(), m.getY(), this);
 		}
+		
 	}
 
 	private boolean withinMaze(int x, int y) {

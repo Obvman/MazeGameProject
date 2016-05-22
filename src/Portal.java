@@ -13,7 +13,8 @@ public class Portal {
 	private int monstersSpawned;
 	
 	public Portal(int totalMonsters) {
-		this.image = new ImageIcon("resources/monster_up.png").getImage();
+		this.image = new ImageIcon("resources/portal.png").getImage()
+					.getScaledInstance(Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE, Image.SCALE_SMOOTH);
 		this.monsters = new LinkedList<Monster>();
 		this.totalMonsters = totalMonsters;
 		this.monstersSpawned = 0;
