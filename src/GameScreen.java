@@ -17,6 +17,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	private MazePanel mazePlaying;
 	private JPanel mazeWon;
 	private JPanel mazeLost;	
+	private JPanel pauseOverlay;
 	private Maze maze;
 	
 	// components to be updated dynamically
@@ -118,6 +119,18 @@ public class GameScreen extends JPanel implements ActionListener {
 		initMazeLost();
 		CardLayout cl = (CardLayout) mazePanels.getLayout();
 		cl.show(mazePanels, "Lost");
+	}
+	
+	private void switchToPauseOverlay() {
+		initPauseOverlay();
+		CardLayout cl = (CardLayout) mazePanels.getLayout();
+		cl.show(mazePanels, "Pause");
+	}
+	
+	private void switchFromPauseOverlay() {
+		mazePanels.remove(pauseOverlay);
+		revalidate();
+		repaint();
 	}
 	
 	private void initMazePanels() {
@@ -348,6 +361,19 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		mazePanels.add(mazeLost, "Lost");
 	}
+	
+	private void initPauseOverlay() {
+		pauseOverlay = new JPanel();
+		// GridBag allows for easy centering of label
+		pauseOverlay.setLayout(new GridBagLayout());
+		pauseOverlay.setBackground(Color.BLACK);
+		
+		JLabel pauseLabel = new JLabel("Paused");
+		pauseLabel.setForeground(Color.WHITE);
+		
+		pauseOverlay.add(pauseLabel);
+		mazePanels.add(pauseOverlay, "Pause");
+	}
 
 	private void initStatusBar() {
 		statusBar = new JPanel(new CardLayout());
@@ -446,10 +472,12 @@ public class GameScreen extends JPanel implements ActionListener {
 					pauseButton.setIcon(new ImageIcon("resources/unpause.png"));
 					timer.stop();
 					mazePlaying.setRunning(false);
+					switchToPauseOverlay();
 				} else {
 					pauseButton.setIcon(new ImageIcon("resources/pause.png"));
 					timer.start();
-					mazePlaying.setRunning(true);;
+					mazePlaying.setRunning(true);
+					switchFromPauseOverlay();
 				}
 			}
 		});
