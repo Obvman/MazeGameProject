@@ -360,10 +360,12 @@ public class GameScreen extends JPanel implements ActionListener {
 					pauseButton.setIcon(new ImageIcon("resources/unpause.png"));
 					timer.stop();
 					mazePlaying.setRunning(false);
+					// switch to pause overlay
 				} else {
 					pauseButton.setIcon(new ImageIcon("resources/pause.png"));
 					timer.start();
 					mazePlaying.setRunning(true);;
+					// switch from pause overlay
 				}
 			}
 		});
