@@ -94,7 +94,7 @@ public class Maze {
 				int portalY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
 				if (portalX > 0.4 * MAZE_SIZE_2 && portalY > 0.2 * MAZE_SIZE_2 &&
 						mazeGrid[portalY][portalX] == PATH_TILE) {
-					Portal p = new Portal(3);
+					Portal p = new Portal(level * 5);
 					p.setPosition(portalX * MAZE_CELL_SIZE, portalY * MAZE_CELL_SIZE);
 					mazeGrid[portalY][portalX] = PORTAL_TILE;
 					portals.add(p);
