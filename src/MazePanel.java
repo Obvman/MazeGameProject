@@ -25,6 +25,10 @@ public class MazePanel extends JPanel implements ActionListener {
                 	}
                 }
         };
+        // Do once at the beginning
+        for (Portal p : maze.getPortals()) {
+        	if (p.canSpawnMonster()) maze.addMonster(p.spawnMonster());
+        }
 		monsterSpawnTimer = new Timer(5000, monsterSpawnListener);
 		monsterSpawnTimer.start();
 	}
