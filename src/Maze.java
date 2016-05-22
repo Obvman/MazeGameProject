@@ -267,8 +267,8 @@ public class Maze {
 		Rectangle spriteRect = sprite.getBounds();
 		spriteRect.translate(dx, dy);
 		
-		if (spriteRect.getX() < 0 || spriteRect.getX() > MAZE_SIZE_2 * MAZE_CELL_SIZE - spriteRect.getWidth()
-			|| spriteRect.getY() < 0 || spriteRect.getY() > MAZE_SIZE_1 * MAZE_CELL_SIZE - spriteRect.getHeight()) {
+		if (spriteRect.getX() < 0 || spriteRect.getX() >= MAZE_SIZE_2 * MAZE_CELL_SIZE - spriteRect.getWidth()
+			|| spriteRect.getY() < 0 || spriteRect.getY() >= MAZE_SIZE_1 * MAZE_CELL_SIZE - spriteRect.getHeight()) {
 			return false;
 		}
 		
