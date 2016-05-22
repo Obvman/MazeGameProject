@@ -51,8 +51,8 @@ public class Maze {
 			MAZE_SIZE_2 = 45;
 		}
 		
-//		MAZE_SIZE_1 = 11;
-//		MAZE_SIZE_2 = 11;
+		MAZE_SIZE_1 = 11;
+		MAZE_SIZE_2 = 11;
 		
 		// maze
 		mazeGenerator = new MazeGenerateDfs();
@@ -126,6 +126,10 @@ public class Maze {
 
 	public LinkedList<Monster> getMonsters() {
 		return monsters;
+	}
+	
+	public boolean isKeyAcquired(){
+		return keyAcquired;
 	}
 	
 	public int getNumMonstersKilled() {
