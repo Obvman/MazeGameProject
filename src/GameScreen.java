@@ -23,6 +23,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	private JLabel levelLabel; // part of status bar
 	private JLabel scoreLabel; // part of status bar
 	private JLabel timeLabel; // part of status bar
+	private JLabel objectLabel; //part of status bar
 	
 	private Timer timer;
 	private double duration;
@@ -61,6 +62,11 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		// refresh score component
 		scoreLabel.setText("Round Score: " + maze.getScore());
+		if(maze.getKey()){
+			objectLabel.setText("Target: Open the door");
+		}else{
+			objectLabel.setText("Target: Collect the key");
+		}
 		
 		if(e.getSource() == timer) {
 			if (maze.isGameLost()) {
@@ -296,12 +302,17 @@ public class GameScreen extends JPanel implements ActionListener {
 		// time
 		timeLabel = new JLabel();
 		timeLabel.setForeground(Color.WHITE);
+		
+		objectLabel = new JLabel();
+		objectLabel.setForeground(Color.WHITE);
 
 		statusBar.add(levelLabel);
 		statusBar.add(Box.createGlue());
 		statusBar.add(scoreLabel);
 		statusBar.add(Box.createGlue());
 		statusBar.add(timeLabel);
+		statusBar.add(Box.createGlue());
+		statusBar.add(objectLabel);
 		add(statusBar, gbcStatus);
 	}
 

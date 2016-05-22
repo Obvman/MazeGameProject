@@ -99,6 +99,10 @@ public class Maze {
 			}
 		}
 	}
+	
+	public boolean getKey(){
+		return keyAcquired;
+	}
 
 	public int[][] getGrid() {
 		return mazeGrid;
