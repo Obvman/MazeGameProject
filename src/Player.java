@@ -169,19 +169,19 @@ public class Player implements MovableSprite, ActionListener {
 
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_LEFT) {
+		if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
 			dx = -1;
 		}
 
-		if (key == KeyEvent.VK_RIGHT) {
+		if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
 			dx = 1;
 		}
 
-		if (key == KeyEvent.VK_UP) {
+		if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
 			dy = -1;
 		}
 
-		if (key == KeyEvent.VK_DOWN) {
+		if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
 			dy = 1;
 		}
 	}
@@ -189,19 +189,19 @@ public class Player implements MovableSprite, ActionListener {
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		if (key == KeyEvent.VK_LEFT) {
+		if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
 			if (dx != 1) dx = 0;
 		}
 
-		if (key == KeyEvent.VK_RIGHT) {
+		if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
 			if (dx != -1) dx = 0;
 		}
 
-		if (key == KeyEvent.VK_UP) {
+		if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
 			if (dy != 1) dy = 0;
 		}
 
-		if (key == KeyEvent.VK_DOWN) {
+		if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
 			if (dy != -1) dy = 0;
 		}
 
