@@ -230,8 +230,8 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbcStatus.gridheight = 1;
 		
 		JPanel statusBar = new JPanel(new BorderLayout());
-		statusBar.setBorder(BorderFactory.createLineBorder(Color.RED));
-//		statusBar.setBorder(new EmptyBorder(0, 40, 0, 40)); // set left and right padding
+//		statusBar.setBorder(BorderFactory.createLineBorder(Color.RED)); // debug border
+		statusBar.setBorder(new EmptyBorder(0, 40, 0, 40)); // set left and right padding
 		statusBar.setOpaque(false);
 		
 	
@@ -289,10 +289,10 @@ public class GameScreen extends JPanel implements ActionListener {
 		statusFields.setOpaque(false);
 		
 		GridBagConstraints gbcFields = new GridBagConstraints();
+		gbcFields.ipadx = 50;
 		
 		objective = new JLabel();
 		objective.setForeground(Color.WHITE);
-		gbcFields.ipadx = 50;
 		statusFields.add(objective, gbcFields);
 
 		monstersSlain = new JLabel();
@@ -351,13 +351,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		add(mazeWon, "Won");
 
 		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.ipady = 20;
 
 		gbc.gridy = 0;
-		JLabel level = new JLabel("You defeated level " + this.currLevel, SwingConstants.CENTER);
-		level.setForeground(Color.WHITE);
-		mazeWon.add(level, gbc);
-
-		gbc.gridy = 1;
 		JLabel roundInfo = new JLabel("Round Results", SwingConstants.CENTER);
 		roundInfo.setForeground(Color.WHITE);
 		Font font = roundInfo.getFont();
@@ -365,6 +361,11 @@ public class GameScreen extends JPanel implements ActionListener {
 		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 		roundInfo.setFont(font.deriveFont(attributes));
 		mazeWon.add(roundInfo, gbc);
+
+		gbc.gridy = 1;
+		JLabel level = new JLabel("You defeated level " + this.currLevel, SwingConstants.CENTER);
+		level.setForeground(Color.WHITE);
+		mazeWon.add(level, gbc);
 
 		gbc.gridy = 2;
 		JLabel numMonstersKilled = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), SwingConstants.CENTER);
@@ -387,6 +388,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		totalScore.setForeground(Color.WHITE);
 		mazeWon.add(totalScore, gbc);
 
+		gbc.ipady = 0;
 		gbc.gridy = 6;
 		JButton nextLevelButton = new JButton(new ImageIcon("resources/next_level.png"));
 		nextLevelButton.setContentAreaFilled(false);
@@ -427,12 +429,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		add(mazeLost, "Lost");
 		
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridy = 0;
-		JLabel lostLevelLabel = new JLabel("You died at level " + currLevel + "...", SwingConstants.CENTER);
-		lostLevelLabel.setForeground(Color.WHITE);
-		mazeLost.add(lostLevelLabel, gbc);
+		gbc.ipady = 20; // gaps between lines
 		
-		gbc.gridy = 1;
+		gbc.gridy = 0;
 		JLabel gameInfo= new JLabel("Game Results", SwingConstants.CENTER);
 		gameInfo.setForeground(Color.WHITE);
 		Font font = gameInfo.getFont();
@@ -440,6 +439,11 @@ public class GameScreen extends JPanel implements ActionListener {
 		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 		gameInfo.setFont(font.deriveFont(attributes));
 		mazeLost.add(gameInfo, gbc);
+		
+		gbc.gridy = 1;
+		JLabel lostLevelLabel = new JLabel("You died at level " + currLevel + "...", SwingConstants.CENTER);
+		lostLevelLabel.setForeground(Color.WHITE);
+		mazeLost.add(lostLevelLabel, gbc);
 		
 		gbc.gridy = 2;
 		JLabel faction = new JLabel("", SwingConstants.CENTER);
@@ -464,6 +468,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeLost.add(gemsCollected, gbc);
 		
 		gbc.gridy = 5;
+		gbc.ipady = 5; // gaps between lines
 		JLabel numGemsCollected = new JLabel("Final score: " + maze.getScore(), SwingConstants.CENTER);
 		numGemsCollected.setForeground(Color.WHITE);
 		mazeLost.add(numGemsCollected, gbc);
@@ -474,6 +479,7 @@ public class GameScreen extends JPanel implements ActionListener {
 			gbc.gridy++;
 		}
 		
+		gbc.ipady = 0;
 		JButton startButton = new JButton(new ImageIcon("resources/start_again.png"));
 		startButton.setContentAreaFilled(false);
 		startButton.setMargin(new Insets(0, 0, 0, 0));
