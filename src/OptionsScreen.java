@@ -60,7 +60,7 @@ public class OptionsScreen extends JPanel {
 		JLabel resolutionLabel = new JLabel("Resolution: ");
 		resolutionLabel.setForeground(Color.WHITE);
 		
-		String[] resolutions = { "1920x1080", "1600x900", "1366x768" };
+		String[] resolutions = { "1920x1080", "1680x1050", "1600x900", "1440x900", "1366x768" };
 		JComboBox<String> resolutionCB = new JComboBox<String>(resolutions);
 		resolutionCB.setSelectedIndex(1); // 1600x900
 		resolutionCB.addActionListener(new ActionListener() {

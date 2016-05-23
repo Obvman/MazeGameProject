@@ -289,7 +289,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		statusFields.setOpaque(false);
 		
 		GridBagConstraints gbcFields = new GridBagConstraints();
-		gbcFields.ipadx = 50;
+		gbcFields.ipadx = 40;
 		
 		objective = new JLabel();
 		objective.setForeground(Color.WHITE);
