@@ -93,9 +93,9 @@ public class Maze {
 				int portalX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
 				int portalY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
 				for (Portal existing : portals) {
-					// Must be at least 1 tile away from another portal
-					if (Math.abs(existing.getX() - portalX) < ((1 / MAZE_SIZE_1) * MAZE_CELL_SIZE)
-						&& Math.abs(existing.getY() - portalY) < ((1 / MAZE_SIZE_1) * MAZE_CELL_SIZE)) {
+					// Must be at least 2 tiles away from another portal
+					if (Math.abs(existing.getX() - portalX) < ((2 / MAZE_SIZE_1) * MAZE_CELL_SIZE)
+						&& Math.abs(existing.getY() - portalY) < ((2 / MAZE_SIZE_1) * MAZE_CELL_SIZE)) {
 							break;
 						}
 				}
