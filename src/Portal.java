@@ -15,7 +15,8 @@ public class Portal {
 	public Portal(int x, int y, LinkedList<Monster> monsters) {
 		this.x = x;
 		this.y = y;
-		this.image = new ImageIcon("resources/portal.png").getImage().getScaledInstance(Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE, Image.SCALE_SMOOTH);
+		this.image = new ImageIcon("resources/blue_portal_32.gif").getImage()
+					 .getScaledInstance(Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE, Image.SCALE_DEFAULT);
 		this.monsters = monsters;
 		this.numTimesShot = 0;
 		this.spells = new LinkedList<Spell>();

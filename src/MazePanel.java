@@ -8,11 +8,11 @@ public class MazePanel extends JPanel implements ActionListener {
 	private TileGenerator tileGenerator;
 	private Timer timer;
 	private Timer portalTimer;
-	
+
 	public MazePanel(int level, int difficulty, int spellType) {
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		addKeyListener(new TAdapter());
-		
+
 		maze = new Maze(level, difficulty, spellType);
 		tileGenerator = new TileGenerator();
 		timer = new Timer(10, this); // corresponds to game speed
@@ -52,10 +52,10 @@ public class MazePanel extends JPanel implements ActionListener {
 		int[][] mazeGrid = maze.getGrid();
 		for (int i = 0; i < mazeGrid.length; i++) {
 			for (int j = 0; j < mazeGrid[i].length; j++) {
-				
+
 				int x = j * Maze.MAZE_CELL_SIZE;
 				int y = i * Maze.MAZE_CELL_SIZE;
-				
+
 				Image tile = null;
 
 				if (mazeGrid[i][j] == Maze.PATH_TILE) tile = tileGenerator.getPathTile();
@@ -77,22 +77,27 @@ public class MazePanel extends JPanel implements ActionListener {
 					if (withinMaze(j, i-1) && mazeGrid[i-1][j] == Maze.WALL_TILE) {
 						g.drawImage(tileGenerator.getWallTileN(), x, y, this);
 					}
-					
+
 					if (withinMaze(j-1, i) && mazeGrid[i][j-1] == Maze.WALL_TILE) {
 						g.drawImage(tileGenerator.getWallTileW(), x, y, this);
 					}
-					
+
 					if (withinMaze(j, i+1) && mazeGrid[i+1][j] == Maze.WALL_TILE) {
 						g.drawImage(tileGenerator.getWallTileS(), x, y, this);
 					}
-					
+
 					if (withinMaze(j+1, i) && mazeGrid[i][j+1] == Maze.WALL_TILE) {
 						g.drawImage(tileGenerator.getWallTileE(), x, y, this);
 					}
 				}
 			}
 		}
-		
+
+		// paint the portals
+		for (Portal p : maze.getPortals()) {
+			g.drawImage(p.getImage(), p.getX(), p.getY(), this);
+		}
+
 		// paint the player
 		Player player = maze.getPlayer();
 		g.drawImage(player.getImage(), player.getX(), player.getY(), this);
@@ -101,17 +106,12 @@ public class MazePanel extends JPanel implements ActionListener {
 		for (Spell s : player.getSpells()) {
 			g.drawImage(s.getImage(), s.getX(), s.getY(), this);
 		}
-		
-		// paint the portals
-		for (Portal p : maze.getPortals()) {
-			g.drawImage(p.getImage(), p.getX(), p.getY(), this);
-		}
 
 		// paint the monsters
 		for (Monster m : maze.getMonsters()) {
 			g.drawImage(m.getImage(), m.getX(), m.getY(), this);
 		}
-		
+
 	}
 
 	private boolean withinMaze(int x, int y) {
