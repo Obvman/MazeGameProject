@@ -34,13 +34,17 @@ public class MenuScreen extends JPanel {
 		startButton.setFocusPainted(false);
 		startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		startButton.setToolTipText("Start a new game");
-		startButton.addActionListener(new ActionListener() {
+		AbstractAction startPressed = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// start game
 				mainWindow.switchToGame();
 			}
-		});
+		};
+		startButton.addActionListener(startPressed);
+		// allow button to be activated by 'Enter' key as well as by clicking
+		startButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "pressEnter");
+		startButton.getActionMap().put("pressEnter", startPressed);
 		
 		// tutorial button
 		JButton tutorialButton = new JButton(new ImageIcon("resources/tutorial.png"));
@@ -80,13 +84,17 @@ public class MenuScreen extends JPanel {
 		exitButton.setFocusPainted(false);
 		exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		exitButton.setToolTipText("Exit to desktop");
-		exitButton.addActionListener(new ActionListener() {
+		AbstractAction exitPressed = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// exit to desktop
 				System.exit(0);
 			}
-		});
+		};
+		exitButton.addActionListener(exitPressed);
+		// allow button to be activated by 'Escape' key as well as by clicking
+		exitButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "pressEsc");
+		exitButton.getActionMap().put("pressEsc", exitPressed);
 		
 		buttonPanel.add(startButton);
 		buttonPanel.add(Box.createVerticalStrut(10));
