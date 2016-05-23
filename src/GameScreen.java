@@ -356,50 +356,70 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 
 	private void initMazeWon() {
-		JPanel mazeWon = new JPanel(new GridBagLayout());
+		JPanel mazeWon = new JPanel(new GridBagLayout()){
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Image background = (new ImageIcon("resources/BG.png")).getImage(); 
+			    g.drawImage(background, 0, 0, null);
+			}
+		};;
+		JPanel mazeWonButtons = new JPanel();
 		mazeWon.setOpaque(false);
+		mazeWonButtons.setOpaque(false);
 		add(mazeWon, "Won");
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.ipady = 20;
-
+		
 		gbc.gridy = 0;
-		JLabel roundInfo = new JLabel("Round Results", SwingConstants.CENTER);
-		roundInfo.setForeground(Color.WHITE);
-		Font font = roundInfo.getFont();
-		Map attributes = font.getAttributes();
-		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-		roundInfo.setFont(font.deriveFont(attributes));
-		mazeWon.add(roundInfo, gbc);
-
+		gbc.weighty = 0.2;
+	    mazeWon.add(new JLabel(" "), gbc);  // blank JLabel
+	    
+	    gbc.weighty = 0.2;
+	    gbc.weightx = 0;
 		gbc.gridy = 1;
-		JLabel level = new JLabel("You defeated level " + this.currLevel, SwingConstants.CENTER);
-		level.setForeground(Color.WHITE);
+		JLabel level = new JLabel("<html><center>LEVEL " + this.currLevel + "<br>VICTORY</center></html>");
+		level.setFont(new Font("Herculanum", Font.PLAIN, 70));
+		level.setForeground(new Color(255,215,0));
 		mazeWon.add(level, gbc);
 
 		gbc.gridy = 2;
+		JLabel roundInfo = new JLabel("Round Results", SwingConstants.CENTER);
+		/*Font font = roundInfo.getFont();
+		Map attributes = font.getAttributes();
+		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+		roundInfo.setFont(font.deriveFont(attributes));*/
+		roundInfo.setFont(new Font("Devanagari MT", Font.PLAIN, 30));
+		roundInfo.setForeground(Color.WHITE);
+		mazeWon.add(roundInfo, gbc);
+        
+		gbc.gridy = 3;
 		JLabel numMonstersKilled = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), SwingConstants.CENTER);
+		numMonstersKilled.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		numMonstersKilled.setForeground(Color.WHITE);
 		mazeWon.add(numMonstersKilled, gbc);
 
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		JLabel numGemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), SwingConstants.CENTER);
+		numGemsCollected.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		numGemsCollected.setForeground(Color.WHITE);
 		mazeWon.add(numGemsCollected, gbc);
 
-		gbc.gridy = 4;
+		gbc.gridy = 5;
 		JLabel roundScore = new JLabel("Round score: " + maze.getScore(), SwingConstants.CENTER);
+		roundScore.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		roundScore.setForeground(Color.WHITE);
 		mazeWon.add(roundScore, gbc);
 		
-		gbc.gridy = 5;
+		gbc.gridy = 6;
 		this.totalScore += maze.getScore();
 		JLabel totalScore = new JLabel("Total score: " + this.totalScore, SwingConstants.CENTER);
+		totalScore.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		totalScore.setForeground(Color.WHITE);
 		mazeWon.add(totalScore, gbc);
 
 		gbc.ipady = 0;
-		gbc.gridy = 6;
+		gbc.gridy = 7;
 		JButton nextLevelButton = new JButton(new ImageIcon("resources/next_level.png"));
 		nextLevelButton.setContentAreaFilled(false);
 		nextLevelButton.setMargin(new Insets(0, 0, 0, 0));
@@ -412,9 +432,9 @@ public class GameScreen extends JPanel implements ActionListener {
 				switchToMazeUI();
 			}
 		});
-		mazeWon.add(nextLevelButton, gbc);
+		mazeWonButtons.add(nextLevelButton);
+		//mazeWon.add(nextLevelButton, gbc);
 
-		gbc.gridy = 7;
 		JButton menuButton = new JButton(new ImageIcon("resources/main_menu.png"));
 		menuButton.setContentAreaFilled(false);
 		menuButton.setMargin(new Insets(0, 0, 0, 0));
@@ -424,7 +444,11 @@ public class GameScreen extends JPanel implements ActionListener {
 				mainWindow.switchToMenu();
 			}
 		});
-		mazeWon.add(menuButton, gbc);
+		mazeWonButtons.add(menuButton);
+		mazeWon.add(mazeWonButtons, gbc);
+	    gbc.weighty = 0.5;
+
+	    mazeWon.add(new JLabel(" "), gbc);  // blank JLabel
 	}
 
 	private void initMazeLost() {
