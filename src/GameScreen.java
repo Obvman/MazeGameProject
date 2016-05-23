@@ -244,12 +244,17 @@ public class GameScreen extends JPanel implements ActionListener {
 		JButton mainMenu = new JButton(new ImageIcon("resources/main_menu.png"));
 		mainMenu.setContentAreaFilled(false);
 		mainMenu.setMargin(new Insets(0, 0, 0 ,0));
-		mainMenu.addActionListener(new ActionListener() {
+		
+		AbstractAction menuPressed = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GameScreen.this.mainWindow.switchToMenu();
 			}
-		});
+		};
+		mainMenu.addActionListener(menuPressed);
+		// allow button to be activated by 'Esc' key as well as by clicking
+		mainMenu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "pressEsc");
+		mainMenu.getActionMap().put("pressEsc", menuPressed);
 		statusButtons.add(mainMenu);
 
 
@@ -257,7 +262,8 @@ public class GameScreen extends JPanel implements ActionListener {
 		JButton pause = new JButton(new ImageIcon("resources/pause.png"));
 		pause.setContentAreaFilled(false);
 		pause.setMargin(new Insets(0, 0, 0 ,0));
-		pause.addActionListener(new ActionListener() {
+		
+		AbstractAction pausePressed = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (timer.isRunning()) {
@@ -268,19 +274,29 @@ public class GameScreen extends JPanel implements ActionListener {
 					switchToMazePlaying();
 				}
 			}
-		});
+		};
+		pause.addActionListener(pausePressed);
+		// allow button to be activated by 'p' key as well as by clicking
+		pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_P,0), "pressP");
+		pause.getActionMap().put("pressP", pausePressed);
+		
 		statusButtons.add(pause);
 
 		// help button
 		JButton help = new JButton(new ImageIcon("resources/help.png"));
 		help.setContentAreaFilled(false);
 		help.setMargin(new Insets(0, 0, 0 ,0));
-		help.addActionListener(new ActionListener() {
+		
+		AbstractAction helpPressed = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("This should be similar to the tutorial screen");
 			}
-		});
+		};
+		help.addActionListener(helpPressed);
+		// allow button to be activated by 'h' key as well as by clicking
+		pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_H,0), "pressH");
+		pause.getActionMap().put("pressH", pausePressed);
 		statusButtons.add(help);
 
 
