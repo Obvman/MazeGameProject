@@ -1,6 +1,5 @@
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.io.File;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
@@ -12,6 +11,8 @@ public class Portal {
 	private LinkedList<Monster> monsters;
 	private int totalMonsters;
 	private int monstersSpawned;
+	private int numTimesShot;
+	private LinkedList<Spell> spells;
 	
 	public Portal(int totalMonsters) {
 		this.image = new ImageIcon("resources/portal.png").getImage()
@@ -19,6 +20,8 @@ public class Portal {
 		this.monsters = new LinkedList<Monster>();
 		this.totalMonsters = totalMonsters;
 		this.monstersSpawned = 0;
+		this.numTimesShot = 0;
+		this.spells = new LinkedList<Spell>();
 	}
 	
 	public int getX() {
@@ -35,6 +38,15 @@ public class Portal {
 	
 	public boolean canSpawnMonster() {
 		return (monstersSpawned < totalMonsters);
+	}
+	
+	public boolean canKill(Spell s) {
+		return (numTimesShot > 2) && (!spells.contains(s));
+	}
+	
+	public void weaken(Spell s) {
+		this.numTimesShot++;
+		spells.add(s);
 	}
 	
 	public Monster spawnMonster() {

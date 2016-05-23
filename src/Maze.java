@@ -1,10 +1,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import javax.swing.*;
 
 public class Maze {
 	// MAZE CONSTANTS
@@ -87,7 +85,8 @@ public class Maze {
 		
 		// Place portals
 		portals = new LinkedList<Portal>();
-		for (int i = 0; i < Math.floor(level * 1.5); i++) {
+		int numPortals = (level < 3) ? 1 : 2;
+		for (int i = 0; i < numPortals; i++) {
 			boolean placed = false;
 			while (!placed) {
 				int portalX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
@@ -173,6 +172,7 @@ public class Maze {
 
 		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
 			// check whether spells have killed monsters
+			boolean canKillPortal = true;
 			Spell s = spellIter.next();
 			for (Iterator<Monster> monsterIter = monsters.iterator(); monsterIter.hasNext(); ) {
 				Monster m = monsterIter.next();
@@ -180,17 +180,25 @@ public class Maze {
 					numMonstersKilled++;
 					spellIter.remove();
 					monsterIter.remove();
+					canKillPortal = false;
 					break;
 				}
 			}
-			// TODO: do this not duplicated-ly
+			
 			// check whether spells have killed portals
+			if (!canKillPortal) break;
 			for (Iterator<Portal> portalIter = portals.iterator(); portalIter.hasNext(); ) {
 				Portal p = portalIter.next();
 				if (s.getBounds().intersects(p.getBounds())) {
-					spellIter.remove();
-					portalIter.remove();
-					portals.remove(p);
+					if (p.canKill(s)) {
+						System.out.println("HELLO");
+						spellIter.remove();
+						portalIter.remove();
+						portals.remove(p);
+					} else {
+						spellIter.remove();
+						p.weaken(s);
+					}
 					break;
 				}
 			}
