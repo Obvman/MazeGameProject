@@ -6,9 +6,9 @@ import javax.swing.*;
 public class MazePanel extends JPanel implements ActionListener {
 	private Maze maze;
 	private TileGenerator tileGenerator;
-	private Timer timer; 
-	private Timer monsterSpawnTimer;
-
+	private Timer timer;
+	private Timer portalTimer;
+	
 	public MazePanel(int level, int difficulty, int spellType) {
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		addKeyListener(new TAdapter());
@@ -17,20 +17,8 @@ public class MazePanel extends JPanel implements ActionListener {
 		tileGenerator = new TileGenerator();
 		timer = new Timer(10, this); // corresponds to game speed
 		timer.start();
-		ActionListener monsterSpawnListener = new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                for (Portal p : maze.getPortals()) 
-                	if (p.canSpawnMonster()) {
-                		maze.addMonster(p.spawnMonster());
-                	}
-                }
-        };
-        // Do once at the beginning
-        for (Portal p : maze.getPortals()) {
-        	if (p.canSpawnMonster()) maze.addMonster(p.spawnMonster());
-        }
-		monsterSpawnTimer = new Timer(8000, monsterSpawnListener);
-		monsterSpawnTimer.start();
+		portalTimer = new Timer(8000, this);
+		portalTimer.start();
 	}
 
 	public Maze getMaze() {
@@ -40,8 +28,10 @@ public class MazePanel extends JPanel implements ActionListener {
 	public void setRunning(boolean isRunning) {
 		if (isRunning && !timer.isRunning()) {
 			timer.start();
+			portalTimer.start();
 		} else if (!isRunning && timer.isRunning()){
 			timer.stop();
+			portalTimer.stop();
 		}
 	}
 
@@ -49,6 +39,9 @@ public class MazePanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		requestFocusInWindow();
 		maze.updateSprites(e);
+		if (e.getSource() == portalTimer) {
+			maze.activatePortals();
+		}
 		repaint();
 	}
 

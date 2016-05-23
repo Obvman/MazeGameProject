@@ -29,8 +29,9 @@ public class Maze {
 	private MazeGenerationStrategy mazeGenerator;
 	private int[][] mazeGrid;
 	private Player player;
-	private LinkedList<Monster> monsters;
 	private LinkedList<Portal> portals;
+	private LinkedList<Monster> monsters;
+	private int maxMonsters;
 	private boolean keyAcquired;
 	
 	// game stats
@@ -49,17 +50,16 @@ public class Maze {
 			MAZE_SIZE_2 = 45;
 		}
 		
-		MAZE_SIZE_1 = 11;
-		MAZE_SIZE_2 = 11;
+//		MAZE_SIZE_1 = 11;
+//		MAZE_SIZE_2 = 11;
 		
 		// maze
 		mazeGenerator = new MazeGenerateDfs();
-		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2); // TODO: place this somewhere else
+		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2);
 
 		player = new Player(spellType);
 		
 		// place key
-		// TODO: make sure it is not within a radius of start and end tile
 		while (true) {
 			int keyX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
 			int keyY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
@@ -80,35 +80,25 @@ public class Maze {
 			}
 		}
 		
+		// place portals
 		monsters = new LinkedList<Monster>();
-		// Place portals
 		portals = new LinkedList<Portal>();
-		int numPortals = (level < 3) ? 1 : 2;
-		for (int i = 0; i < numPortals; i++) {
+		for (int i = 0; i < 3 * (level + difficulty); i++) {
 			boolean placed = false;
 			while (!placed) {
 				int portalX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
 				int portalY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
-				for (Portal existing : portals) {
-					// Must be at least 2 tiles away from another portal
-					if (Math.abs(existing.getX() - portalX) < ((2 / MAZE_SIZE_1) * MAZE_CELL_SIZE)
-						&& Math.abs(existing.getY() - portalY) < ((2 / MAZE_SIZE_1) * MAZE_CELL_SIZE)) {
-							break;
-						}
-				}
-				if (portalX > 0.4 * MAZE_SIZE_2 && portalY > 0.2 * MAZE_SIZE_2 &&
-						mazeGrid[portalY][portalX] == PATH_TILE) {
-					Portal p = new Portal(level * 5);
-					p.setPosition(portalX * MAZE_CELL_SIZE, portalY * MAZE_CELL_SIZE);
-					mazeGrid[portalY][portalX] = PORTAL_TILE;
-					portals.add(p);
+				
+				double distance = Math.sqrt(portalX*portalX + portalY*portalY);
+				if (distance > 0.33 * MAZE_SIZE_2 && mazeGrid[portalY][portalX] == PATH_TILE) {
+					portals.add(new Portal(portalX * MAZE_CELL_SIZE, portalY * MAZE_CELL_SIZE, monsters));
 					placed = true;
 				}
 			}
 		}
 		
-		// place flying monsters
-		for (int i = 0; i < level*difficulty; i++) {
+		// place starting random monsters
+		for (int i = 0; i < 3 * (level + difficulty); i++) {
 			boolean placed = false;
 			while (!placed) {
 				int monsterX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
@@ -116,13 +106,15 @@ public class Maze {
 				
 				double distance = Math.sqrt(monsterX*monsterX + monsterY*monsterY);
 				if (distance > 0.33 * MAZE_SIZE_2 && mazeGrid[monsterY][monsterX] == PATH_TILE) {
-					Monster m = new FlyingMonster();
+					Monster m = Math.random() > 0.5 ? new Monster() : new FlyingMonster();
 					m.setPosition(monsterX * MAZE_CELL_SIZE, monsterY * MAZE_CELL_SIZE);
 					monsters.add(m);
 					placed = true;
 				}
 			}
 		}
+		
+		maxMonsters = 9 * (level + difficulty);
 	}
 	
 	public void addMonster(Monster m) {
@@ -171,6 +163,15 @@ public class Maze {
 
 	public boolean isGameWon() {
 		return keyAcquired && player.getX()/MAZE_CELL_SIZE == MAZE_SIZE_2 - 1 && player.getY()/MAZE_CELL_SIZE == MAZE_SIZE_1 - 1;
+	}
+	
+	public void activatePortals() {
+		for (Portal p : portals) {
+			if (monsters.size() > maxMonsters) {
+				break;
+			}
+			p.spawnMonster();
+		}
 	}
 
 	public void updateSprites(ActionEvent e) {

@@ -9,17 +9,14 @@ public class Portal {
 	private int y;
 	private Image image;
 	private LinkedList<Monster> monsters;
-	private int totalMonsters;
-	private int monstersSpawned;
 	private int numTimesShot;
 	private LinkedList<Spell> spells;
 	
-	public Portal(int totalMonsters) {
-		this.image = new ImageIcon("resources/portal.png").getImage()
-					.getScaledInstance(Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE, Image.SCALE_SMOOTH);
-		this.monsters = new LinkedList<Monster>();
-		this.totalMonsters = totalMonsters;
-		this.monstersSpawned = 0;
+	public Portal(int x, int y, LinkedList<Monster> monsters) {
+		this.x = x;
+		this.y = y;
+		this.image = new ImageIcon("resources/portal.png").getImage().getScaledInstance(Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE, Image.SCALE_SMOOTH);
+		this.monsters = monsters;
 		this.numTimesShot = 0;
 		this.spells = new LinkedList<Spell>();
 	}
@@ -36,10 +33,6 @@ public class Portal {
 		return this.image;
 	}
 	
-	public boolean canSpawnMonster() {
-		return (monstersSpawned < totalMonsters);
-	}
-	
 	public boolean canKill(Spell s) {
 		return (numTimesShot > 2) && (!spells.contains(s));
 	}
@@ -49,12 +42,10 @@ public class Portal {
 		spells.add(s);
 	}
 	
-	public Monster spawnMonster() {
-		Monster m = new Monster();
+	public void spawnMonster() {
+		Monster m = Math.random() > 0.5 ? new Monster() : new FlyingMonster();
 		m.setPosition(this.x, this.y);
 		monsters.add(m);
-		monstersSpawned++;
-		return m;
 	}
 	
 	public void setPosition(int x, int y) {
