@@ -1,17 +1,10 @@
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.Font;
 import java.awt.LayoutManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -19,11 +12,12 @@ import java.util.Scanner;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 
 public class HighscoresPanel extends JPanel {
 	
+	private static final long serialVersionUID = 1L;
+
 	public HighscoresPanel(LayoutManager layout) {
 		this.setLayout(layout);
 	}
@@ -48,8 +42,8 @@ public class HighscoresPanel extends JPanel {
 			}
 			
 			
-			// Print highscores to panel and 
-			// output new highscores to file.
+			// Output highscores to labels and 
+			// print new highscores to file.
 			PrintWriter writer = null;
 			try {
 				writer = new PrintWriter("resources/highscores.txt", "UTF-8");
@@ -62,6 +56,7 @@ public class HighscoresPanel extends JPanel {
 				JLabel scoreLabel = new JLabel(Integer.toString(rank+1) + ") " + entry.getName() + " " + entry.getScore());
 				writer.println(entry.getName() + " " + entry.getScore());
 				scoreLabel.setForeground(Color.WHITE);
+				scoreLabel.setFont(new Font("Sans Serif", Font.BOLD, 20));
 				highscoresLabels.add(scoreLabel);
 				rank++;
 			}

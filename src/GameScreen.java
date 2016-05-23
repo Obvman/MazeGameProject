@@ -445,6 +445,11 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeLost.add(gemsCollected, gbc);
 		
 		gbc.gridy = 5;
+		JLabel numGemsCollected = new JLabel("Final score: " + maze.getScore(), SwingConstants.CENTER);
+		numGemsCollected.setForeground(Color.WHITE);
+		mazeLost.add(numGemsCollected, gbc);
+		
+		gbc.gridy = 6;
 		for (JLabel label : mazeLost.getHighscores(maze.getScore(), userName)) {
 			mazeLost.add(label, gbc);
 			gbc.gridy++;
