@@ -385,10 +385,6 @@ public class GameScreen extends JPanel implements ActionListener {
 
 		gbc.gridy = 2;
 		JLabel roundInfo = new JLabel("Round Results", SwingConstants.CENTER);
-		/*Font font = roundInfo.getFont();
-		Map attributes = font.getAttributes();
-		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-		roundInfo.setFont(font.deriveFont(attributes));*/
 		roundInfo.setFont(new Font("Devanagari MT", Font.PLAIN, 30));
 		roundInfo.setForeground(Color.WHITE);
 		mazeWon.add(roundInfo, gbc);
@@ -457,29 +453,43 @@ public class GameScreen extends JPanel implements ActionListener {
 		// Remove whitespace
 		userName = userName.replaceAll("\\s+","");
 
-		HighscoresPanel mazeLost = new HighscoresPanel(new GridBagLayout());
+		HighscoresPanel mazeLost = new HighscoresPanel(new GridBagLayout()){
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Image background = (new ImageIcon("resources/BG.png")).getImage(); 
+			    g.drawImage(background, 0, 0, null);
+			}
+		};;
+		JPanel mazeLostButton = new JPanel();
 		
 		mazeLost.setOpaque(false);
+		mazeLostButton.setOpaque(false);
 		add(mazeLost, "Lost");
 		
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.ipady = 20; // gaps between lines
-		
+
 		gbc.gridy = 0;
-		JLabel gameInfo= new JLabel("Game Results", SwingConstants.CENTER);
-		gameInfo.setForeground(Color.WHITE);
-		Font font = gameInfo.getFont();
-		Map attributes = font.getAttributes();
-		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-		gameInfo.setFont(font.deriveFont(attributes));
-		mazeLost.add(gameInfo, gbc);
-		
+		gbc.weighty = 0.2;
+	    mazeLost.add(new JLabel(" "), gbc);  // blank JLabel
+	    
+	    gbc.weighty = 0;
+	    gbc.weightx = 1;
+	    
 		gbc.gridy = 1;
-		JLabel lostLevelLabel = new JLabel("You died at level " + currLevel + "...", SwingConstants.CENTER);
-		lostLevelLabel.setForeground(Color.WHITE);
+	    
+		JLabel lostLevelLabel = new JLabel("<html><center>LEVEL " + currLevel + "<br>YOU DIED</center></html>", SwingConstants.CENTER);
+		lostLevelLabel.setForeground(Color.RED);
+		lostLevelLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 70));
 		mazeLost.add(lostLevelLabel, gbc);
 		
+		
 		gbc.gridy = 2;
+		JLabel gameInfo= new JLabel("Game Results", SwingConstants.CENTER);
+		gameInfo.setForeground(Color.WHITE);
+		gameInfo.setFont(new Font("Devanagari MT", Font.PLAIN, 30));
+		mazeLost.add(gameInfo, gbc);
+		
+		gbc.gridy = 3;
 		JLabel faction = new JLabel("", SwingConstants.CENTER);
 		if (spellType == 1) {
 			faction.setText("Faction: Water");
@@ -488,32 +498,33 @@ public class GameScreen extends JPanel implements ActionListener {
 		} else if (spellType == 3) {
 			faction.setText("Faction: Air");
 		}
+		faction.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		faction.setForeground(Color.WHITE);
 		mazeLost.add(faction, gbc);
 		
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		JLabel monstersSlain = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), SwingConstants.CENTER);
 		monstersSlain.setForeground(Color.WHITE);
 		mazeLost.add(monstersSlain, gbc);
 		
-		gbc.gridy = 4;
+		gbc.gridy = 5;
 		JLabel gemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), SwingConstants.CENTER);
 		gemsCollected.setForeground(Color.WHITE);
 		mazeLost.add(gemsCollected, gbc);
 		
-		gbc.gridy = 5;
+		gbc.gridy = 6;
 		gbc.ipady = 5; // gaps between lines
 		JLabel numGemsCollected = new JLabel("Final score: " + maze.getScore(), SwingConstants.CENTER);
 		numGemsCollected.setForeground(Color.WHITE);
 		mazeLost.add(numGemsCollected, gbc);
 		
-		gbc.gridy = 6;
+		gbc.gridy = 7;
 		for (JLabel label : mazeLost.getHighscores(maze.getScore(), userName)) {
 			mazeLost.add(label, gbc);
 			gbc.gridy++;
 		}
 		
-		gbc.ipady = 0;
+		gbc.ipady = 8;
 		JButton startButton = new JButton(new ImageIcon("resources/start_again.png"));
 		startButton.setContentAreaFilled(false);
 		startButton.setMargin(new Insets(0, 0, 0, 0));
@@ -523,7 +534,19 @@ public class GameScreen extends JPanel implements ActionListener {
 				mainWindow.switchToGame();
 			}
 		});
-		mazeLost.add(startButton, gbc);
+		mazeLostButton.add(startButton);
+		JButton menuButton = new JButton(new ImageIcon("resources/main_menu.png"));
+		menuButton.setContentAreaFilled(false);
+		menuButton.setMargin(new Insets(0, 0, 0, 0));
+		menuButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainWindow.switchToMenu();
+			}
+		});
+		mazeLostButton.add(menuButton);
+		mazeLost.add(mazeLostButton, gbc);
+		
 		
 	}
 
