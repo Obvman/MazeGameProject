@@ -230,14 +230,14 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbcStatus.gridheight = 1;
 		
 		JPanel statusBar = new JPanel(new BorderLayout());
-//		statusBar.setBorder(BorderFactory.createLineBorder(Color.RED));
-		statusBar.setBorder(new EmptyBorder(20, 20, 20, 20));
+		statusBar.setBorder(BorderFactory.createLineBorder(Color.RED));
+//		statusBar.setBorder(new EmptyBorder(0, 40, 0, 40)); // set left and right padding
 		statusBar.setOpaque(false);
 		
 	
 		// status bar components
 		// TODO: remove place holder text
-		JPanel statusButtons = new JPanel(new FlowLayout());
+		JPanel statusButtons = new JPanel(new GridBagLayout()); // vertically aligns when no gbc are defined
 		statusButtons.setOpaque(false);
 		statusBar.add(statusButtons, BorderLayout.WEST);
 		
@@ -285,28 +285,31 @@ public class GameScreen extends JPanel implements ActionListener {
 
 
 		// dynamically updated components
-		JPanel statusFields = new JPanel(new FlowLayout());
+		JPanel statusFields = new JPanel(new GridBagLayout());
 		statusFields.setOpaque(false);
+		
+		GridBagConstraints gbcFields = new GridBagConstraints();
 		
 		objective = new JLabel();
 		objective.setForeground(Color.WHITE);
-		statusFields.add(objective);
+		gbcFields.ipadx = 50;
+		statusFields.add(objective, gbcFields);
 
 		monstersSlain = new JLabel();
 		monstersSlain.setForeground(Color.WHITE);
-		statusFields.add(monstersSlain);
+		statusFields.add(monstersSlain, gbcFields);
 
 		gemsCollected = new JLabel();
 		gemsCollected.setForeground(Color.WHITE);
-		statusFields.add(gemsCollected);
+		statusFields.add(gemsCollected, gbcFields);
 
 		time = new JLabel();
 		time.setForeground(Color.WHITE);
-		statusFields.add(time);
+		statusFields.add(time, gbcFields);
 
 		level = new JLabel();
 		level.setForeground(Color.WHITE);
-		statusFields.add(level);
+		statusFields.add(level, gbcFields);
 		
 		statusBar.add(statusFields, BorderLayout.EAST);
 		
