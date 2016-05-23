@@ -4,6 +4,7 @@ import java.awt.font.TextAttribute;
 import java.util.Map;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
 public class GameScreen extends JPanel implements ActionListener {
@@ -219,22 +220,27 @@ public class GameScreen extends JPanel implements ActionListener {
 	private void initMazeUI() {
 		mazeUI = new JPanel(new GridBagLayout());
 		mazeUI.setOpaque(false);
-		add(mazeUI, "MazeUI");
-
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.weightx = 1;
+		this.add(mazeUI, "MazeUI");
 
 		// status bar
-		gbc.weighty = 0.1;
-		JPanel statusBar = new JPanel();
-		statusBar.setBorder(BorderFactory.createLineBorder(Color.RED));
+		GridBagConstraints gbcStatus = new GridBagConstraints();
+		gbcStatus.fill = GridBagConstraints.BOTH;
+		gbcStatus.weighty = 0.1;
+		gbcStatus.weightx = 1;
+		gbcStatus.gridheight = 1;
+		
+		JPanel statusBar = new JPanel(new BorderLayout());
+//		statusBar.setBorder(BorderFactory.createLineBorder(Color.RED));
+		statusBar.setBorder(new EmptyBorder(20, 20, 20, 20));
 		statusBar.setOpaque(false);
-		mazeUI.add(statusBar, gbc);
-
-		// status bar
+		
+	
+		// status bar components
 		// TODO: remove place holder text
-		// main menu button
+		JPanel statusButtons = new JPanel(new FlowLayout());
+		statusButtons.setOpaque(false);
+		statusBar.add(statusButtons, BorderLayout.WEST);
+		
 		JButton mainMenu = new JButton(new ImageIcon("resources/main_menu.png"));
 		mainMenu.setContentAreaFilled(false);
 		mainMenu.setMargin(new Insets(0, 0, 0 ,0));
@@ -244,7 +250,7 @@ public class GameScreen extends JPanel implements ActionListener {
 				GameScreen.this.mainWindow.switchToMenu();
 			}
 		});
-		statusBar.add(mainMenu);
+		statusButtons.add(mainMenu);
 
 
 		// pause button
@@ -263,7 +269,7 @@ public class GameScreen extends JPanel implements ActionListener {
 				}
 			}
 		});
-		statusBar.add(pause);
+		statusButtons.add(pause);
 
 		// help button
 		JButton help = new JButton(new ImageIcon("resources/help.png"));
@@ -275,38 +281,48 @@ public class GameScreen extends JPanel implements ActionListener {
 				System.out.println("This should be similar to the tutorial screen");
 			}
 		});
-		statusBar.add(help);
+		statusButtons.add(help);
 
 
 		// dynamically updated components
+		JPanel statusFields = new JPanel(new FlowLayout());
+		statusFields.setOpaque(false);
+		
 		objective = new JLabel();
 		objective.setForeground(Color.WHITE);
-		statusBar.add(objective);
+		statusFields.add(objective);
 
 		monstersSlain = new JLabel();
 		monstersSlain.setForeground(Color.WHITE);
-		statusBar.add(monstersSlain);
+		statusFields.add(monstersSlain);
 
 		gemsCollected = new JLabel();
 		gemsCollected.setForeground(Color.WHITE);
-		statusBar.add(gemsCollected);
+		statusFields.add(gemsCollected);
 
 		time = new JLabel();
 		time.setForeground(Color.WHITE);
-		statusBar.add(time);
+		statusFields.add(time);
 
 		level = new JLabel();
 		level.setForeground(Color.WHITE);
-		statusBar.add(level);
+		statusFields.add(level);
+		
+		statusBar.add(statusFields, BorderLayout.EAST);
+		
+		mazeUI.add(statusBar, gbcStatus);
 
 
 		// maze panel
-		gbc.fill = GridBagConstraints.NONE;
-		gbc.weightx = 0;
-		gbc.weighty = 0.9;
-		gbc.gridy = 1;
+		GridBagConstraints gbcMaze = new GridBagConstraints();
+		
+		gbcMaze.fill = GridBagConstraints.NONE;
+		gbcMaze.weightx = 0;
+		gbcMaze.weighty = 0.9;
+		gbcMaze.gridy = 1;
+		gbcMaze.gridheight = 10;
 		mazeScreens = new JPanel(new CardLayout());
-		mazeUI.add(mazeScreens, gbc);
+		mazeUI.add(mazeScreens, gbcMaze);
 
 		// maze playing
 		mazePlaying = new MazePanel(currLevel, difficulty, spellType);
@@ -320,10 +336,10 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazePlaying.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 
 		// maze paused
-		mazePaused = new JPanel();
+		mazePaused = new JPanel(new GridBagLayout());
 		mazePaused.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+		mazePaused.add(new JLabel("Paused"));
 		mazeScreens.add(mazePaused, "Paused");
-
 	}
 
 	private void initMazeWon() {
