@@ -8,7 +8,7 @@ public class Maze {
 	// MAZE CONSTANTS
 	// maze configuration
 	
-	public static final int MAZE_CELL_SIZE = 28;
+	public static final int MAZE_CELL_SIZE = 32;
 
 	// TODO: enum?
 	// types of tiles
@@ -43,15 +43,12 @@ public class Maze {
 		// TODO: clean this 
 		// TODO: figure out maximum size given the window size
 		if (level < 3) {
-			MAZE_SIZE_1 = 25 - 2 * (3 - level);
-			MAZE_SIZE_2 = 45 - 4 * (3 - level);
+			MAZE_SIZE_1 = 25 - 2 * (5 - level);
+			MAZE_SIZE_2 = 45 - 4 * (5 - level);
 		} else {
 			MAZE_SIZE_1 = 25;
 			MAZE_SIZE_2 = 45;
 		}
-		
-//		MAZE_SIZE_1 = 11;
-//		MAZE_SIZE_2 = 11;
 		
 		// maze
 		mazeGenerator = new MazeGenerateDfs();
@@ -207,7 +204,6 @@ public class Maze {
 				Portal p = portalIter.next();
 				if (s.getBounds().intersects(p.getBounds())) {
 					if (p.canKill(s)) {
-						System.out.println("HELLO");
 						spellIter.remove();
 						portalIter.remove();
 						portals.remove(p);

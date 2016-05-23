@@ -18,9 +18,6 @@ public class GameScreen extends JPanel implements ActionListener {
 
 	// screens
 	private JPanel spellSelect;
-	private JPanel mazeWon;
-	private JPanel mazeLost;
-	private JPanel help;
 
 	private JPanel mazeUI;
 	private JPanel mazeScreens; // screen controller for mazePlaying & mazePaused
@@ -346,17 +343,14 @@ public class GameScreen extends JPanel implements ActionListener {
 		// maze playing
 		mazePlaying = new MazePanel(currLevel, difficulty, spellType);
 		maze = mazePlaying.getMaze();
+		mazeScreens.add(mazePlaying, "Playing");
 		
 		// pack the panel
 		Dimension size = new Dimension(Maze.MAZE_CELL_SIZE * maze.getGrid()[0].length, Maze.MAZE_CELL_SIZE * maze.getGrid().length);
 		mazeScreens.setPreferredSize(size);
-		
-		mazeScreens.add(mazePlaying, "Playing");
-		mazePlaying.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 
 		// maze paused
 		mazePaused = new JPanel(new GridBagLayout());
-		mazePaused.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
 		mazePaused.add(new JLabel("Paused"));
 		mazeScreens.add(mazePaused, "Paused");
 	}
