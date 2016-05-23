@@ -81,8 +81,6 @@ public class Maze {
 		}
 		
 		monsters = new LinkedList<Monster>();
-		
-		
 		// Place portals
 		portals = new LinkedList<Portal>();
 		int numPortals = (level < 3) ? 1 : 2;
@@ -104,6 +102,23 @@ public class Maze {
 					p.setPosition(portalX * MAZE_CELL_SIZE, portalY * MAZE_CELL_SIZE);
 					mazeGrid[portalY][portalX] = PORTAL_TILE;
 					portals.add(p);
+					placed = true;
+				}
+			}
+		}
+		
+		// place flying monsters
+		for (int i = 0; i < level*difficulty; i++) {
+			boolean placed = false;
+			while (!placed) {
+				int monsterX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
+				int monsterY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
+				
+				double distance = Math.sqrt(monsterX*monsterX + monsterY*monsterY);
+				if (distance > 0.33 * MAZE_SIZE_2 && mazeGrid[monsterY][monsterX] == PATH_TILE) {
+					Monster m = new FlyingMonster();
+					m.setPosition(monsterX * MAZE_CELL_SIZE, monsterY * MAZE_CELL_SIZE);
+					monsters.add(m);
 					placed = true;
 				}
 			}
