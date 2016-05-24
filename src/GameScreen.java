@@ -360,15 +360,21 @@ public class GameScreen extends JPanel implements ActionListener {
 		Dimension size = new Dimension(Maze.MAZE_CELL_SIZE * maze.getGrid()[0].length, Maze.MAZE_CELL_SIZE * maze.getGrid().length);
 		mazeScreens.setPreferredSize(size);
 
-		// maze paused
-		mazePaused = new JPanel(new GridBagLayout());
-		mazePaused.add(new JLabel("Paused"));
-		mazeScreens.add(mazePaused, "Paused");
-		
-		//help screen
+		initHelp();
+		initPause();
+	}
+	
+	private void initHelp() {
 		mazeHelp = new JPanel(new GridBagLayout());
 		mazeHelp.add(new JLabel("Placeholder help screen"));
 		mazeScreens.add(mazeHelp, "Help");
+	}
+	
+	private void initPause() {
+		mazePaused = new JPanel(new GridBagLayout());
+		mazePaused.add(new JLabel("Game Paused. Press P or H to continue playing."));
+		mazePaused.setBackground(Color.LIGHT_GRAY);
+		mazeScreens.add(mazePaused, "Paused");
 	}
 
 	private void initMazeWon() {
