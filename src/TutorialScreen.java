@@ -93,7 +93,7 @@ public class TutorialScreen extends JPanel {
 		tutorialScreen.add(ei2, gbc);
 		
 		gbc.gridy = 12;
-		JLabel e3 = new JLabel("However, you are not defenceless – press the space bar to unleash a powerful"
+		JLabel e3 = new JLabel("However, you are not defenceless - press the space bar to unleash a powerful"
 				+ " spell which will kill monsters, dragons and portals, clearing your path to freedom.", SwingConstants.CENTER);
 		e3.setForeground(Color.WHITE);
 		tutorialScreen.add(e3, gbc);
