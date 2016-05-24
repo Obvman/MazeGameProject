@@ -6,7 +6,6 @@ public interface MovableSprite {
 	int getY();
 	int getDX();
 	int getDY();
-	boolean canFly();
 	Image getImage();
 	Rectangle getBounds();
 	void manualMove(int dx, int dy);

@@ -254,7 +254,7 @@ public class Maze {
 			int monsterCellY = m.getY() / MAZE_CELL_SIZE;
 
 			if ((Math.abs(monsterCellX-playerCellX) > 0.25 * MAZE_SIZE_2 
-					&& Math.abs(monsterCellY-playerCellY) > 0.25 * MAZE_SIZE_1) || m.canFly()) {
+					&& Math.abs(monsterCellY-playerCellY) > 0.25 * MAZE_SIZE_1) || m instanceof FlyingMonster) {
 				// random movement
 				// TODO: improve algorithm
 
@@ -270,7 +270,7 @@ public class Maze {
 						}
 					}
 				}
-			} else if (!m.canFly()) {
+			} else if (!(m instanceof FlyingMonster)) {
 				// TODO: fix coordinates order is reversed
 				boolean[][] pathToPlayer = solveMaze(monsterCellY, monsterCellX, playerCellY, playerCellX);
 
@@ -326,7 +326,7 @@ public class Maze {
 			return false;
 		}
 		
-		if (sprite.canFly()) {
+		if (sprite instanceof FlyingMonster) {
 			return true;
 		}
 		

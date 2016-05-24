@@ -80,11 +80,6 @@ public class FlyingMonster extends Monster implements MovableSprite, ActionListe
 	}
 
 	@Override
-	public boolean canFly() {
-		return true;
-	}
-
-	@Override
 	public Image getImage() {
 		Image[] image = image_W;
 

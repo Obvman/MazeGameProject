@@ -112,11 +112,6 @@ public class Player implements MovableSprite, ActionListener {
 	}
 
 	@Override
-	public boolean canFly() {
-		return false;
-	}
-
-	@Override
 	public BufferedImage getImage() {
 		BufferedImage[] image = null;
 

@@ -53,11 +53,6 @@ public class WaterSpell implements Spell {
 	}
 
 	@Override
-	public boolean canFly() {
-		return true;
-	}
-	
-	@Override
 	public Image getImage() {
 		if (stage == 0) {
 			return image1;

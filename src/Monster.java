@@ -52,11 +52,6 @@ public class Monster implements MovableSprite {
 	}
     
 	@Override
-	public boolean canFly() {
-		return false;
-	}
-	
-	@Override
     public Image getImage() {
     	if (dx == 0 && dy < 0) {
     		return image_N;
