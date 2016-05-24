@@ -398,7 +398,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		JLabel oi1 = new JLabel(new ImageIcon("resources/obj.png"));
 		mazeHelp.add(oi1, gbc);
 		
-		mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
+		//mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
 		
 		//CONTROLS
 		gbc.ipady = 0;
@@ -434,7 +434,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		JLabel ei1 = new JLabel(new ImageIcon("resources/enemies.png"));
 		mazeHelp.add(ei1, gbc);
 		
-		mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
+		//mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
 		
 		//GEMS
 		gbc.ipady = 0;
@@ -444,10 +444,10 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeHelp.add(g1, gbc);
 		
 		gbc.gridy = 17;
-		JLabel gi1 = new JLabel(new ImageIcon("resources/gems.png"));
+		JLabel gi1 = new JLabel(new ImageIcon("resources/gemssmall.png"));
 		mazeHelp.add(gi1, gbc);
 		
-		mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
+		//mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
 
 		gbc.gridy = 20;
 		JLabel ret = new JLabel("Press P or H to resume playing.");
