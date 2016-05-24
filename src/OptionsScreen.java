@@ -19,7 +19,7 @@ public class OptionsScreen extends JPanel {
 		this.mainWindow = mainWindow;
 		
 		GridLayout layout = new GridLayout(0, 1);
-		setLayout(layout);
+		this.setLayout(layout);
 		
 		// default options
 		resolution = new Dimension(1600, 900);
@@ -28,6 +28,7 @@ public class OptionsScreen extends JPanel {
 		tmpDifficulty = difficulty;
 		
 		initResolutionPicker();
+		initControlSelector();
 		initDifficultyPicker();
 		initConfirmation();
 		repaint();
@@ -77,6 +78,19 @@ public class OptionsScreen extends JPanel {
 		resolutionPicker.add(resolutionLabel, gbc);
 		resolutionPicker.add(resolutionCB, gbc);
 	}
+
+    private void initControlSelector() {
+        JPanel controlPicker = new JPanel(new GridBagLayout());
+        controlPicker.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JLabel controlLabel = new JLabel("Controls placeholder");
+        controlLabel.setForeground(Color.WHITE);
+
+        controlPicker.add(controlLabel);
+
+        this.add(controlPicker);
+    }
 	
 	private void initDifficultyPicker() {
 		// resolution picker (dropdown list)

@@ -17,6 +17,11 @@ public class Player implements MovableSprite, ActionListener {
 	private LinkedList<Spell> spells;
 	private int spellType;
 	private boolean alive;
+    private int moveRightKey;
+    private int moveLeftKey;
+    private int moveUpKey;
+    private int moveDownKey;
+    private int shootKey;
 	
 
 	// character sprites
@@ -39,6 +44,13 @@ public class Player implements MovableSprite, ActionListener {
 		this.spellType = spellType;
 		alive = true;
 
+        // set default keys to arrow keys and space
+        moveRightKey = KeyEvent.VK_RIGHT;
+        moveLeftKey = KeyEvent.VK_LEFT;
+        moveUpKey = KeyEvent.VK_UP;
+        moveDownKey = KeyEvent.VK_DOWN;
+        shootKey = KeyEvent.VK_SPACE;
+        
 		// sprites
 		scaledHeight = (3 * Maze.MAZE_CELL_SIZE) / 4;
 
@@ -170,19 +182,19 @@ public class Player implements MovableSprite, ActionListener {
 
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
+		if (key == moveLeftKey) {
 			dx = -1;
 		}
 
-		if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
+		if (key == moveRightKey) {
 			dx = 1;
 		}
 
-		if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
+		if (key == moveUpKey) {
 			dy = -1;
 		}
 
-		if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
+		if (key == moveDownKey) {
 			dy = 1;
 		}
 	}
@@ -190,23 +202,23 @@ public class Player implements MovableSprite, ActionListener {
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
+		if (key == moveLeftKey) {
 			if (dx != 1) dx = 0;
 		}
 
-		if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
+		if (key == moveRightKey) {
 			if (dx != -1) dx = 0;
 		}
 
-		if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
+		if (key == moveUpKey) {
 			if (dy != 1) dy = 0;
 		}
 
-		if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
+		if (key == moveDownKey) {
 			if (dy != -1) dy = 0;
 		}
 
-		if (key == KeyEvent.VK_SPACE) {
+		if (key == shootKey) {
 			if (spells.size() < 2) {
 				// work out direction currently being faced
 				int lastDX = 0;
@@ -245,6 +257,27 @@ public class Player implements MovableSprite, ActionListener {
 			}
 		}
 	}
+
+    public void setKey(int keyCode, int keyValue) {
+        switch (keyCode) {
+            case 1:
+                moveRightKey = keyValue;
+                break;
+            case 2:
+                moveLeftKey = keyValue;
+                break;
+            case 3:
+                moveUpKey = keyValue;
+                break;
+            case 4:
+                moveDownKey = keyValue;
+                break;
+            case 5:
+                shootKey = keyValue;
+                break;
+        }
+
+    }
 
 	private BufferedImage getScaledImage(BufferedImage src, int w, int h){
 		int finalw = w;
