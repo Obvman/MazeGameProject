@@ -96,6 +96,7 @@ public class MenuScreen extends JPanel {
 		exitButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "pressEsc");
 		exitButton.getActionMap().put("pressEsc", exitPressed);
 		
+		buttonPanel.add(Box.createVerticalStrut(60));
 		buttonPanel.add(startButton);
 		buttonPanel.add(Box.createVerticalStrut(10));
 		buttonPanel.add(tutorialButton);
