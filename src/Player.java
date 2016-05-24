@@ -269,7 +269,6 @@ public class Player implements MovableSprite, ActionListener {
 	        clip.start();
 	       }
 	       catch(Exception ex){
-	    	   System.out.println("Exception for the boys");
 	       }
 	}
 

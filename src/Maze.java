@@ -405,7 +405,6 @@ public class Maze {
 	}
 	
 	private void playSound(String soundName) {
-		System.out.println("Playing for the boys");
 	       try 
 	       {
 	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
@@ -414,7 +413,6 @@ public class Maze {
 	        clip.start();
 	       }
 	       catch(Exception ex){
-	    	   System.out.println("Exception for the boys");
 	       }
 	}
 }
