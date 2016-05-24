@@ -41,12 +41,17 @@ public class GameScreen extends JPanel implements ActionListener {
 
 	// GameScreen controller
 	private Timer timer;
+	
+	// highscores
+	JTextField usernameField;
+	private String username;
 
 	public GameScreen(MainWindow mainWindow, int difficulty) {
 		this.mainWindow = mainWindow;
 		this.currLevel = 1;
 		this.difficulty = difficulty;
 		this.timer = new Timer(10, this);
+		this.username = "";
 
 		setLayout(new CardLayout());
 
@@ -448,11 +453,6 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 
 	private void initMazeLost() {
-		// Show a text field to input name
-		String userName = JOptionPane.showInputDialog("Enter your name for highscores: ");
-		// Remove whitespace
-		userName = userName.replaceAll("\\s+","");
-
 		HighscoresPanel mazeLost = new HighscoresPanel(new GridBagLayout()){
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
@@ -482,14 +482,38 @@ public class GameScreen extends JPanel implements ActionListener {
 		lostLevelLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 70));
 		mazeLost.add(lostLevelLabel, gbc);
 		
+		if (username.equals("")) {
+			gbc.gridy = 2;
+			JLabel highscoresLabel = new JLabel("Enter a name to share your highscore");
+			highscoresLabel.setForeground(Color.WHITE);
+			mazeLost.add(highscoresLabel, gbc);
+			
+			gbc.gridy = 3;
+			usernameField = new JTextField(20);
+			mazeLost.add(usernameField, gbc);
+			
+			gbc.gridy = 4;
+			JButton highscoreButton = new JButton("Share");
+			highscoreButton.addActionListener(new ActionListener()
+			{
+			  public void actionPerformed(ActionEvent e)
+			  {
+			    username = usernameField.getText();
+			    username = username.replaceAll("\\s+","");
+			    switchToMazeLost();
+			  }
+			});
+			mazeLost.add(highscoreButton, gbc);
+		}
+
 		
-		gbc.gridy = 2;
+		gbc.gridy = 5;
 		JLabel gameInfo= new JLabel("Game Results", SwingConstants.CENTER);
 		gameInfo.setForeground(Color.WHITE);
 		gameInfo.setFont(new Font("Devanagari MT", Font.PLAIN, 30));
 		mazeLost.add(gameInfo, gbc);
 		
-		gbc.gridy = 3;
+		gbc.gridy = 6;
 		JLabel faction = new JLabel("", SwingConstants.CENTER);
 		if (spellType == 1) {
 			faction.setText("Faction: Water");
@@ -502,24 +526,30 @@ public class GameScreen extends JPanel implements ActionListener {
 		faction.setForeground(Color.WHITE);
 		mazeLost.add(faction, gbc);
 		
-		gbc.gridy = 4;
+		gbc.gridy = 7;
 		JLabel monstersSlain = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), SwingConstants.CENTER);
 		monstersSlain.setForeground(Color.WHITE);
 		mazeLost.add(monstersSlain, gbc);
 		
-		gbc.gridy = 5;
+		gbc.gridy = 8;
 		JLabel gemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), SwingConstants.CENTER);
 		gemsCollected.setForeground(Color.WHITE);
 		mazeLost.add(gemsCollected, gbc);
 		
-		gbc.gridy = 6;
+		gbc.gridy = 8;
 		gbc.ipady = 5; // gaps between lines
 		JLabel numGemsCollected = new JLabel("Final score: " + maze.getScore(), SwingConstants.CENTER);
 		numGemsCollected.setForeground(Color.WHITE);
 		mazeLost.add(numGemsCollected, gbc);
 		
-		gbc.gridy = 7;
-		for (JLabel label : mazeLost.getHighscores(maze.getScore(), userName)) {
+		gbc.gridy = 9;
+		String name = "";
+		int score = 0;
+		if (!username.equals("")) {
+			name = username;
+			score = maze.getScore();
+		}
+		for (JLabel label : mazeLost.getHighscores(score, name)) {
 			mazeLost.add(label, gbc);
 			gbc.gridy++;
 		}
