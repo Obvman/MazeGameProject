@@ -21,6 +21,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	private JPanel mazeScreens; // screen controller for mazePlaying & mazePaused
 	private MazePanel mazePlaying;
 	private JPanel mazePaused;
+	private JPanel mazeHelp; //check if we need
 
 	// model
 	private Maze maze;
@@ -54,7 +55,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		setLayout(new CardLayout());
 
 		initSpellSelect();
-		initHelp();
 	}
 
 	public void gamePause() {
@@ -106,6 +106,11 @@ public class GameScreen extends JPanel implements ActionListener {
 	public void switchToMazePaused() {
 		CardLayout cl = (CardLayout) mazeScreens.getLayout();
 		cl.show(mazeScreens, "Paused");
+	}
+	
+	public void switchToMazeHelp() {
+		CardLayout cl = (CardLayout) mazeScreens.getLayout();
+		cl.show(mazeScreens, "Help");
 	}
 
 	@Override
@@ -213,9 +218,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		spellSelect.add(air, gbc);
 	}
 
-	private void initHelp() {
-
-	}
 
 	private void initMazeUI() {
 		mazeUI = new JPanel(new GridBagLayout());
@@ -290,7 +292,13 @@ public class GameScreen extends JPanel implements ActionListener {
 		AbstractAction helpPressed = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("This should be similar to the tutorial screen");
+				if (timer.isRunning()) {
+					gamePause();
+					switchToMazeHelp();
+				} else {
+					gameResume();
+					switchToMazePlaying();
+				}
 			}
 		};
 		help.addActionListener(helpPressed);
@@ -356,6 +364,11 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazePaused = new JPanel(new GridBagLayout());
 		mazePaused.add(new JLabel("Paused"));
 		mazeScreens.add(mazePaused, "Paused");
+		
+		//help screen
+		mazeHelp = new JPanel(new GridBagLayout());
+		mazeHelp.add(new JLabel("Placeholder help screen"));
+		mazeScreens.add(mazeHelp, "Help");
 	}
 
 	private void initMazeWon() {
