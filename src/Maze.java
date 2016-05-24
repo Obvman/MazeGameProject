@@ -39,21 +39,15 @@ public class Maze {
 	private int numGemsCollected;
 
 	public Maze(int level, int difficulty, int spellType) {
-		// the determine the height and width based on the level
-		// TODO: clean this 
-		// TODO: figure out maximum size given the window size
-		if (level < 3) {
-			MAZE_SIZE_1 = 21 - 4 * (3 - level);
-			MAZE_SIZE_2 = 37 - 8 * (3 - level);
-		} else {
-			MAZE_SIZE_1 = 21;
-			MAZE_SIZE_2 = 37;
-		}
+		// set maze height and width according to level
+		MAZE_SIZE_1 = 21 - 4 * (level < 3 ? 3 - level : 0);
+		MAZE_SIZE_2 = 37 - 8 * (level < 3 ? 3 - level : 0);
 		
-		// maze
+		// generate maze
 		mazeGenerator = new MazeGenerateDfs();
 		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2);
 
+		// spawn player
 		player = new Player(spellType);
 		
 		// place key
@@ -94,7 +88,10 @@ public class Maze {
 			}
 		}
 		
+		// set max monsters
 		maxMonsters = 6 * (level + difficulty);
+		
+		// spawn monsters at the start of game
 		activatePortals();
 	}
 	
@@ -194,10 +191,7 @@ public class Maze {
 				}
 			}
 		}
-		
 
-		// TODO: make it smoother pickup
-		
 		// check if key picked up
 		if (mazeGrid[playerCellY][playerCellX] == KEY_TILE) {
 			keyAcquired = true;
@@ -221,11 +215,12 @@ public class Maze {
 				player.manualMove(player.getDX(), 0); // move in X-axis direction only
 			}
 		}
+		
 		// update spell positions
 		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
 			Spell s = spellIter.next();
 
-			if (!withinMaze(s.getY()/MAZE_CELL_SIZE, s.getX()/MAZE_CELL_SIZE)) {
+			if (!withinMaze(s.getX()/MAZE_CELL_SIZE, s.getY()/MAZE_CELL_SIZE)) {
 				spellIter.remove();
 			} else {
 				s.updatePosition();
@@ -255,16 +250,15 @@ public class Maze {
 					}
 				}
 			} else if (!(m instanceof FlyingMonster)) {
-				// TODO: fix coordinates order is reversed
-				boolean[][] pathToPlayer = solveMaze(monsterCellY, monsterCellX, playerCellY, playerCellX);
+				boolean[][] pathToPlayer = solveMaze(monsterCellX, monsterCellY, playerCellX, playerCellY);
 
 				int nextCellX = monsterCellX;
 				int nextCellY = monsterCellY;
-				if (withinMaze(monsterCellY + 1, monsterCellX) && pathToPlayer[monsterCellY + 1][monsterCellX]) {
+				if (withinMaze(monsterCellX, monsterCellY + 1) && pathToPlayer[monsterCellY + 1][monsterCellX]) {
 					nextCellY += 1;
-				} else if (withinMaze(monsterCellY, monsterCellX - 1) && pathToPlayer[monsterCellY][monsterCellX - 1]) {
+				} else if (withinMaze(monsterCellX - 1, monsterCellY) && pathToPlayer[monsterCellY][monsterCellX - 1]) {
 					nextCellX -= 1;
-				} else if (withinMaze(monsterCellY - 1, monsterCellX) && pathToPlayer[monsterCellY - 1][monsterCellX]) {
+				} else if (withinMaze(monsterCellX, monsterCellY - 1) && pathToPlayer[monsterCellY - 1][monsterCellX]) {
 					nextCellY -= 1;
 				} else {
 					nextCellX += 1;
@@ -297,7 +291,7 @@ public class Maze {
 		}
 	}
 
-	private boolean withinMaze(int y, int x) {
+	private boolean withinMaze(int x, int y) {
 		return x >= 0 && y >= 0 && x < MAZE_SIZE_2 && y < MAZE_SIZE_1;
 	}
 
@@ -347,35 +341,35 @@ public class Maze {
 
 	private boolean recursiveSolve(int x, int y, int goalX, int goalY, boolean[][] visited, boolean[][] solution) {
 		if (x == goalX && y == goalY) {
-			solution[x][y] = true;
+			solution[y][x] = true;
 			return true; // If you reached the end
 		}
 
-		if (mazeGrid[x][y] == WALL_TILE || visited[x][y]) return false;  
+		if (mazeGrid[y][x] == WALL_TILE || visited[y][x]) return false;  
 		// If you are on a wall or already were here
 
-		visited[x][y] = true;
+		visited[y][x] = true;
 		if (x != 0) // Checks if not on left edge
 			if (recursiveSolve(x-1, y, goalX, goalY, visited, solution)) { // Recalls method one to the left
-				solution[x][y] = true; // Sets that path value to true;
+				solution[y][x] = true; // Sets that path value to true;
 				return true	;
 			}
 
-		if (x != MAZE_SIZE_1 - 1) // Checks if not on right edge
+		if (x != MAZE_SIZE_2 - 1) // Checks if not on right edge
 			if (recursiveSolve(x+1, y, goalX, goalY, visited, solution)) { // Recalls method one to the right
-				solution[x][y] = true;
+				solution[y][x] = true;
 				return true;
 			}
 
 		if (y != 0)  // Checks if not on top edge
 			if (recursiveSolve(x, y-1, goalX, goalY, visited, solution)) { // Recalls method one up
-				solution[x][y] = true;
+				solution[y][x] = true;
 				return true;
 			}
 
-		if (y != MAZE_SIZE_2 - 1) // Checks if not on bottom edge
+		if (y != MAZE_SIZE_1 - 1) // Checks if not on bottom edge
 			if (recursiveSolve(x, y+1, goalX, goalY, visited, solution)) { // Recalls method one down
-				solution[x][y] = true;
+				solution[y][x] = true;
 				return true;
 			}
 

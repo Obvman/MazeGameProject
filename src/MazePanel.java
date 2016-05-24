@@ -6,7 +6,7 @@ import javax.swing.*;
 public class MazePanel extends JPanel implements ActionListener {
 	private Maze maze;
 	private TileGenerator tileGenerator;
-	private Timer timer;
+	private Timer gameSpeedTimer;
 	private Timer portalTimer;
 
 	public MazePanel(int level, int difficulty, int spellType) {
@@ -15,8 +15,8 @@ public class MazePanel extends JPanel implements ActionListener {
 
 		maze = new Maze(level, difficulty, spellType);
 		tileGenerator = new TileGenerator();
-		timer = new Timer(10, this); // corresponds to game speed
-		timer.start();
+		gameSpeedTimer = new Timer(10, this); // corresponds to game speed
+		gameSpeedTimer.start();
 		portalTimer = new Timer(8000, this);
 		portalTimer.start();
 	}
@@ -26,11 +26,11 @@ public class MazePanel extends JPanel implements ActionListener {
 	}
 
 	public void setRunning(boolean isRunning) {
-		if (isRunning && !timer.isRunning()) {
-			timer.start();
+		if (isRunning && !gameSpeedTimer.isRunning()) {
+			gameSpeedTimer.start();
 			portalTimer.start();
-		} else if (!isRunning && timer.isRunning()){
-			timer.stop();
+		} else if (!isRunning && gameSpeedTimer.isRunning()){
+			gameSpeedTimer.stop();
 			portalTimer.stop();
 		}
 	}

@@ -45,11 +45,11 @@ public class HighscoresPanel extends JPanel {
 			// Output highscores to labels and 
 			// print new highscores to file.
 			PrintWriter writer = null;
-			try {
-				writer = new PrintWriter("resources/highscores.txt", "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				// TODO does nothing here
-			}
+				try {
+					writer = new PrintWriter("resources/highscores.txt", "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 			
 			int rank = 0;
 			for (HighscoresEntry entry : highscores) {

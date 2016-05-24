@@ -238,7 +238,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 	
 		// status bar components
-		// TODO: remove place holder text
 		JPanel statusButtons = new JPanel(new GridBagLayout()); // vertically aligns when no gbc are defined
 		statusButtons.setOpaque(false);
 		statusBar.add(statusButtons, BorderLayout.WEST);
@@ -369,7 +368,6 @@ public class GameScreen extends JPanel implements ActionListener {
 	private void initHelp() {
 		mazeHelp = new JPanel(new GridBagLayout());
 		mazeHelp.setBackground(Color.LIGHT_GRAY);
-		add(mazeHelp, "Maze Help");
 		mazeScreens.add(mazeHelp, "Help");
 		
 		GridBagConstraints gbc = new GridBagConstraints();

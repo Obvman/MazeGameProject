@@ -19,8 +19,8 @@ public class FlyingMonster extends Monster implements MovableSprite, ActionListe
 	private BufferedImage[] image_E;
 	private int scaledHeight;
 
-	private Timer timer;
-	private Timer timer2;
+	private Timer animationTimer;
+	private Timer changeDirectionTimer;
 	private int spriteCounter = 0;
 
 	public FlyingMonster() {
@@ -39,22 +39,20 @@ public class FlyingMonster extends Monster implements MovableSprite, ActionListe
 				image_E[i] = getScaledImage(ImageIO.read(new File("resources/dragon/dragonE" + (i+1) + ".png")), scaledHeight, scaledHeight);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-
-		timer = new Timer(300, this); 
-		timer.start();
-		timer2 = new Timer(2000, this);
-		timer2.start();
+		animationTimer = new Timer(300, this); 
+		animationTimer.start();
+		changeDirectionTimer = new Timer(2000, this);
+		changeDirectionTimer.start();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		spriteCounter = (spriteCounter + 1) % 4;
 
-		if (e.getSource() == timer2) {
+		if (e.getSource() == changeDirectionTimer) {
 			randomiseDirection();
 		}
 	}
