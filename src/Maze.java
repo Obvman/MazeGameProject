@@ -1,7 +1,12 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 
 public class Maze {
@@ -94,8 +99,24 @@ public class Maze {
 			}
 		}
 		
+		// place starting random monsters
+		for (int i = 0; i < 2 * (level + difficulty); i++) {
+			boolean placed = false;
+			while (!placed) {
+				int monsterX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
+				int monsterY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
+				
+				double distance = Math.sqrt(monsterX*monsterX + monsterY*monsterY);
+				if (distance > 0.33 * MAZE_SIZE_2 && mazeGrid[monsterY][monsterX] == PATH_TILE) {
+					Monster m = Math.random() > 0.5 ? new Monster() : new FlyingMonster();
+					m.setPosition(monsterX * MAZE_CELL_SIZE, monsterY * MAZE_CELL_SIZE);
+					monsters.add(m);
+					placed = true;
+				}
+			}
+		}
+		
 		maxMonsters = 6 * (level + difficulty);
-		activatePortals();
 	}
 	
 	public void addMonster(Monster m) {
@@ -207,6 +228,7 @@ public class Maze {
 		// check if gem picked up
 		if (mazeGrid[playerCellY][playerCellX] == GEM_TILE) {
 			numGemsCollected++;
+			playSound("resources/sound/gem.wav");
 			mazeGrid[playerCellY][playerCellX] = PATH_TILE;
 		}
 
@@ -380,5 +402,19 @@ public class Maze {
 			}
 
 		return false;
+	}
+	
+	private void playSound(String soundName) {
+		System.out.println("Playing for the boys");
+	       try 
+	       {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.start();
+	       }
+	       catch(Exception ex){
+	    	   System.out.println("Exception for the boys");
+	       }
 	}
 }
