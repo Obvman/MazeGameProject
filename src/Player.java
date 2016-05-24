@@ -7,6 +7,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 public class Player implements MovableSprite, ActionListener {
@@ -242,15 +245,31 @@ public class Player implements MovableSprite, ActionListener {
 				if (spellType == 1) {
 					spells.add(new WaterSpell(getX() + lastDX * imageWidth, 
 							getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY));
+					playSound("resources/sound/water.wav");
+					
 				} else if (spellType == 2) {
 					spells.add(new FireSpell(getX() + lastDX * imageWidth, 
 							getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY));
+					playSound("resources/sound/fire.wav");
 				} else if (spellType == 3) {
 					spells.add(new AirSpell(getX() + lastDX * imageWidth, 
 							getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY));
+					playSound("resources/sound/wind.wav");
 				}
 			}
 		}
+	}
+
+	private void playSound(String soundName) {
+	       try 
+	       {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.start();
+	       }
+	       catch(Exception ex){
+	       }
 	}
 
 	private BufferedImage getScaledImage(BufferedImage src, int w, int h){

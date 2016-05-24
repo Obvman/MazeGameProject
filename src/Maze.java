@@ -1,7 +1,12 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 
 public class Maze {
@@ -201,6 +206,7 @@ public class Maze {
 		// check if gem picked up
 		if (mazeGrid[playerCellY][playerCellX] == GEM_TILE) {
 			numGemsCollected++;
+			playSound("resources/sound/gem.wav");
 			mazeGrid[playerCellY][playerCellX] = PATH_TILE;
 		}
 
@@ -374,5 +380,17 @@ public class Maze {
 			}
 
 		return false;
+	}
+	
+	private void playSound(String soundName) {
+	       try 
+	       {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.start();
+	       }
+	       catch(Exception ex){
+	       }
 	}
 }
