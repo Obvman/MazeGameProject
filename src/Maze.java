@@ -177,6 +177,7 @@ public class Maze {
 				Monster m = monsterIter.next();
 				if (s.getBounds().intersects(m.getBounds())) {
 					numMonstersKilled++;
+					playSound("resources/sound/ripmonster.wav");
 					spellIter.remove();
 					monsterIter.remove();
 					canKillPortal = false;
@@ -391,6 +392,7 @@ public class Maze {
 	        clip.start();
 	       }
 	       catch(Exception ex){
+	    	   System.out.println("Trying");
 	       }
 	}
 }
