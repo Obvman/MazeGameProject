@@ -203,14 +203,9 @@ public class Maze {
 			for (Iterator<Portal> portalIter = portals.iterator(); portalIter.hasNext(); ) {
 				Portal p = portalIter.next();
 				if (s.getBounds().intersects(p.getBounds())) {
-					if (p.canKill(s)) {
-						spellIter.remove();
-						portalIter.remove();
-						portals.remove(p);
-					} else {
-						spellIter.remove();
-						p.weaken(s);
-					}
+					spellIter.remove();
+					portalIter.remove();
+					portals.remove(p);
 					break;
 				}
 			}
