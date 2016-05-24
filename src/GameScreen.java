@@ -304,7 +304,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		help.addActionListener(helpPressed);
 		// allow button to be activated by 'h' key as well as by clicking
 		pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_H,0), "pressH");
-		pause.getActionMap().put("pressH", pausePressed);
+		pause.getActionMap().put("pressH", helpPressed);
 		statusButtons.add(help);
 
 
@@ -366,8 +366,93 @@ public class GameScreen extends JPanel implements ActionListener {
 	
 	private void initHelp() {
 		mazeHelp = new JPanel(new GridBagLayout());
-		mazeHelp.add(new JLabel("Placeholder help screen"));
+		mazeHelp.setBackground(Color.LIGHT_GRAY);
+		add(mazeHelp, "Maze Help");
 		mazeScreens.add(mazeHelp, "Help");
+		
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		gbc.ipady = 30;
+		gbc.gridy = 2;
+		JLabel help = new JLabel("IN-GAME HELP SCREEN");
+		mazeHelp.add(help, gbc);
+		
+		
+	
+		//OBJECTIVE
+		gbc.ipady = 0;
+		gbc.gridy = 3;
+		JLabel o1 = new JLabel("OBJECTIVE");
+		mazeHelp.add(o1, gbc);
+		
+		gbc.gridy = 4;
+		JLabel o2 = new JLabel("The objective is to reach the end of the maze with the highest score.");
+		mazeHelp.add(o2, gbc);
+		
+		gbc.gridy = 5;
+		JLabel o3 = new JLabel("First retrieve the key from it's hiding place, then use it to unlock the steel door.");
+		mazeHelp.add(o3, gbc);
+		
+		gbc.ipady = 10;
+		gbc.gridy = 6;
+		JLabel oi1 = new JLabel(new ImageIcon("resources/obj.png"));
+		mazeHelp.add(oi1, gbc);
+		
+		mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
+		
+		//CONTROLS
+		gbc.ipady = 0;
+		gbc.gridy = 7;
+		JLabel c1 = new JLabel("CONTROLS");
+		mazeHelp.add(c1, gbc);
+		
+		gbc.gridy = 8;
+		JLabel c2 = new JLabel("Use the arrow keys (default) to navigate the maze. Press space to shoot a spell.");
+		mazeHelp.add(c2, gbc);
+		
+		gbc.gridy = 9;
+		JLabel ci1 = new JLabel(new ImageIcon("resources/controls.png"));
+		mazeHelp.add(ci1, gbc);
+		
+		//ENEMIES
+		gbc.ipady = 0;
+		gbc.gridy = 10;
+		JLabel e1 = new JLabel("ENEMIES");
+		mazeHelp.add(e1, gbc);
+		
+		gbc.gridy = 11;
+		JLabel e2 = new JLabel("Spells are used to kill monsters and dragons, and destroy portals.");
+		mazeHelp.add(e2, gbc);
+		
+		gbc.gridy = 12;
+		JLabel e3 = new JLabel("Monsters are restriced to navigating the maze, whereas dragons can"
+				+ "fly over the lava to find you.");
+		mazeHelp.add(e3, gbc);
+		
+		gbc.ipady = 10;
+		gbc.gridy = 13;
+		JLabel ei1 = new JLabel(new ImageIcon("resources/enemies.png"));
+		mazeHelp.add(ei1, gbc);
+		
+		mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
+		
+		//GEMS
+		gbc.ipady = 0;
+		gbc.ipady = 0;
+		gbc.gridy = 16;
+		JLabel g1 = new JLabel("Collect gems to increase your score.");
+		mazeHelp.add(g1, gbc);
+		
+		gbc.gridy = 17;
+		JLabel gi1 = new JLabel(new ImageIcon("resources/gems.png"));
+		mazeHelp.add(gi1, gbc);
+		
+		mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
+
+		gbc.gridy = 20;
+		JLabel ret = new JLabel("Press P or H to resume playing.");
+		mazeHelp.add(ret, gbc);
+		
 	}
 	
 	private void initPause() {
