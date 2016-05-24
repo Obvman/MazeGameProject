@@ -261,7 +261,7 @@ public class GameScreen extends JPanel implements ActionListener {
 
 
 		// pause button
-		JButton pause = new JButton(new ImageIcon("resources/pause.png"));
+		final JButton pause = new JButton(new ImageIcon("resources/pause.png"));
 		pause.setContentAreaFilled(false);
 		pause.setMargin(new Insets(0, 0, 0 ,0));
 		
@@ -269,9 +269,11 @@ public class GameScreen extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (timer.isRunning()) {
+					pause.setIcon(new ImageIcon("resources/unpause.png"));
 					gamePause();
 					switchToMazePaused();
 				} else {
+					pause.setIcon(new ImageIcon("resources/pause.png"));
 					gameResume();
 					switchToMazePlaying();
 				}
@@ -457,7 +459,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	
 	private void initPause() {
 		mazePaused = new JPanel(new GridBagLayout());
-		mazePaused.add(new JLabel("Game Paused. Press P or H to continue playing."));
+		mazePaused.add(new JLabel("Game Paused. TODO: make U instead of (H or P) the unpause button"));
 		mazePaused.setBackground(Color.LIGHT_GRAY);
 		mazeScreens.add(mazePaused, "Paused");
 	}
