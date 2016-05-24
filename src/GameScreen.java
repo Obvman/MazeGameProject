@@ -377,11 +377,10 @@ public class GameScreen extends JPanel implements ActionListener {
 		JLabel help = new JLabel("IN-GAME HELP SCREEN");
 		mazeHelp.add(help, gbc);
 		
-		//mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
 		
-		gbc.ipady = 0;
-		
+	
 		//OBJECTIVE
+		gbc.ipady = 0;
 		gbc.gridy = 3;
 		JLabel o1 = new JLabel("OBJECTIVE");
 		mazeHelp.add(o1, gbc);
@@ -394,11 +393,15 @@ public class GameScreen extends JPanel implements ActionListener {
 		JLabel o3 = new JLabel("First retrieve the key from it's hiding place, then use it to unlock the steel door.");
 		mazeHelp.add(o3, gbc);
 		
+		gbc.ipady = 10;
 		gbc.gridy = 6;
 		JLabel oi1 = new JLabel(new ImageIcon("resources/obj.png"));
 		mazeHelp.add(oi1, gbc);
 		
+		mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
+		
 		//CONTROLS
+		gbc.ipady = 0;
 		gbc.gridy = 7;
 		JLabel c1 = new JLabel("CONTROLS");
 		mazeHelp.add(c1, gbc);
@@ -412,7 +415,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeHelp.add(ci1, gbc);
 		
 		//ENEMIES
-
+		gbc.ipady = 0;
 		gbc.gridy = 10;
 		JLabel e1 = new JLabel("ENEMIES");
 		mazeHelp.add(e1, gbc);
@@ -426,11 +429,15 @@ public class GameScreen extends JPanel implements ActionListener {
 				+ "fly over the lava to find you.");
 		mazeHelp.add(e3, gbc);
 		
+		gbc.ipady = 10;
 		gbc.gridy = 13;
 		JLabel ei1 = new JLabel(new ImageIcon("resources/enemies.png"));
 		mazeHelp.add(ei1, gbc);
 		
+		mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
+		
 		//GEMS
+		gbc.ipady = 0;
 		gbc.ipady = 0;
 		gbc.gridy = 16;
 		JLabel g1 = new JLabel("Collect gems to increase your score.");
@@ -439,6 +446,8 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbc.gridy = 17;
 		JLabel gi1 = new JLabel(new ImageIcon("resources/gems.png"));
 		mazeHelp.add(gi1, gbc);
+		
+		mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
 
 		gbc.gridy = 20;
 		JLabel ret = new JLabel("Press P or H to resume playing.");
