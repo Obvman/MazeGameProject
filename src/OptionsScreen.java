@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -9,6 +10,7 @@ public class OptionsScreen extends JPanel {
 	// options
 	Dimension resolution;
 	int difficulty; // 1, 2, or 3
+    ArrayList<Integer> validKeysArray;
 	
 	// tmp options
 	Dimension tmpResolution;
@@ -27,6 +29,15 @@ public class OptionsScreen extends JPanel {
 		tmpResolution = resolution;
 		tmpDifficulty = difficulty;
 		
+        // initalise array of valid keys for remapping
+        // SORRY I DON'T KNOW A BETTER WAY TO DO THIS
+        Integer[] validKeys = {KeyEvent.VK_Q, KeyEvent.VK_W, KeyEvent.VK_E, KeyEvent.VK_R, KeyEvent.VK_T, KeyEvent.VK_Y, KeyEvent.VK_U, KeyEvent.VK_I, KeyEvent.VK_O, KeyEvent.VK_P, KeyEvent.VK_A, KeyEvent.VK_S, KeyEvent.VK_D, KeyEvent.VK_F, KeyEvent.VK_G, KeyEvent.VK_H, KeyEvent.VK_J, KeyEvent.VK_K, KeyEvent.VK_L, KeyEvent.VK_Z, KeyEvent.VK_Z, KeyEvent.VK_X, KeyEvent.VK_C, KeyEvent.VK_V, KeyEvent.VK_B, KeyEvent.VK_N, KeyEvent.VK_M, KeyEvent.VK_1, KeyEvent.VK_2};
+        ArrayList<Integer> validKeyList = new ArrayList(validKeys.length);
+        for (int i = 0; i < validKeys.length; ++i) {
+            validKeyList.add(validKeys[i]);
+        }
+
+
 		initResolutionPicker();
 		initControlSelector();
 		initDifficultyPicker();
@@ -87,7 +98,35 @@ public class OptionsScreen extends JPanel {
         JLabel controlLabel = new JLabel("Controls placeholder");
         controlLabel.setForeground(Color.WHITE);
 
+
+        gbc.ipady = 5;
+        gbc.gridy = 0;
         controlPicker.add(controlLabel);
+
+        gbc.gridy = 1;
+        JLabel test1 = new JLabel("Right");
+        test1.setForeground(Color.WHITE);
+        controlPicker.add(test1, gbc);
+
+        gbc.gridy = 2;
+        JLabel test2 = new JLabel("Left");
+        test2.setForeground(Color.WHITE);
+        controlPicker.add(test2, gbc);
+
+        gbc.gridy = 3;
+        JLabel test3 = new JLabel("Up");
+        test3.setForeground(Color.WHITE);
+        controlPicker.add(test3, gbc);
+        
+        gbc.gridy = 4;
+        JLabel test4 = new JLabel("Down");
+        test4.setForeground(Color.WHITE);
+        controlPicker.add(test4, gbc);
+
+        gbc.gridy = 5;
+        JLabel test5 = new JLabel("Shoot");
+        test5.setForeground(Color.WHITE);
+        controlPicker.add(test5, gbc);
 
         this.add(controlPicker);
     }
