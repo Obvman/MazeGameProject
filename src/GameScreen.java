@@ -304,7 +304,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		help.addActionListener(helpPressed);
 		// allow button to be activated by 'h' key as well as by clicking
 		pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_H,0), "pressH");
-		pause.getActionMap().put("pressH", pausePressed);
+		pause.getActionMap().put("pressH", helpPressed);
 		statusButtons.add(help);
 
 
