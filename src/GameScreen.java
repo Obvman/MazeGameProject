@@ -21,7 +21,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	private JPanel mazeScreens; // screen controller for mazePlaying & mazePaused
 	private MazePanel mazePlaying;
 	private JPanel mazePaused;
-	private JPanel mazeHelp; //check if we need
+	private JPanel mazeHelp; // check if we need
 
 	// model
 	private Maze maze;

@@ -43,11 +43,11 @@ public class Maze {
 		// TODO: clean this 
 		// TODO: figure out maximum size given the window size
 		if (level < 3) {
-			MAZE_SIZE_1 = 25 - 2 * (5 - level);
-			MAZE_SIZE_2 = 45 - 4 * (5 - level);
+			MAZE_SIZE_1 = 21 - 4 * (3 - level);
+			MAZE_SIZE_2 = 37 - 8 * (3 - level);
 		} else {
-			MAZE_SIZE_1 = 25;
-			MAZE_SIZE_2 = 45;
+			MAZE_SIZE_1 = 21;
+			MAZE_SIZE_2 = 37;
 		}
 		
 		// maze
