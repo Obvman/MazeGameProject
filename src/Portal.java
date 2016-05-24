@@ -3,7 +3,6 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
-
 public class Portal {
 	private int x;
 	private int y;

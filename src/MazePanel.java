@@ -62,14 +62,16 @@ public class MazePanel extends JPanel implements ActionListener {
 				else if (mazeGrid[i][j] == Maze.WALL_TILE) tile = tileGenerator.getWallTile();
 				else if (mazeGrid[i][j] == Maze.START_TILE) tile = tileGenerator.getStartTile();
 				else if (mazeGrid[i][j] == Maze.END_TILE) tile = tileGenerator.getEndTile();
+				else if (mazeGrid[i][j] == Maze.KEY_TILE) tile = tileGenerator.getKeyTile(); 
 				else tile = tileGenerator.getPathTile();
 
-				// key
 				g.drawImage(tile, x, y, this);
-				if (mazeGrid[i][j] == Maze.KEY_TILE) {
-					g.drawImage(tileGenerator.getKeyImage(), x, y, this);
-				} else if (mazeGrid[i][j] == Maze.GEM_TILE) {
-					g.drawImage(tileGenerator.getGemImage(x, y), x, y, this);
+				
+				// overlay gem on top of the tiles
+				if (mazeGrid[i][j] == Maze.GEM_TILE) {
+					Image gemImage = tileGenerator.getGemImage(x, y);
+					g.drawImage(gemImage, x + (Maze.MAZE_CELL_SIZE/2 - gemImage.getWidth(this)/2), 
+									      y + (Maze.MAZE_CELL_SIZE/2 - gemImage.getHeight(this)/2), this);
 				}
 
 				// create the illusion of connected wall tiles
