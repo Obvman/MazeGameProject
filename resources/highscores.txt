@@ -1,4 +1,5 @@
 Test 2000
+Anna 1600
 Hello 1500
 World 1400
 How 1400
@@ -6,5 +7,4 @@ Are 1000
 Jeff 950
 You 840
 Going 650
- 550
-A 420
+Leon 550
