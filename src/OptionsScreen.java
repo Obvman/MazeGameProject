@@ -11,10 +11,20 @@ public class OptionsScreen extends JPanel {
 	Dimension resolution;
 	int difficulty; // 1, 2, or 3
     ArrayList<Integer> validKeysArray;
+    private int moveRightKey;
+    private int moveLeftKey;
+    private int moveUpKey;
+    private int moveDownKey;
+    private int shootKey;
 	
 	// tmp options
 	Dimension tmpResolution;
 	int tmpDifficulty;
+	private int tmpRightKey;
+	private int tmpLeftKey;
+	private int tmpUpKey;
+	private int tmpDownKey;
+	private int tmpSpaceKey;
 	
 	
 	public OptionsScreen (MainWindow mainWindow) {
@@ -31,10 +41,23 @@ public class OptionsScreen extends JPanel {
 		
         // initalise array of valid keys for remapping
         // SORRY I DON'T KNOW A BETTER WAY TO DO THIS
-        Integer[] validKeys = {KeyEvent.VK_Q, KeyEvent.VK_W, KeyEvent.VK_E, KeyEvent.VK_R, KeyEvent.VK_T, KeyEvent.VK_Y, KeyEvent.VK_U, KeyEvent.VK_I, KeyEvent.VK_O, KeyEvent.VK_P, KeyEvent.VK_A, KeyEvent.VK_S, KeyEvent.VK_D, KeyEvent.VK_F, KeyEvent.VK_G, KeyEvent.VK_H, KeyEvent.VK_J, KeyEvent.VK_K, KeyEvent.VK_L, KeyEvent.VK_Z, KeyEvent.VK_Z, KeyEvent.VK_X, KeyEvent.VK_C, KeyEvent.VK_V, KeyEvent.VK_B, KeyEvent.VK_N, KeyEvent.VK_M, KeyEvent.VK_1, KeyEvent.VK_2};
-        ArrayList<Integer> validKeyList = new ArrayList(validKeys.length);
-        for (int i = 0; i < validKeys.length; ++i) {
-            validKeyList.add(validKeys[i]);
+        Integer[] validKeysTmp = {KeyEvent.VK_Q, KeyEvent.VK_W, KeyEvent.VK_E,
+        		KeyEvent.VK_R, KeyEvent.VK_T, KeyEvent.VK_Y, KeyEvent.VK_U,
+        		KeyEvent.VK_I, KeyEvent.VK_O, KeyEvent.VK_P, KeyEvent.VK_A,
+        		KeyEvent.VK_S, KeyEvent.VK_D, KeyEvent.VK_F, KeyEvent.VK_G,
+        		KeyEvent.VK_H, KeyEvent.VK_J, KeyEvent.VK_K, KeyEvent.VK_L,
+        		KeyEvent.VK_Z, KeyEvent.VK_Z, KeyEvent.VK_X, KeyEvent.VK_C,
+        		KeyEvent.VK_V, KeyEvent.VK_B, KeyEvent.VK_N, KeyEvent.VK_M,
+        		KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4,
+        		KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8,
+        		KeyEvent.VK_9, KeyEvent.VK_0, KeyEvent.VK_TAB, KeyEvent.VK_SHIFT,
+        		KeyEvent.VK_ALT, KeyEvent.VK_CONTROL, KeyEvent.VK_SPACE,
+        		KeyEvent.VK_COMMA, KeyEvent.VK_PERIOD, KeyEvent.VK_SLASH,
+        		KeyEvent.VK_MINUS, KeyEvent.VK_PLUS};
+        // stick mappings into ArrayList for better adding/removing
+        ArrayList<Integer> validKeyList = new ArrayList<Integer>(validKeysTmp.length);
+        for (int i = 0; i < validKeysTmp.length; ++i) {
+            validKeyList.add(validKeysTmp[i]);
         }
 
 
@@ -52,6 +75,44 @@ public class OptionsScreen extends JPanel {
 	public int getDifficulty() {
 		return difficulty;
 	}
+	
+	public void setKey(int keyCode, int keyValue) {
+        switch (keyCode) {
+            case 1:
+                moveRightKey = keyValue;
+                break;
+            case 2:
+                moveLeftKey = keyValue;
+                break;
+            case 3:
+                moveUpKey = keyValue;
+                break;
+            case 4:
+                moveDownKey = keyValue;
+                break;
+            case 5:
+                shootKey = keyValue;
+                break;
+        }
+
+    }
+    
+    public int getKey(int keyCode) {
+    	switch (keyCode) {
+	        case 1:
+	            return moveRightKey;
+	        case 2:
+	        	return moveLeftKey;
+	        case 3:
+	        	return moveUpKey;
+	        case 4:
+	        	return moveDownKey;
+	        case 5:
+	        	return shootKey;
+	        default:
+	        	return -1;
+    	}
+    }
 	
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -90,6 +151,12 @@ public class OptionsScreen extends JPanel {
 		resolutionPicker.add(resolutionCB, gbc);
 	}
 
+	// list of buttons that bring up a dialog when clicked
+	// dialog prompts user to press the key they want to rebind to
+	// then disappears. Key is confirmed mapped when 'Confirm' button is clicked
+	// TODO each button shows the current key that it's mapped to
+	// valid keys do not include keys that are already mapped (prevents remapping to used keys)
+	// if the already mapped key is pressed with dialog open, nothing should happen
     private void initControlSelector() {
         JPanel controlPicker = new JPanel(new GridBagLayout());
         controlPicker.setOpaque(false);
@@ -98,35 +165,54 @@ public class OptionsScreen extends JPanel {
         JLabel controlLabel = new JLabel("Controls placeholder");
         controlLabel.setForeground(Color.WHITE);
 
-
+        AbstractAction showDialog = new AbstractAction() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		JDialog keyRemapDialog = new JDialog();
+                JPanel dialogMessage = new JPanel();
+                dialogMessage.add(new JLabel("Press the key you wish to rebind to"));
+                keyRemapDialog.add(dialogMessage);
+                keyRemapDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                keyRemapDialog.setLocationRelativeTo(mainWindow);
+                keyRemapDialog.pack();
+                keyRemapDialog.setVisible(true);
+        	}
+        };
+        
         gbc.ipady = 5;
         gbc.gridy = 0;
         controlPicker.add(controlLabel);
 
         gbc.gridy = 1;
-        JLabel test1 = new JLabel("Right");
-        test1.setForeground(Color.WHITE);
-        controlPicker.add(test1, gbc);
+        JButton rightRemap = new JButton("Right");
+        rightRemap.setForeground(Color.WHITE);
+        rightRemap.addActionListener(showDialog);
+        controlPicker.add(rightRemap, gbc);
+        
 
         gbc.gridy = 2;
-        JLabel test2 = new JLabel("Left");
-        test2.setForeground(Color.WHITE);
-        controlPicker.add(test2, gbc);
+        JButton leftRemap = new JButton("Left");
+        leftRemap.setForeground(Color.WHITE);
+        leftRemap.addActionListener(showDialog);
+        controlPicker.add(leftRemap, gbc);
 
         gbc.gridy = 3;
-        JLabel test3 = new JLabel("Up");
-        test3.setForeground(Color.WHITE);
-        controlPicker.add(test3, gbc);
+        JButton upRemap = new JButton("Up");
+        upRemap.setForeground(Color.WHITE);
+        upRemap.addActionListener(showDialog);
+        controlPicker.add(upRemap, gbc);
         
         gbc.gridy = 4;
-        JLabel test4 = new JLabel("Down");
-        test4.setForeground(Color.WHITE);
-        controlPicker.add(test4, gbc);
+        JButton downRemap = new JButton("Down");
+        downRemap.setForeground(Color.WHITE);
+        downRemap.addActionListener(showDialog);
+        controlPicker.add(downRemap, gbc);
 
         gbc.gridy = 5;
-        JLabel test5 = new JLabel("Shoot");
-        test5.setForeground(Color.WHITE);
-        controlPicker.add(test5, gbc);
+        JButton shootRemap = new JButton("Shoot");
+        shootRemap.setForeground(Color.WHITE);
+        shootRemap.addActionListener(showDialog);
+        controlPicker.add(shootRemap, gbc);        
 
         this.add(controlPicker);
     }

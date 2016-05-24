@@ -258,27 +258,6 @@ public class Player implements MovableSprite, ActionListener {
 		}
 	}
 
-    public void setKey(int keyCode, int keyValue) {
-        switch (keyCode) {
-            case 1:
-                moveRightKey = keyValue;
-                break;
-            case 2:
-                moveLeftKey = keyValue;
-                break;
-            case 3:
-                moveUpKey = keyValue;
-                break;
-            case 4:
-                moveDownKey = keyValue;
-                break;
-            case 5:
-                shootKey = keyValue;
-                break;
-        }
-
-    }
-
 	private BufferedImage getScaledImage(BufferedImage src, int w, int h){
 		int finalw = w;
 		int finalh = h;
