@@ -80,7 +80,7 @@ public class Maze {
 		// place portals
 		monsters = new LinkedList<Monster>();
 		portals = new LinkedList<Portal>();
-		for (int i = 0; i < 3 * (level + difficulty); i++) {
+		for (int i = 0; i < 2 * (level + difficulty); i++) {
 			boolean placed = false;
 			while (!placed) {
 				int portalX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
@@ -95,7 +95,7 @@ public class Maze {
 		}
 		
 		// place starting random monsters
-		for (int i = 0; i < 3 * (level + difficulty); i++) {
+		for (int i = 0; i < 2 * (level + difficulty); i++) {
 			boolean placed = false;
 			while (!placed) {
 				int monsterX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
@@ -111,7 +111,7 @@ public class Maze {
 			}
 		}
 		
-		maxMonsters = 9 * (level + difficulty);
+		maxMonsters = 6 * (level + difficulty);
 	}
 	
 	public void addMonster(Monster m) {

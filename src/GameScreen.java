@@ -467,15 +467,12 @@ public class GameScreen extends JPanel implements ActionListener {
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		gbc.gridy = 0;
-		gbc.weighty = 0.2;
-	    mazeLost.add(new JLabel(" "), gbc);  // blank JLabel
-	    
 	    gbc.weighty = 0;
 	    gbc.weightx = 1;
 	    
 		gbc.gridy = 1;
 	    
-		JLabel lostLevelLabel = new JLabel("<html><center>LEVEL " + currLevel + "<br>YOU DIED</center></html>", SwingConstants.CENTER);
+		JLabel lostLevelLabel = new JLabel("LEVEL " + currLevel + "... YOU DIED", SwingConstants.CENTER);
 		lostLevelLabel.setForeground(Color.RED);
 		lostLevelLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 70));
 		mazeLost.add(lostLevelLabel, gbc);
@@ -534,13 +531,13 @@ public class GameScreen extends JPanel implements ActionListener {
 		gemsCollected.setForeground(Color.WHITE);
 		mazeLost.add(gemsCollected, gbc);
 		
-		gbc.gridy = 8;
+		gbc.gridy = 9;
 		gbc.ipady = 5; // gaps between lines
 		JLabel numGemsCollected = new JLabel("Final score: " + maze.getScore(), SwingConstants.CENTER);
 		numGemsCollected.setForeground(Color.WHITE);
 		mazeLost.add(numGemsCollected, gbc);
 		
-		gbc.gridy = 9;
+		gbc.gridy = 10;
 		String name = "";
 		int score = 0;
 		if (!username.equals("")) {
@@ -574,8 +571,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		});
 		mazeLostButton.add(menuButton);
 		mazeLost.add(mazeLostButton, gbc);
-		
-		
 	}
 
 	private Icon getScaledImageIcon(ImageIcon img, int width, int height) {

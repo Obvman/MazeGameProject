@@ -62,7 +62,7 @@ public class OptionsScreen extends JPanel {
 		
 		String[] resolutions = { "1920x1080", "1680x1050", "1600x900", "1440x900", "1366x768" };
 		JComboBox<String> resolutionCB = new JComboBox<String>(resolutions);
-		resolutionCB.setSelectedIndex(1); // 1600x900
+		resolutionCB.setSelectedIndex(2); // 1600x900
 		resolutionCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

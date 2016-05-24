@@ -17,6 +17,7 @@ public class Player implements MovableSprite, ActionListener {
 	private LinkedList<Spell> spells;
 	private int spellType;
 	private boolean alive;
+	
 
 	// character sprites
 	private BufferedImage[] image_N;
@@ -151,7 +152,7 @@ public class Player implements MovableSprite, ActionListener {
 			}
 		}
 		return spells;
-	}
+	}		
 
 	public boolean isAlive() {
 		return alive;
