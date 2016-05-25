@@ -34,12 +34,19 @@ public class OptionsScreen extends JPanel {
 
 		GridLayout layout = new GridLayout(0, 1);
 		this.setLayout(layout);
+		
+		// set default keys
+		moveRightKey = KeyEvent.VK_RIGHT;
+		moveLeftKey = KeyEvent.VK_LEFT;
+		moveUpKey = KeyEvent.VK_UP;
+		moveDownKey = KeyEvent.VK_DOWN;
+		shootKey = KeyEvent.VK_SPACE;
 
 		initResolutionPicker();
 		initControlSelector();
 		initDifficultyPicker();
 		initConfirmation();
-
+		
 		// initalise array of valid keys for remapping
 		// SORRY I DON'T KNOW A BETTER WAY TO DO THIS
 		Integer[] validKeysTmp = {KeyEvent.VK_Q, KeyEvent.VK_W, KeyEvent.VK_E,
@@ -205,34 +212,40 @@ public class OptionsScreen extends JPanel {
 		controlPicker.add(controlLabel);
 
 		gbc.gridy = 1;
-		JButton rightRemap = new JButton("Right");
-		rightRemap.setForeground(Color.WHITE);
+		gbc.gridwidth = 40;
+		JButton rightRemap = new JButton("Right ("+ KeyEvent.getKeyText(moveRightKey)+")");
+		rightRemap.setForeground(Color.BLACK);
 		rightRemap.addActionListener(showDialog);
+		rightRemap.setPreferredSize(new Dimension(150,30));
 		controlPicker.add(rightRemap, gbc);
 
 
 		gbc.gridy = 2;
-		JButton leftRemap = new JButton("Left");
-		leftRemap.setForeground(Color.WHITE);
+		JButton leftRemap = new JButton("Left ("+ KeyEvent.getKeyText(moveLeftKey)+")");
+		leftRemap.setForeground(Color.BLACK);
 		leftRemap.addActionListener(showDialog);
+		leftRemap.setPreferredSize(new Dimension(150,30));
 		controlPicker.add(leftRemap, gbc);
 
 		gbc.gridy = 3;
-		JButton upRemap = new JButton("Up");
-		upRemap.setForeground(Color.WHITE);
+		JButton upRemap = new JButton("Up ("+ KeyEvent.getKeyText(moveUpKey)+")");
+		upRemap.setForeground(Color.BLACK);
 		upRemap.addActionListener(showDialog);
+		upRemap.setPreferredSize(new Dimension(150,30));
 		controlPicker.add(upRemap, gbc);
 
 		gbc.gridy = 4;
-		JButton downRemap = new JButton("Down");
-		downRemap.setForeground(Color.WHITE);
+		JButton downRemap = new JButton("Down ("+ KeyEvent.getKeyText(moveDownKey)+")");
+		downRemap.setForeground(Color.BLACK);
 		downRemap.addActionListener(showDialog);
+		downRemap.setPreferredSize(new Dimension(150,30));
 		controlPicker.add(downRemap, gbc);
 
 		gbc.gridy = 5;
-		JButton shootRemap = new JButton("Shoot");
-		shootRemap.setForeground(Color.WHITE);
+		JButton shootRemap = new JButton("Shoot ("+ KeyEvent.getKeyText(shootKey)+")");
+		shootRemap.setForeground(Color.BLACK);
 		shootRemap.addActionListener(showDialog);
+		shootRemap.setPreferredSize(new Dimension(150,30));
 		controlPicker.add(shootRemap, gbc);        
 
 		this.add(controlPicker);
