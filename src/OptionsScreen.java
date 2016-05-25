@@ -149,6 +149,10 @@ public class OptionsScreen extends JPanel {
 			}
 		}
 
+		if (resolutions.size() == 0) {
+			resolutions.add(nativeWidth+"x"+nativeHeight + " (native)");
+		}
+		
 		JComboBox resolutionCB = new JComboBox(resolutions);
 		resolutionCB.addActionListener(new ActionListener() {
 			@Override
