@@ -48,10 +48,6 @@ public class Maze {
 		MAZE_SIZE_1 = 21 - 4 * (level < 3 ? 3 - level : 0);
 		MAZE_SIZE_2 = 37 - 8 * (level < 3 ? 3 - level : 0);
 		
-		MAZE_SIZE_1 = 7;
-		MAZE_SIZE_2 = 7;
-		level = difficulty = 0;
-		
 		// generate maze
 		mazeGenerator = new MazeGenerateDfs();
 		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2);
