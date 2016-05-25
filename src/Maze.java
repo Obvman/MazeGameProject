@@ -191,6 +191,7 @@ public class Maze {
 			for (Iterator<Portal> portalIter = portals.iterator(); portalIter.hasNext(); ) {
 				Portal p = portalIter.next();
 				if (s.getBounds().intersects(p.getBounds())) {
+					playSound("resources/sound/portaldes.wav");
 					spellIter.remove();
 					portalIter.remove();
 					portals.remove(p);
