@@ -19,8 +19,9 @@ public class Spell implements MovableSprite {
 	private Image image2;
 	private Image image3;
 	private int stage; 
+	private boolean muted;
 
-	public Spell(int startX, int startY, int dx, int dy, int spellType) {
+	public Spell(int startX, int startY, int dx, int dy, int spellType, boolean muted) {
 		initialX = startX;
 		initialY = startY;
 
@@ -28,6 +29,8 @@ public class Spell implements MovableSprite {
 		y = startY;
 		this.dx = dx;
 		this.dy = dy;
+		
+		this.muted = muted;
 
 		int scaledSize = (3 * Maze.MAZE_CELL_SIZE) / 4;
 
@@ -35,17 +38,17 @@ public class Spell implements MovableSprite {
 			image1 = (new ImageIcon("resources/32_flame_1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 			image2 = (new ImageIcon("resources/32_flame_2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 			image3 = (new ImageIcon("resources/32_flame_3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			playSound("resources/sound/fire.wav");
+			if (!muted) playSound("resources/sound/fire.wav");
 		} else if (spellType == GameScreen.WATER) {
 			image1 = (new ImageIcon("resources/water1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 			image2 = (new ImageIcon("resources/water2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 			image3 = (new ImageIcon("resources/water3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			playSound("resources/sound/water.wav");
+			if (!muted) playSound("resources/sound/water.wav");
 		} else if (spellType == GameScreen.AIR) {
 			image1 = (new ImageIcon("resources/air1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 			image2 = (new ImageIcon("resources/air2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 			image3 = (new ImageIcon("resources/air3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			playSound("resources/sound/wind.wav");
+			if (!muted) playSound("resources/sound/wind.wav");
 		}
 
 	}

@@ -37,6 +37,8 @@ public class Player implements MovableSprite, ActionListener {
 
 	private Timer timer;
 	private int spriteCounter = 0;
+	
+	private boolean muted;
 
 	public Player(int spellType)  {
 		spells = new LinkedList<Spell>();
@@ -52,6 +54,9 @@ public class Player implements MovableSprite, ActionListener {
 
 		// sprites
 		scaledHeight = (3 * Maze.MAZE_CELL_SIZE) / 4;
+		
+		//mute val
+		muted = false;
 
 		image_N = new BufferedImage[6];
 		image_NE = new BufferedImage[6];
@@ -239,7 +244,7 @@ public class Player implements MovableSprite, ActionListener {
 				int imageHeight = getImage().getHeight(null);
 
 				spells.add(new Spell(getX() + lastDX * imageWidth, 
-						getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY, spellType));
+						getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY, spellType, muted));
 			}
 		}
 	}
@@ -264,5 +269,13 @@ public class Player implements MovableSprite, ActionListener {
 		g2.drawImage(src, 0, 0, finalw, finalh, null);
 		g2.dispose();
 		return resizedImg;
+	}
+
+	public void toggleMute() {
+		if (!muted) {
+			muted = true;
+		} else {
+			muted = false;
+		}
 	}
 }
