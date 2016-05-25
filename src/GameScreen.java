@@ -41,16 +41,11 @@ public class GameScreen extends JPanel implements ActionListener {
 	// GameScreen controller
 	private Timer timer;
 	
-	// highscores
-	JTextField usernameField;
-	private String username;
-
 	public GameScreen(MainWindow mainWindow, int difficulty) {
 		this.mainWindow = mainWindow;
 		this.currLevel = 1;
 		this.difficulty = difficulty;
 		this.timer = new Timer(10, this);
-		this.username = "";
 
 		setLayout(new CardLayout());
 
@@ -464,58 +459,43 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 
 	private void initMazeWon() {
-		JPanel mazeWon = new JPanel(new GridBagLayout()){
-			public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Image background = (new ImageIcon("resources/BG.png")).getImage(); 
-			    g.drawImage(background, 0, 0, null);
-			}
-		};;
-		JPanel mazeWonButtons = new JPanel();
+		JPanel mazeWon = new JPanel(new GridBagLayout());
 		mazeWon.setOpaque(false);
-		mazeWonButtons.setOpaque(false);
 		add(mazeWon, "Won");
 
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.ipady = 20;
 		
 		gbc.gridy = 0;
-		gbc.weighty = 0.2;
-	    mazeWon.add(new JLabel(" "), gbc);  // blank JLabel
-	    
-	    gbc.weighty = 0.2;
-	    gbc.weightx = 0;
-		gbc.gridy = 1;
-		JLabel level = new JLabel("<html><center>LEVEL " + this.currLevel + "<br>VICTORY</center></html>");
+		JLabel level = new JLabel("DEFEATED LEVEL " + currLevel, SwingConstants.CENTER);
 		level.setFont(new Font("Herculanum", Font.PLAIN, 70));
 		level.setForeground(new Color(255,215,0));
 		mazeWon.add(level, gbc);
 
-		gbc.gridy = 2;
+		gbc.gridy = 1;
 		JLabel roundInfo = new JLabel("Round Results", SwingConstants.CENTER);
 		roundInfo.setFont(new Font("Devanagari MT", Font.PLAIN, 30));
 		roundInfo.setForeground(Color.WHITE);
 		mazeWon.add(roundInfo, gbc);
         
-		gbc.gridy = 3;
+		gbc.gridy = 2;
 		JLabel numMonstersKilled = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), SwingConstants.CENTER);
 		numMonstersKilled.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		numMonstersKilled.setForeground(Color.WHITE);
 		mazeWon.add(numMonstersKilled, gbc);
 
-		gbc.gridy = 4;
+		gbc.gridy = 3;
 		JLabel numGemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), SwingConstants.CENTER);
 		numGemsCollected.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		numGemsCollected.setForeground(Color.WHITE);
 		mazeWon.add(numGemsCollected, gbc);
 
-		gbc.gridy = 5;
+		gbc.gridy = 4;
 		JLabel roundScore = new JLabel("Round score: " + maze.getScore(), SwingConstants.CENTER);
 		roundScore.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		roundScore.setForeground(Color.WHITE);
 		mazeWon.add(roundScore, gbc);
 		
-		gbc.gridy = 6;
+		gbc.gridy = 5;
 		this.totalScore += maze.getScore();
 		JLabel totalScore = new JLabel("Total score: " + this.totalScore, SwingConstants.CENTER);
 		totalScore.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
@@ -523,7 +503,10 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeWon.add(totalScore, gbc);
 
 		gbc.ipady = 0;
-		gbc.gridy = 7;
+		gbc.gridy = 6;
+		JPanel mazeWonButtons = new JPanel();
+		mazeWonButtons.setOpaque(false);
+		
 		JButton nextLevelButton = new JButton(new ImageIcon("resources/next_level.png"));
 		nextLevelButton.setContentAreaFilled(false);
 		nextLevelButton.setMargin(new Insets(0, 0, 0, 0));
@@ -537,7 +520,6 @@ public class GameScreen extends JPanel implements ActionListener {
 			}
 		});
 		mazeWonButtons.add(nextLevelButton);
-		//mazeWon.add(nextLevelButton, gbc);
 
 		JButton menuButton = new JButton(new ImageIcon("resources/main_menu.png"));
 		menuButton.setContentAreaFilled(false);
@@ -550,70 +532,34 @@ public class GameScreen extends JPanel implements ActionListener {
 		});
 		mazeWonButtons.add(menuButton);
 		mazeWon.add(mazeWonButtons, gbc);
-	    gbc.weighty = 0.5;
-
-	    mazeWon.add(new JLabel(" "), gbc);  // blank JLabel
 	}
 
 	private void initMazeLost() {
-		HighscoresPanel mazeLost = new HighscoresPanel(new GridBagLayout()){
-			public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Image background = (new ImageIcon("resources/BG.png")).getImage(); 
-			    g.drawImage(background, 0, 0, null);
-			}
-		};;
-		JPanel mazeLostButton = new JPanel();
+		JPanel mazeLost = new JPanel(new GridBagLayout());
 		
 		mazeLost.setOpaque(false);
-		mazeLostButton.setOpaque(false);
 		add(mazeLost, "Lost");
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 
-		gbc.gridy = 0;
 	    gbc.weighty = 0;
 	    gbc.weightx = 1;
 	    
-		gbc.gridy = 1;
+		gbc.gridy = 0;
 	    
-		JLabel lostLevelLabel = new JLabel("LEVEL " + currLevel + "... YOU DIED", SwingConstants.CENTER);
-		lostLevelLabel.setForeground(Color.RED);
-		lostLevelLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 70));
+		JLabel lostLevelLabel = new JLabel("YOU DIED AT LEVEL " + currLevel, SwingConstants.CENTER);
+		lostLevelLabel.setForeground(new Color(255,215,0));
+		lostLevelLabel.setFont(new Font("Herculanum", Font.PLAIN, 70));
 		mazeLost.add(lostLevelLabel, gbc);
 		
-		if (username.equals("")) {
-			gbc.gridy = 2;
-			JLabel highscoresLabel = new JLabel("Enter a name to share your highscore");
-			highscoresLabel.setForeground(Color.WHITE);
-			mazeLost.add(highscoresLabel, gbc);
-			
-			gbc.gridy = 3;
-			usernameField = new JTextField(20);
-			mazeLost.add(usernameField, gbc);
-			
-			gbc.gridy = 4;
-			JButton highscoreButton = new JButton("Share");
-			highscoreButton.addActionListener(new ActionListener()
-			{
-			  public void actionPerformed(ActionEvent e)
-			  {
-			    username = usernameField.getText();
-			    username = username.replaceAll("\\s+","");
-			    switchToMazeLost();
-			  }
-			});
-			mazeLost.add(highscoreButton, gbc);
-		}
-
-		
-		gbc.gridy = 5;
+		gbc.gridy = 1;
 		JLabel gameInfo= new JLabel("Game Results", SwingConstants.CENTER);
 		gameInfo.setForeground(Color.WHITE);
 		gameInfo.setFont(new Font("Devanagari MT", Font.PLAIN, 30));
 		mazeLost.add(gameInfo, gbc);
 		
-		gbc.gridy = 6;
+		
+		gbc.gridy = 2;
 		JLabel faction = new JLabel("", SwingConstants.CENTER);
 		if (spellType == 1) {
 			faction.setText("Faction: Water");
@@ -626,35 +572,30 @@ public class GameScreen extends JPanel implements ActionListener {
 		faction.setForeground(Color.WHITE);
 		mazeLost.add(faction, gbc);
 		
-		gbc.gridy = 7;
+		gbc.gridy = 3;
 		JLabel monstersSlain = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), SwingConstants.CENTER);
+		monstersSlain.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		monstersSlain.setForeground(Color.WHITE);
 		mazeLost.add(monstersSlain, gbc);
 		
-		gbc.gridy = 8;
+		gbc.gridy = 4;
 		JLabel gemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), SwingConstants.CENTER);
+		gemsCollected.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		gemsCollected.setForeground(Color.WHITE);
 		mazeLost.add(gemsCollected, gbc);
 		
-		gbc.gridy = 9;
+		gbc.gridy = 5;
 		gbc.ipady = 5; // gaps between lines
 		JLabel numGemsCollected = new JLabel("Final score: " + maze.getScore(), SwingConstants.CENTER);
+		numGemsCollected.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		numGemsCollected.setForeground(Color.WHITE);
 		mazeLost.add(numGemsCollected, gbc);
 		
-		gbc.gridy = 10;
-		String name = "";
-		int score = 0;
-		if (!username.equals("")) {
-			name = username;
-			score = maze.getScore();
-		}
-		for (JLabel label : mazeLost.getHighscores(score, name)) {
-			mazeLost.add(label, gbc);
-			gbc.gridy++;
-		}
+		gbc.gridy = 6;
+		gbc.ipady = 0;
+		JPanel mazeLostButtons = new JPanel();
+		mazeLostButtons.setOpaque(false);
 		
-		gbc.ipady = 8;
 		JButton startButton = new JButton(new ImageIcon("resources/start_again.png"));
 		startButton.setContentAreaFilled(false);
 		startButton.setMargin(new Insets(0, 0, 0, 0));
@@ -664,7 +605,8 @@ public class GameScreen extends JPanel implements ActionListener {
 				mainWindow.switchToGame();
 			}
 		});
-		mazeLostButton.add(startButton);
+		mazeLostButtons.add(startButton);
+		
 		JButton menuButton = new JButton(new ImageIcon("resources/main_menu.png"));
 		menuButton.setContentAreaFilled(false);
 		menuButton.setMargin(new Insets(0, 0, 0, 0));
@@ -674,8 +616,9 @@ public class GameScreen extends JPanel implements ActionListener {
 				mainWindow.switchToMenu();
 			}
 		});
-		mazeLostButton.add(menuButton);
-		mazeLost.add(mazeLostButton, gbc);
+		mazeLostButtons.add(menuButton);
+		
+		mazeLost.add(mazeLostButtons, gbc);
 	}
 
 	private Icon getScaledImageIcon(ImageIcon img, int width, int height) {
