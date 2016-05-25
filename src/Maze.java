@@ -172,6 +172,7 @@ public class Maze {
 		// check if player has been killed from monsters
 		for (Monster m: monsters) {
 			if (m.getBounds().intersects(player.getBounds())) {
+				playSound("resources/sound/death.wav");
 				player.setAlive(false);
 				return;
 			}

@@ -244,12 +244,16 @@ public class Player implements MovableSprite, ActionListener {
 				int imageHeight = getImage().getHeight(null);
 
 				spells.add(new Spell(getX() + lastDX * imageWidth, 
-						getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY, spellType, muted));
+						getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY, spellType, getMuted()));
 			}
 		}
 	}
 
 
+
+	private boolean getMuted() {
+		return this.muted;
+	}
 
 	private BufferedImage getScaledImage(BufferedImage src, int w, int h){
 		int finalw = w;
