@@ -15,7 +15,7 @@ public class MazePanel extends JPanel implements ActionListener {
 
 		maze = new Maze(level, difficulty, spellType);
 		tileGenerator = new TileGenerator();
-		gameSpeedTimer = new Timer(10, this); // corresponds to game speed
+		gameSpeedTimer = new Timer(10, this);
 		gameSpeedTimer.start();
 		portalTimer = new Timer(8000, this);
 		portalTimer.start();

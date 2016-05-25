@@ -17,7 +17,7 @@ public class Monster implements MovableSprite {
 	private int scaledHeight;
 	
 	public Monster() {
-		dy = 1;
+		randomiseDirection();
 		
 		scaledHeight = Maze.MAZE_CELL_SIZE * 3/4;
 		

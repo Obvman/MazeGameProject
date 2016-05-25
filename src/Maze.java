@@ -67,7 +67,7 @@ public class Maze {
 		
 		// place gems
 		int numGemsPlaced = 0;
-		while (numGemsPlaced < (MAZE_SIZE_1 * MAZE_SIZE_2)/50) {
+		while (numGemsPlaced < (MAZE_SIZE_1 * MAZE_SIZE_2) / 50) {
 			int gemX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
 			int gemY = (int) (Math.random() * (MAZE_SIZE_1 - 1));
 			if (mazeGrid[gemY][gemX] == PATH_TILE) {
@@ -79,7 +79,7 @@ public class Maze {
 		// place portals
 		monsters = new LinkedList<Monster>();
 		portals = new LinkedList<Portal>();
-		for (int i = 0; i < 2 * (level + difficulty); i++) {
+		for (int i = 0; i < (MAZE_SIZE_1 * MAZE_SIZE_2) / 50; i++) {
 			boolean placed = false;
 			while (!placed) {
 				int portalX = (int) (Math.random() * (MAZE_SIZE_2 - 1));
@@ -94,7 +94,7 @@ public class Maze {
 		}
 		
 		// set max monsters
-		maxMonsters = 6 * (level + difficulty);
+		maxMonsters = (MAZE_SIZE_1 * MAZE_SIZE_2) / 25;
 		
 		// spawn monsters at the start of game
 		activatePortals();
@@ -153,6 +153,7 @@ public class Maze {
 			if (monsters.size() > maxMonsters) {
 				break;
 			}
+			
 			p.spawnMonster();
 		}
 	}

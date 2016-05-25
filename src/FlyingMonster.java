@@ -24,6 +24,8 @@ public class FlyingMonster extends Monster implements MovableSprite, ActionListe
 	private int spriteCounter = 0;
 
 	public FlyingMonster() {
+		randomiseDirection();
+		
 		scaledHeight = Maze.MAZE_CELL_SIZE;
 
 		image_N = new BufferedImage [4];

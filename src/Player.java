@@ -25,7 +25,6 @@ public class Player implements MovableSprite, ActionListener {
     private int moveUpKey;
     private int moveDownKey;
     private int shootKey;
-	
 
 	// character sprites
 	private BufferedImage[] image_N;
