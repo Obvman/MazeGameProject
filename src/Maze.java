@@ -92,12 +92,13 @@ public class Maze {
 				}
 			}
 		}
-		
+
 		// set max monsters
 		maxMonsters = (MAZE_SIZE_1 * MAZE_SIZE_2) / 25;
 		
 		// spawn monsters at the start of game
 		activatePortals();
+
 	}
 	
 	public void addMonster(Monster m) {
@@ -396,5 +397,9 @@ public class Maze {
 	       }
 	       catch(Exception ex){
 	       }
+	}
+
+	public void playSoundWon() {
+		playSound("resources/sound/door.wav");
 	}
 }

@@ -116,6 +116,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (maze.isGameWon()) {
+			maze.playSoundWon();
 			gamePause();
 			switchToMazeWon();
 		} else if (maze.isGameLost()) {
