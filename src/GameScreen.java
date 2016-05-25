@@ -228,7 +228,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbcStatus.gridheight = 1;
 		
 		JPanel statusBar = new JPanel(new BorderLayout());
-//		statusBar.setBorder(BorderFactory.createLineBorder(Color.RED)); // debug border
 		statusBar.setBorder(new EmptyBorder(0, 40, 0, 40)); // set left and right padding
 		statusBar.setOpaque(false);
 		
@@ -478,32 +477,45 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeWon.add(roundInfo, gbc);
         
 		gbc.gridy = 2;
+		JLabel timeTaken = new JLabel();
+		if (duration >= 60) {
+			timeTaken.setText("Time taken: " + (int)duration/60 + "m " + (int)duration%60 + "s");
+		} else {
+			timeTaken.setText("Time taken: " + (int)duration + "s");
+		}
+		timeTaken.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
+		timeTaken.setForeground(Color.WHITE);
+		mazeWon.add(timeTaken, gbc);
+		
+		gbc.gridy = 3;
 		JLabel numMonstersKilled = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), SwingConstants.CENTER);
 		numMonstersKilled.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		numMonstersKilled.setForeground(Color.WHITE);
 		mazeWon.add(numMonstersKilled, gbc);
 
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		JLabel numGemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), SwingConstants.CENTER);
 		numGemsCollected.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		numGemsCollected.setForeground(Color.WHITE);
 		mazeWon.add(numGemsCollected, gbc);
-
-		gbc.gridy = 4;
-		JLabel roundScore = new JLabel("Round score: " + maze.getScore(), SwingConstants.CENTER);
-		roundScore.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
-		roundScore.setForeground(Color.WHITE);
-		mazeWon.add(roundScore, gbc);
 		
 		gbc.gridy = 5;
-		this.totalScore += maze.getScore();
+		int roundScore = (int) ((maze.getScore() + 200*(currLevel+difficulty)) * (double)duration/60);
+		totalScore += roundScore;
+		JLabel roundScoreLabel = new JLabel("Round score: " + roundScore, SwingConstants.CENTER);
+		roundScoreLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
+		roundScoreLabel.setForeground(Color.WHITE);
+		mazeWon.add(roundScoreLabel, gbc);
+		
+		
+		gbc.gridy = 6;
 		JLabel totalScore = new JLabel("Total score: " + this.totalScore, SwingConstants.CENTER);
 		totalScore.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		totalScore.setForeground(Color.WHITE);
 		mazeWon.add(totalScore, gbc);
 
 		gbc.ipady = 0;
-		gbc.gridy = 6;
+		gbc.gridy = 7;
 		JPanel mazeWonButtons = new JPanel();
 		mazeWonButtons.setOpaque(false);
 		
@@ -514,6 +526,7 @@ public class GameScreen extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				currLevel++;
+				duration = 0;
 				gameResume();
 				initMazeUI();
 				switchToMazeUI();
@@ -562,11 +575,11 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbc.gridy = 2;
 		JLabel faction = new JLabel("", SwingConstants.CENTER);
 		if (spellType == 1) {
-			faction.setText("Faction: Water");
+			faction.setText("Chosen spell: Water");
 		} else if (spellType == 2) {
-			faction.setText("Faction: Fire");
+			faction.setText("Chosen spell: Fire");
 		} else if (spellType == 3) {
-			faction.setText("Faction: Air");
+			faction.setText("Chosen spell: Air");
 		}
 		faction.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		faction.setForeground(Color.WHITE);
