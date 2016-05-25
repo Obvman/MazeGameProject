@@ -130,9 +130,9 @@ public class GameScreen extends JPanel implements ActionListener {
 			} else {
 				objective.setText("Objective: Get to the key!");
 			}
-			monstersSlain.setText("Monsters slain: " + maze.getNumMonstersKilled());
-			gemsCollected.setText("Gems collected: " + maze.getNumGemsCollected());
-			time.setText("Time elapsed: " + (int)duration);
+			monstersSlain.setText("" + maze.getNumMonstersKilled());
+			gemsCollected.setText("" + maze.getNumGemsCollected());
+			time.setText("" + (int)duration);
 			level.setText("Level: " + currLevel);
 		}
 	}
@@ -320,15 +320,15 @@ public class GameScreen extends JPanel implements ActionListener {
 		objective.setForeground(Color.WHITE);
 		statusFields.add(objective, gbcFields);
 
-		monstersSlain = new JLabel();
+		monstersSlain = new JLabel(getScaledImageIcon(new ImageIcon("resources/monstersKilled.png"), Maze.MAZE_CELL_SIZE*2/3, Maze.MAZE_CELL_SIZE*2/3));
 		monstersSlain.setForeground(Color.WHITE);
 		statusFields.add(monstersSlain, gbcFields);
 
-		gemsCollected = new JLabel();
+		gemsCollected = new JLabel(getScaledImageIcon(new ImageIcon("resources/gems/gems-6.png"), Maze.MAZE_CELL_SIZE*4/5, Maze.MAZE_CELL_SIZE*4/5));
 		gemsCollected.setForeground(Color.WHITE);
 		statusFields.add(gemsCollected, gbcFields);
 
-		time = new JLabel();
+		time = new JLabel(getScaledImageIcon(new ImageIcon("resources/clock.png"), Maze.MAZE_CELL_SIZE*4/5, Maze.MAZE_CELL_SIZE*4/5));
 		time.setForeground(Color.WHITE);
 		statusFields.add(time, gbcFields);
 
