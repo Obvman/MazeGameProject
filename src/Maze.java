@@ -202,6 +202,7 @@ public class Maze {
 
 		// check if key picked up
 		if (mazeGrid[playerCellY][playerCellX] == KEY_TILE) {
+			playSound("resources/sound/key.wav");
 			keyAcquired = true;
 			mazeGrid[playerCellY][playerCellX] = PATH_TILE;
 		}
@@ -394,7 +395,6 @@ public class Maze {
 	        clip.start();
 	       }
 	       catch(Exception ex){
-	    	   System.out.println("Trying");
 	       }
 	}
 }
