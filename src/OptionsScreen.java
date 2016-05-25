@@ -153,11 +153,12 @@ public class OptionsScreen extends JPanel {
 			resolutions.add(nativeWidth+"x"+nativeHeight + " (native)");
 		}
 		
-		JComboBox resolutionCB = new JComboBox(resolutions);
+		JComboBox<String> resolutionCB = new JComboBox<String>(resolutions);
 		resolutionCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JComboBox cb = (JComboBox)e.getSource();
+				@SuppressWarnings("unchecked")
+				JComboBox<String> cb = (JComboBox<String>) e.getSource();
 				String resolution = (String)cb.getSelectedItem();
 				String[] dimensions = resolution.substring(0, resolution.indexOf(" ")).split("x");
 				OptionsScreen.this.tmpResolution = new Dimension(Integer.parseInt(dimensions[0]), Integer.parseInt(dimensions[1]));
@@ -167,7 +168,7 @@ public class OptionsScreen extends JPanel {
 
 		// default
 		resolutionCB.setSelectedIndex(0);
-		String defaultResolution = (String) resolutionCB.getItemAt(0);
+		String defaultResolution = resolutionCB.getItemAt(0);
 		String[] defaultDimensions = defaultResolution.substring(0, defaultResolution.indexOf(" ")).split("x");
 		resolution = new Dimension(Integer.parseInt(defaultDimensions[0]), Integer.parseInt(defaultDimensions[1]));
 		tmpResolution = resolution;

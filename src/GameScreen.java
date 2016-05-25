@@ -552,7 +552,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeWon.add(numGemsCollected, gbc);
 		
 		gbc.gridy = 5;
-		int roundScore = (int) ((maze.getScore() + 200*(currLevel+difficulty)) * (double)duration/60);
+		int roundScore = (int) ((maze.getScore() + 200*(currLevel+difficulty)) * duration/60);
 		totalScore += roundScore;
 		JLabel roundScoreLabel = new JLabel("Round score: " + roundScore, SwingConstants.CENTER);
 		roundScoreLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
