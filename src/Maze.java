@@ -403,6 +403,7 @@ public class Maze {
 	        clip.start();
 	       }
 	       catch(Exception ex){
+	    	   ex.printStackTrace();
 	       }
 		}
 	}

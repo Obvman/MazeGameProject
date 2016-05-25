@@ -116,6 +116,7 @@ public class Spell implements MovableSprite {
 			clip.start();
 		}
 		catch(Exception ex){
+			ex.printStackTrace();
 		}
 	}
 }
