@@ -317,7 +317,6 @@ public class OptionsScreen extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// update the settings
 				OptionsScreen.this.resolution = OptionsScreen.this.tmpResolution;
-				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 				OptionsScreen.this.mainWindow.setSize(OptionsScreen.this.resolution);
 				OptionsScreen.this.difficulty = OptionsScreen.this.tmpDifficulty;
 				OptionsScreen.this.mainWindow.switchToMenu();

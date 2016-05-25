@@ -7,9 +7,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 public class Player implements MovableSprite, ActionListener {
@@ -20,11 +17,11 @@ public class Player implements MovableSprite, ActionListener {
 	private LinkedList<Spell> spells;
 	private int spellType;
 	private boolean alive;
-    private int moveRightKey;
-    private int moveLeftKey;
-    private int moveUpKey;
-    private int moveDownKey;
-    private int shootKey;
+	private int moveRightKey;
+	private int moveLeftKey;
+	private int moveUpKey;
+	private int moveDownKey;
+	private int shootKey;
 
 	// character sprites
 	private BufferedImage[] image_N;
@@ -46,13 +43,13 @@ public class Player implements MovableSprite, ActionListener {
 		this.spellType = spellType;
 		alive = true;
 
-        // set default keys to arrow keys and space
-        moveRightKey = KeyEvent.VK_RIGHT;
-        moveLeftKey = KeyEvent.VK_LEFT;
-        moveUpKey = KeyEvent.VK_UP;
-        moveDownKey = KeyEvent.VK_DOWN;
-        shootKey = KeyEvent.VK_SPACE;
-        
+		// set default keys to arrow keys and space
+		moveRightKey = KeyEvent.VK_RIGHT;
+		moveLeftKey = KeyEvent.VK_LEFT;
+		moveUpKey = KeyEvent.VK_UP;
+		moveDownKey = KeyEvent.VK_DOWN;
+		shootKey = KeyEvent.VK_SPACE;
+
 		// sprites
 		scaledHeight = (3 * Maze.MAZE_CELL_SIZE) / 4;
 
@@ -240,14 +237,14 @@ public class Player implements MovableSprite, ActionListener {
 
 				int imageWidth = getImage().getWidth(null);
 				int imageHeight = getImage().getHeight(null);
-				
+
 				spells.add(new Spell(getX() + lastDX * imageWidth, 
 						getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY, spellType));
 			}
 		}
 	}
 
-	
+
 
 	private BufferedImage getScaledImage(BufferedImage src, int w, int h){
 		int finalw = w;

@@ -23,14 +23,14 @@ public class Spell implements MovableSprite {
 	public Spell(int startX, int startY, int dx, int dy, int spellType) {
 		initialX = startX;
 		initialY = startY;
-		
+
 		x = startX;
 		y = startY;
 		this.dx = dx;
 		this.dy = dy;
-		
+
 		int scaledSize = (3 * Maze.MAZE_CELL_SIZE) / 4;
-		
+
 		if (spellType == GameScreen.FIRE) {
 			image1 = (new ImageIcon("resources/32_flame_1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 			image2 = (new ImageIcon("resources/32_flame_2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
@@ -47,9 +47,9 @@ public class Spell implements MovableSprite {
 			image3 = (new ImageIcon("resources/air3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 			playSound("resources/sound/wind.wav");
 		}
-		
+
 	}
-	
+
 	@Override
 	public int getX() {
 		return (int)x;
@@ -80,23 +80,23 @@ public class Spell implements MovableSprite {
 			return image3;
 		}
 	}
-	
+
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), getImage().getWidth(null), getImage().getHeight(null));
 	}
-	
+
 	public void updatePosition() {
 		x += dx * (double)Maze.MAZE_CELL_SIZE/32;
 		y += dy * (double)Maze.MAZE_CELL_SIZE/32;
-		
+
 		stage = (int)Math.sqrt(Math.pow(x - initialX, 2) + Math.pow(y - initialY, 2))/getImage().getWidth(null);
 	}
-	
+
 	public int getStage() {
 		return stage;
 	}
-	
+
 	public void updateStage() {
 		stage++;
 	}
@@ -106,16 +106,16 @@ public class Spell implements MovableSprite {
 		x += dx;
 		y += dy;
 	}
-	
+
 	private void playSound(String soundName) {
-	       try 
-	       {
-	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
-	        Clip clip = AudioSystem.getClip();
-	        clip.open(audioInputStream);
-	        clip.start();
-	       }
-	       catch(Exception ex){
-	       }
+		try 
+		{
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		}
+		catch(Exception ex){
+		}
 	}
 }
