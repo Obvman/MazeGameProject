@@ -2,6 +2,10 @@ import javax.swing.*;
 
 public class MazeGame {
 
+	/**
+	 * Main entry point for the application
+	 * @param args Command-line arguments
+	 */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			
@@ -11,7 +15,5 @@ public class MazeGame {
 				game.setVisible(true);
 			}
 		});
-
 	}
-
 }

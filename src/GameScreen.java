@@ -16,7 +16,6 @@ public class GameScreen extends JPanel implements ActionListener {
 
 	// screens
 	private JPanel spellSelect;
-
 	private JPanel mazeUI;
 	private JPanel mazeScreens; // screen controller for mazePlaying & mazePaused
 	private MazePanel mazePlaying;
@@ -38,76 +37,101 @@ public class GameScreen extends JPanel implements ActionListener {
 	JLabel time;
 	JLabel level;
 
-	// GameScreen controller
-	private Timer timer;
+	private Timer updateTimer;
 	
+	/**
+	 * Creates a GameScreen starting at level 1 and the given difficulty
+	 * @param mainWindow The JFrame containing the GameScreen
+	 * @param difficulty The difficulty level of the game
+	 */
 	public GameScreen(MainWindow mainWindow, int difficulty) {
 		this.mainWindow = mainWindow;
 		this.currLevel = 1;
 		this.difficulty = difficulty;
-		this.timer = new Timer(10, this);
+		this.updateTimer = new Timer(10, this);
 
 		setLayout(new CardLayout());
 
 		initSpellSelect();
 	}
 
+	/**
+	 * Pauses the game and maze
+	 */
 	public void gamePause() {
-		timer.stop();
+		updateTimer.stop();
 		if (mazePlaying != null) mazePlaying.setRunning(false);
 	}
 
+	/**
+	 * Resumes the game and maze
+	 */
 	public void gameResume() {
-		timer.start();
+		updateTimer.start();
 		if (mazePlaying != null) mazePlaying.setRunning(true);
 	}
 
+	/**
+	 * Displays the spell select screen
+	 */
 	public void switchToSpellSelect() {
 		CardLayout cl = (CardLayout) this.getLayout();
 		cl.show(this, "Spell");
 	}
 
-	public void switchToHelp() {
-		CardLayout cl = (CardLayout) this.getLayout();
-		cl.show(this, "Help");
-	}
-
+	/**
+	 * Displays the maze game screen
+	 */
 	public void switchToMazeUI() {
 		CardLayout cl = (CardLayout) this.getLayout();
 		cl.show(this, "MazeUI");
 	}
 
-	// controlled by mazeUI
+	/**
+	 * Displays the win screen 
+	 */
 	public void switchToMazeWon() {
 		initMazeWon();
 		CardLayout cl = (CardLayout) this.getLayout();
 		cl.show(this, "Won");
 	}
 
-	// controlled by mazeUI
+	/**
+	 * Displays the lose screen
+	 */
 	public void switchToMazeLost() {
 		initMazeLost();
 		CardLayout cl = (CardLayout) this.getLayout();
 		cl.show(this, "Lost");
 	}
 
-	// controlled by mazeScreens
+	/**
+	 * Displays the running maze in the maze panel
+	 */
 	public void switchToMazePlaying() {
 		CardLayout cl = (CardLayout) mazeScreens.getLayout();
 		cl.show(mazeScreens, "Playing");
 	}
 
-	// controlled by mazeScreens
+	/**
+	 * Displays a pause screen over the maze panel
+	 */
 	public void switchToMazePaused() {
 		CardLayout cl = (CardLayout) mazeScreens.getLayout();
 		cl.show(mazeScreens, "Paused");
 	}
 	
+	/**
+	 * Displays the help screen over the maze panel
+	 */
 	public void switchToMazeHelp() {
 		CardLayout cl = (CardLayout) mazeScreens.getLayout();
 		cl.show(mazeScreens, "Help");
 	}
 
+	/**
+	 * Refreshes the state of the game 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (maze.isGameWon()) {
@@ -118,7 +142,7 @@ public class GameScreen extends JPanel implements ActionListener {
 			gamePause();
 			switchToMazeLost();
 		} else {
-			duration += (double)timer.getDelay()/1000;
+			duration += (double)updateTimer.getDelay()/1000;
 
 			// update status bar
 			if (maze.isKeyAcquired()) {
@@ -133,6 +157,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * Paints a background image for the GameScreen
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -140,6 +167,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
 	}
 
+	/**
+	 * Initialises elements of the spell select screen
+	 */
 	private void initSpellSelect() {
 		spellSelect = new JPanel(new GridBagLayout());
 		spellSelect.setOpaque(false);
@@ -214,7 +244,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		spellSelect.add(air, gbc);
 	}
 
-
+	/**
+	 * Initialises elements of the maze UI (status bar, maze panel)
+	 */
 	private void initMazeUI() {
 		mazeUI = new JPanel(new GridBagLayout());
 		mazeUI.setOpaque(false);
@@ -262,7 +294,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		AbstractAction pausePressed = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (timer.isRunning()) {
+				if (updateTimer.isRunning()) {
 					pause.setIcon(new ImageIcon("resources/unpause.png"));
 					gamePause();
 					switchToMazePaused();
@@ -288,7 +320,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		AbstractAction helpPressed = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (timer.isRunning()) {
+				if (updateTimer.isRunning()) {
 					gamePause();
 					switchToMazeHelp();
 				} else {
@@ -357,9 +389,16 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeScreens.setPreferredSize(size);
 
 		initHelp();
-		initPause();
+		
+		mazePaused = new JPanel(new GridBagLayout());
+		mazePaused.add(new JLabel("Game Paused. TODO: make U instead of (H or P) the unpause button"));
+		mazePaused.setBackground(Color.LIGHT_GRAY);
+		mazeScreens.add(mazePaused, "Paused");
 	}
 	
+	/**
+	 * Initialises elements of the help panel 
+	 */
 	private void initHelp() {
 		mazeHelp = new JPanel(new GridBagLayout());
 		mazeHelp.setBackground(Color.LIGHT_GRAY);
@@ -450,13 +489,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 	}
 	
-	private void initPause() {
-		mazePaused = new JPanel(new GridBagLayout());
-		mazePaused.add(new JLabel("Game Paused. TODO: make U instead of (H or P) the unpause button"));
-		mazePaused.setBackground(Color.LIGHT_GRAY);
-		mazeScreens.add(mazePaused, "Paused");
-	}
-
+	/**
+	 * Initialises elements of the win screen
+	 */
 	private void initMazeWon() {
 		JPanel mazeWon = new JPanel(new GridBagLayout());
 		mazeWon.setOpaque(false);
@@ -547,6 +582,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeWon.add(mazeWonButtons, gbc);
 	}
 
+	/**
+	 * Initialises elements of the lose screen
+	 */
 	private void initMazeLost() {
 		JPanel mazeLost = new JPanel(new GridBagLayout());
 		
@@ -634,6 +672,13 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeLost.add(mazeLostButtons, gbc);
 	}
 
+	/**
+	 * Returns a scaled instance of an ImageIcon
+	 * @param img the ImageIcon to be scaled
+	 * @param width the width of the new ImageIcon
+	 * @param height the height of the new ImageIcon
+	 * @return
+	 */
 	private Icon getScaledImageIcon(ImageIcon img, int width, int height) {
 		return new ImageIcon(img.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}

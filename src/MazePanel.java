@@ -9,6 +9,12 @@ public class MazePanel extends JPanel implements ActionListener {
 	private Timer gameSpeedTimer;
 	private Timer portalTimer;
 
+	/**
+	 * Creates a new MazePanel object with parameters to configure the Maze
+	 * @param level the level of the Maze
+	 * @param difficulty the difficulty of the Maze
+	 * @param spellType the spellType of the Player
+	 */
 	public MazePanel(int level, int difficulty, int spellType) {
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		addKeyListener(new TAdapter());
@@ -21,10 +27,17 @@ public class MazePanel extends JPanel implements ActionListener {
 		portalTimer.start();
 	}
 
+	/**
+	 * @return the Maze associated with the MazePanel
+	 */
 	public Maze getMaze() {
 		return maze;
 	}
 
+	/**
+	 * Sets whether the game is running or not
+	 * @param isRunning true if the game is running else false
+	 */
 	public void setRunning(boolean isRunning) {
 		if (isRunning && !gameSpeedTimer.isRunning()) {
 			gameSpeedTimer.start();
@@ -35,6 +48,9 @@ public class MazePanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * Updates the Maze every timer tick
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		requestFocusInWindow();
@@ -45,6 +61,10 @@ public class MazePanel extends JPanel implements ActionListener {
 		repaint();
 	}
 
+	/**
+	 * Paints the elements of the Maze including path tiles, wall tiles, 
+	 * key tiles, gems, Portals, the Player, Spells, and Monsters 
+	 */
 	@Override
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -116,10 +136,19 @@ public class MazePanel extends JPanel implements ActionListener {
 
 	}
 
+	/**
+	 * Helper function to check whether a coordinate is within the Maze
+	 * @param x the x ordinate to check
+	 * @param y the y ordinate to check
+	 * @return true if the coordinate is within the Maze else false
+	 */
 	private boolean withinMaze(int x, int y) {
 		return x >= 0 && y >= 0 && x < maze.getGrid()[0].length && y < maze.getGrid().length;
 	}
 
+	/**
+	 *	Private class to allow KeyEvents to update the Maze object
+	 */
 	private class TAdapter extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
