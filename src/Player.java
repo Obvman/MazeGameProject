@@ -241,35 +241,13 @@ public class Player implements MovableSprite, ActionListener {
 				int imageWidth = getImage().getWidth(null);
 				int imageHeight = getImage().getHeight(null);
 				
-				if (spellType == 1) {
-					spells.add(new WaterSpell(getX() + lastDX * imageWidth, 
-							getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY));
-					playSound("resources/sound/water.wav");
-					
-				} else if (spellType == 2) {
-					spells.add(new FireSpell(getX() + lastDX * imageWidth, 
-							getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY));
-					playSound("resources/sound/fire.wav");
-				} else if (spellType == 3) {
-					spells.add(new AirSpell(getX() + lastDX * imageWidth, 
-							getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY));
-					playSound("resources/sound/wind.wav");
-				}
+				spells.add(new Spell(getX() + lastDX * imageWidth, 
+						getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY, spellType));
 			}
 		}
 	}
 
-	private void playSound(String soundName) {
-	       try 
-	       {
-	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
-	        Clip clip = AudioSystem.getClip();
-	        clip.open(audioInputStream);
-	        clip.start();
-	       }
-	       catch(Exception ex){
-	       }
-	}
+	
 
 	private BufferedImage getScaledImage(BufferedImage src, int w, int h){
 		int finalw = w;
