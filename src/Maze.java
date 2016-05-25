@@ -42,6 +42,9 @@ public class Maze {
 	// game stats
 	private int numMonstersKilled;
 	private int numGemsCollected;
+	
+	//settings
+	private int muted;
 
 	public Maze(int level, int difficulty, int spellType) {
 		// set maze height and width according to level
@@ -54,6 +57,9 @@ public class Maze {
 
 		// spawn player
 		player = new Player(spellType);
+		
+		//init mute
+		muted = 0;
 		
 		// place key
 		while (true) {
@@ -388,6 +394,7 @@ public class Maze {
 	}
 	
 	private void playSound(String soundName) {
+		if(muted == 0) {
 	       try 
 	       {
 	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
@@ -397,9 +404,18 @@ public class Maze {
 	       }
 	       catch(Exception ex){
 	       }
+		}
 	}
 
 	public void playSoundWon() {
 		playSound("resources/sound/door.wav");
+	}
+
+	public void toggleMute() {
+		if (muted == 0) {
+			muted = 1;
+		} else {
+			muted = 0;
+		}
 	}
 }
