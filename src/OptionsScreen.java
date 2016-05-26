@@ -14,6 +14,7 @@ public class OptionsScreen extends JPanel {
 	Dimension resolution;
 	int difficulty; // 1, 2, or 3
 	ArrayList<Integer> validKeyList;
+	HashMap<String, JButton> buttonMap;
 	private int moveRightKey;
 	private int moveLeftKey;
 	private int moveUpKey;
@@ -67,6 +68,12 @@ public class OptionsScreen extends JPanel {
 		this.validKeyList = new ArrayList<Integer>(validKeysTmp.length);
 		for (int i = 0; i < validKeysTmp.length; ++i) {
 			validKeyList.add(validKeysTmp[i]);
+		}
+		
+		buttonMap = new HashMap<String, JButton>();
+		String buttonKeys[] = {"R", "L", "U", "P", " "};
+		for (int i = 0; i < buttonKeys.length; ++i) {
+			
 		}
 	}
 
@@ -130,11 +137,15 @@ public class OptionsScreen extends JPanel {
 		add(resolutionPicker);
 
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(10, 0, 10, 0);
 
-		JLabel resolutionLabel = new JLabel("Resolution: ");
+		gbc.gridy = 0;
+		JLabel resolutionLabel = new JLabel("Resolution: ", SwingConstants.CENTER);
 		resolutionLabel.setForeground(Color.WHITE);
+		resolutionLabel.setPreferredSize(new Dimension(180,30));
+		
+		resolutionPicker.add(resolutionLabel, gbc);
 
+		gbc.gridy = 1;
 		Vector<String> resolutions = new Vector<String>();
 
 		// add standard resolutions (note: game requires MINIMUM ~700 height and ~1400 width)
@@ -157,16 +168,11 @@ public class OptionsScreen extends JPanel {
 			}
 		}
 
-		if (resolutions.size() == 0) {
-			resolutions.add(nativeWidth+"x"+nativeHeight + " (native)");
-		}
-		
-		JComboBox<String> resolutionCB = new JComboBox<String>(resolutions);
+		JComboBox resolutionCB = new JComboBox(resolutions);
 		resolutionCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				@SuppressWarnings("unchecked")
-				JComboBox<String> cb = (JComboBox<String>) e.getSource();
+				JComboBox cb = (JComboBox)e.getSource();
 				String resolution = (String)cb.getSelectedItem();
 				String[] dimensions = resolution.substring(0, resolution.indexOf(" ")).split("x");
 				OptionsScreen.this.tmpResolution = new Dimension(Integer.parseInt(dimensions[0]), Integer.parseInt(dimensions[1]));
@@ -176,12 +182,12 @@ public class OptionsScreen extends JPanel {
 
 		// default
 		resolutionCB.setSelectedIndex(0);
-		String defaultResolution = resolutionCB.getItemAt(0);
+		String defaultResolution = (String) resolutionCB.getItemAt(0);
 		String[] defaultDimensions = defaultResolution.substring(0, defaultResolution.indexOf(" ")).split("x");
 		resolution = new Dimension(Integer.parseInt(defaultDimensions[0]), Integer.parseInt(defaultDimensions[1]));
 		tmpResolution = resolution;
-
-		resolutionPicker.add(resolutionLabel, gbc);
+		
+		
 		resolutionPicker.add(resolutionCB, gbc);
 	}
 
@@ -194,9 +200,11 @@ public class OptionsScreen extends JPanel {
 		JPanel controlPicker = new JPanel(new GridBagLayout());
 		controlPicker.setOpaque(false);
 		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(5, 0 , 0, 0);
 
-		JLabel controlLabel = new JLabel("Controls placeholder");
+		JLabel controlLabel = new JLabel("Rebind Keys:", SwingConstants.CENTER);
 		controlLabel.setForeground(Color.WHITE);
+		controlLabel.setPreferredSize(new Dimension(180,20));
 
 		AbstractAction showDialog = new AbstractAction() {
 			@Override
@@ -258,7 +266,6 @@ public class OptionsScreen extends JPanel {
 								tmpShootKey = e.getKeyCode();
 								break;
 							}
-							System.out.println(tmpShootKey);
 							
 							keyRemapDialog.setVisible(false);
 							keyRemapDialog.dispose();
@@ -292,7 +299,6 @@ public class OptionsScreen extends JPanel {
 		rightRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(rightRemap, gbc);
 
-
 		gbc.gridy = 2;
 		JButton leftRemap = new JButton("Move Left ("+ KeyEvent.getKeyText(moveLeftKey)+")");
 		leftRemap.setForeground(Color.BLACK);
@@ -321,21 +327,27 @@ public class OptionsScreen extends JPanel {
 		shootRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(shootRemap, gbc);        
 		
-		HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
-		String buttonKeys[] = {"R", "L", "U", "P", " "};
 
 		this.add(controlPicker);
 	}
 
 	private void initDifficultyPicker() {
 		// resolution picker (dropdown list)
-		JPanel difficultyPicker = new JPanel();
+		JPanel difficultyPicker = new JPanel(new GridBagLayout());
 		difficultyPicker.setOpaque(false);
-		add(difficultyPicker);
-
-		JLabel difficultyLabel = new JLabel("Difficulty: ");
+		this.add(difficultyPicker);
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(5, 0, 0, 0);
+		
+		gbc.gridy = 0;
+		gbc.gridwidth = 3;
+		JLabel difficultyLabel = new JLabel("Difficulty: ", SwingConstants.CENTER);
 		difficultyLabel.setForeground(Color.WHITE);
+		
+		difficultyPicker.add(difficultyLabel, gbc);
 
+		gbc.gridy = 1;
+		gbc.gridwidth = 1;
 		ButtonGroup group = new ButtonGroup();
 
 		JRadioButton easyButton = new JRadioButton("Easy");
@@ -388,10 +400,9 @@ public class OptionsScreen extends JPanel {
 		group.add(easyButton);
 		group.add(mediumButton);
 		group.add(hardButton);
-		difficultyPicker.add(difficultyLabel);
-		difficultyPicker.add(easyButton);
-		difficultyPicker.add(mediumButton);
-		difficultyPicker.add(hardButton);
+		difficultyPicker.add(easyButton, gbc);
+		difficultyPicker.add(mediumButton, gbc);
+		difficultyPicker.add(hardButton, gbc);
 	}
 
 	private void initConfirmation() {
