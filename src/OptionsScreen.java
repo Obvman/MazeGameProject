@@ -199,6 +199,8 @@ public class OptionsScreen extends JPanel {
 				JDialog keyRemapDialog = new JDialog();
 				JPanel dialogMessage = new JPanel();
 				dialogMessage.add(new JLabel("Press the key you wish to rebind to"));
+				dialogMessage.add(new JLabel("or press Escape to cancel"));
+				keyRemapDialog.setPreferredSize(new Dimension(300, 100));
 				keyRemapDialog.add(dialogMessage);
 				keyRemapDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				keyRemapDialog.setLocationRelativeTo(mainWindow);
@@ -213,39 +215,39 @@ public class OptionsScreen extends JPanel {
 
 		gbc.gridy = 1;
 		gbc.gridwidth = 40;
-		JButton rightRemap = new JButton("Right ("+ KeyEvent.getKeyText(moveRightKey)+")");
+		JButton rightRemap = new JButton("Move Right ("+ KeyEvent.getKeyText(moveRightKey)+")");
 		rightRemap.setForeground(Color.BLACK);
 		rightRemap.addActionListener(showDialog);
-		rightRemap.setPreferredSize(new Dimension(150,30));
+		rightRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(rightRemap, gbc);
 
 
 		gbc.gridy = 2;
-		JButton leftRemap = new JButton("Left ("+ KeyEvent.getKeyText(moveLeftKey)+")");
+		JButton leftRemap = new JButton("Move Left ("+ KeyEvent.getKeyText(moveLeftKey)+")");
 		leftRemap.setForeground(Color.BLACK);
 		leftRemap.addActionListener(showDialog);
-		leftRemap.setPreferredSize(new Dimension(150,30));
+		leftRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(leftRemap, gbc);
 
 		gbc.gridy = 3;
-		JButton upRemap = new JButton("Up ("+ KeyEvent.getKeyText(moveUpKey)+")");
+		JButton upRemap = new JButton("Move Up ("+ KeyEvent.getKeyText(moveUpKey)+")");
 		upRemap.setForeground(Color.BLACK);
 		upRemap.addActionListener(showDialog);
-		upRemap.setPreferredSize(new Dimension(150,30));
+		upRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(upRemap, gbc);
 
 		gbc.gridy = 4;
-		JButton downRemap = new JButton("Down ("+ KeyEvent.getKeyText(moveDownKey)+")");
+		JButton downRemap = new JButton("Move Down ("+ KeyEvent.getKeyText(moveDownKey)+")");
 		downRemap.setForeground(Color.BLACK);
 		downRemap.addActionListener(showDialog);
-		downRemap.setPreferredSize(new Dimension(150,30));
+		downRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(downRemap, gbc);
 
 		gbc.gridy = 5;
 		JButton shootRemap = new JButton("Shoot ("+ KeyEvent.getKeyText(shootKey)+")");
 		shootRemap.setForeground(Color.BLACK);
 		shootRemap.addActionListener(showDialog);
-		shootRemap.setPreferredSize(new Dimension(150,30));
+		shootRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(shootRemap, gbc);        
 
 		this.add(controlPicker);
