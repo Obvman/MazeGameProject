@@ -135,7 +135,8 @@ public class OptionsScreen extends JPanel {
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 				String resolution = (String)cb.getSelectedItem();
 				String[] dimensions = resolution.substring(0, resolution.indexOf(" ")).split("x");
-				OptionsScreen.this.tmpResolution = new Dimension(Integer.parseInt(dimensions[0]), Integer.parseInt(dimensions[1]));
+				OptionsScreen.this.resolution = new Dimension(Integer.parseInt(dimensions[0]), Integer.parseInt(dimensions[1]));
+				OptionsScreen.this.mainWindow.setSize(OptionsScreen.this.resolution);
 			}
 
 		});
@@ -145,8 +146,6 @@ public class OptionsScreen extends JPanel {
 		String defaultResolution = (String) resolutionCB.getItemAt(0);
 		String[] defaultDimensions = defaultResolution.substring(0, defaultResolution.indexOf(" ")).split("x");
 		resolution = new Dimension(Integer.parseInt(defaultDimensions[0]), Integer.parseInt(defaultDimensions[1]));
-		tmpResolution = resolution;
-		
 		
 		resolutionPicker.add(resolutionCB, gbc);
 	}
@@ -345,7 +344,7 @@ public class OptionsScreen extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OptionsScreen.this.tmpDifficulty = 1;
+				OptionsScreen.this.difficulty = 1;
 			}
 
 		});
@@ -360,13 +359,12 @@ public class OptionsScreen extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OptionsScreen.this.tmpDifficulty = 2;
+				OptionsScreen.this.difficulty = 2;
 			}
 
 		});
 		// default
 		difficulty = 2;
-		tmpDifficulty = difficulty;
 
 		JRadioButton hardButton = new JRadioButton("Hard");
 		hardButton.setForeground(Color.WHITE);
@@ -377,8 +375,7 @@ public class OptionsScreen extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OptionsScreen.this.tmpDifficulty = 3;
-
+				OptionsScreen.this.difficulty = 3;
 			}
 
 		});
@@ -392,72 +389,23 @@ public class OptionsScreen extends JPanel {
 	}
 
 	private void initConfirmation() {
-		JPanel confirmation = new JPanel();
-		confirmation.setOpaque(false);
+		JPanel backToMenu = new JPanel();
+		backToMenu.setOpaque(false);
 		
-		JButton confirmButton = new JButton(new ImageIcon("resources/buttons/confirm.png"));
-		confirmButton.setContentAreaFilled(false);
-		confirmButton.setMargin(new Insets(0, 0, 0, 0));
-		confirmButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// update the settings
-				OptionsScreen.this.resolution = OptionsScreen.this.tmpResolution;
-				OptionsScreen.this.mainWindow.setSize(OptionsScreen.this.resolution);
-				OptionsScreen.this.difficulty = OptionsScreen.this.tmpDifficulty;
-//				OptionsScreen.this.moveRightKey = tmpRightKey;
-//				OptionsScreen.this.moveLeftKey = tmpLeftKey;
-//				OptionsScreen.this.moveUpKey = tmpUpKey;
-//				OptionsScreen.this.moveDownKey = tmpDownKey;
-//				OptionsScreen.this.shootKey = tmpShootKey;
-				OptionsScreen.this.mainWindow.switchToMenu();
-			}
-
-		});
-		confirmation.add(confirmButton);
 
 		// cancel
-		JButton cancelButton = new JButton(new ImageIcon("resources/buttons/cancel.png"));
-		cancelButton.setContentAreaFilled(false);
-		cancelButton.setMargin(new Insets(0, 0, 0, 0));
-		cancelButton.addActionListener(new ActionListener() {
+		JButton backButton = new JButton(new ImageIcon("resources/buttons/back.png"));
+		backButton.setContentAreaFilled(false);
+		backButton.setMargin(new Insets(0, 0, 0, 0));
+		backButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				OptionsScreen.this.mainWindow.switchToMenu();
-				
-				// revert control button text and valid key list
-//				for (String key : buttonMap.keySet()) {
-//					switch (key) {
-//					case "R":
-//						buttonMap.get(key).setText("Right ("
-//											+ KeyEvent.getKeyText(moveRightKey) +")");
-////						validKeyList.add(Integer.valueOf(tmpRightKey));
-////						validKeyList.remove(Integer.valueOf(moveRightKey));
-////						System.out.println(KeyEvent.getKeyText(tmpRightKey) +":"+KeyEvent.getKeyText(moveRightKey) );
-//						break;
-//					case "L":
-//						buttonMap.get(key).setText("Left ("
-//								+ KeyEvent.getKeyText(moveLeftKey) +")");
-//						break;
-//					case "U":
-//						buttonMap.get(key).setText("Up ("
-//								+ KeyEvent.getKeyText(moveUpKey) +")");
-//						break;
-//					case "D":
-//						buttonMap.get(key).setText("Down ("
-//								+ KeyEvent.getKeyText(moveDownKey) +")");
-//						break;
-//					case "S":
-//						buttonMap.get(key).setText("Shoot ("
-//								+ KeyEvent.getKeyText(shootKey) +")");
-//						break;
-//					}
-//				}
 			}
 		});
-		confirmation.add(cancelButton);
+		backToMenu.add(backButton);
 
-		add(confirmation);
+		add(backToMenu);
 	}
 
 }
