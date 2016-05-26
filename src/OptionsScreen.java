@@ -50,7 +50,6 @@ public class OptionsScreen extends JPanel {
 		initConfirmation();
 		
 		// initalise array of valid keys for remapping
-		// SORRY I DON'T KNOW A BETTER WAY TO DO THIS
 		Integer[] validKeysTmp = {KeyEvent.VK_Q, KeyEvent.VK_W, KeyEvent.VK_E,
 				KeyEvent.VK_R, KeyEvent.VK_T, KeyEvent.VK_Y, KeyEvent.VK_U,
 				KeyEvent.VK_I, KeyEvent.VK_O, KeyEvent.VK_P, KeyEvent.VK_A,
@@ -69,12 +68,6 @@ public class OptionsScreen extends JPanel {
 		for (int i = 0; i < validKeysTmp.length; ++i) {
 			validKeyList.add(validKeysTmp[i]);
 		}
-		
-		buttonMap = new HashMap<String, JButton>();
-		String buttonKeys[] = {"R", "L", "U", "P", " "};
-		for (int i = 0; i < buttonKeys.length; ++i) {
-			
-		}
 	}
 
 	public Dimension getResolution() {
@@ -84,43 +77,10 @@ public class OptionsScreen extends JPanel {
 	public int getDifficulty() {
 		return difficulty;
 	}
-
-	public void setKey(int keyCode, int keyValue) {
-		switch (keyCode) {
-		case 1:
-			moveRightKey = keyValue;
-			break;
-		case 2:
-			moveLeftKey = keyValue;
-			break;
-		case 3:
-			moveUpKey = keyValue;
-			break;
-		case 4:
-			moveDownKey = keyValue;
-			break;
-		case 5:
-			shootKey = keyValue;
-			break;
-		}
-
-	}
-
-	public int getKey(int keyCode) {
-		switch (keyCode) {
-		case 1:
-			return moveRightKey;
-		case 2:
-			return moveLeftKey;
-		case 3:
-			return moveUpKey;
-		case 4:
-			return moveDownKey;
-		case 5:
-			return shootKey;
-		default:
-			return -1;
-		}
+	
+	public int[] getKeyArray() {
+		int[] keys = {moveRightKey, moveLeftKey, moveUpKey, moveDownKey, shootKey};
+		return keys;
 	}
 
 	@Override
@@ -205,6 +165,14 @@ public class OptionsScreen extends JPanel {
 		JLabel controlLabel = new JLabel("Rebind Keys:", SwingConstants.CENTER);
 		controlLabel.setForeground(Color.WHITE);
 		controlLabel.setPreferredSize(new Dimension(180,20));
+		
+		// set temp keys to the defaults so they don't overwrite the key bindings when confirm button
+		// is clicked
+		tmpRightKey = moveRightKey;
+		tmpLeftKey = moveLeftKey;
+		tmpUpKey = moveUpKey;
+		tmpDownKey = moveDownKey;
+		tmpShootKey = shootKey;
 
 		AbstractAction showDialog = new AbstractAction() {
 			@Override
@@ -290,6 +258,8 @@ public class OptionsScreen extends JPanel {
 		gbc.ipady = 5;
 		gbc.gridy = 0;
 		controlPicker.add(controlLabel);
+		
+		buttonMap = new HashMap<String, JButton>();
 
 		gbc.gridy = 1;
 		gbc.gridwidth = 40;
@@ -327,6 +297,11 @@ public class OptionsScreen extends JPanel {
 		shootRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(shootRemap, gbc);        
 		
+		buttonMap.put("R", rightRemap);
+		buttonMap.put("L", leftRemap);
+		buttonMap.put("U", upRemap);
+		buttonMap.put("D", downRemap);
+		buttonMap.put("S", shootRemap);
 
 		this.add(controlPicker);
 	}
@@ -424,6 +399,7 @@ public class OptionsScreen extends JPanel {
 				OptionsScreen.this.moveUpKey = tmpUpKey;
 				OptionsScreen.this.moveDownKey = tmpDownKey;
 				OptionsScreen.this.shootKey = tmpShootKey;
+//				mainWindow.setPlayerKeys(moveRightKey, moveLeftKey, moveDownKey, shootKey);
 				OptionsScreen.this.mainWindow.switchToMenu();
 			}
 

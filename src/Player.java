@@ -40,17 +40,22 @@ public class Player implements MovableSprite, ActionListener {
 	
 	private boolean muted;
 
-	public Player(int spellType)  {
+	public Player(int spellType, int[] keys)  {
 		spells = new LinkedList<Spell>();
 		this.spellType = spellType;
 		alive = true;
 
 		// set default keys to arrow keys and space
-		moveRightKey = KeyEvent.VK_RIGHT;
-		moveLeftKey = KeyEvent.VK_LEFT;
-		moveUpKey = KeyEvent.VK_UP;
-		moveDownKey = KeyEvent.VK_DOWN;
-		shootKey = KeyEvent.VK_SPACE;
+//		moveRightKey = KeyEvent.VK_RIGHT;
+//		moveLeftKey = KeyEvent.VK_LEFT;
+//		moveUpKey = KeyEvent.VK_UP;
+//		moveDownKey = KeyEvent.VK_DOWN;
+//		shootKey = KeyEvent.VK_SPACE;
+		moveRightKey = keys[0];
+		moveLeftKey = keys[1];
+		moveUpKey = keys[2];
+		moveDownKey = keys[3];
+		shootKey = keys[4];
 
 		// sprites
 		scaledHeight = (3 * Maze.MAZE_CELL_SIZE) / 4;
@@ -114,7 +119,7 @@ public class Player implements MovableSprite, ActionListener {
 	public int getDY() {
 		return dy;
 	}
-
+	
 	@Override
 	public BufferedImage getImage() {
 		BufferedImage[] image = null;
@@ -249,6 +254,13 @@ public class Player implements MovableSprite, ActionListener {
 		}
 	}
 
+	public void setKeys(int right, int left, int up, int down, int shoot) {
+		this.moveRightKey = right;
+		this.moveLeftKey = left;
+		this.moveUpKey = up;
+		this.moveDownKey = down;
+		this.shootKey = shoot;
+	}
 
 
 	private boolean getMuted() {
