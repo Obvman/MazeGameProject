@@ -314,7 +314,8 @@ public class GameScreen extends JPanel implements ActionListener {
 		};
 		mainMenu.addActionListener(menuPressed);
 		// allow button to be activated by 'Esc' key as well as by clicking
-		mainMenu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "pressEsc");
+		mainMenu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+			.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "pressEsc");
 		mainMenu.getActionMap().put("pressEsc", menuPressed);
 		mainMenu.setFocusable(false);
 		statusButtons.add(mainMenu);
@@ -475,7 +476,11 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		mazePaused = new JPanel(new GridBagLayout());
 		mazePaused.setOpaque(false);
+<<<<<<< HEAD
 		JLabel pausedLabel = new JLabel("Game paused. Press U to unpause.", SwingUtilities.CENTER);
+=======
+		JLabel pausedLabel = new JLabel("Game Paused.", SwingUtilities.CENTER);
+>>>>>>> 6182d988726aea9ea8c4cb9be6d67ae4f06d22f4
 		pausedLabel.setForeground(Color.WHITE);
 		mazePaused.add(pausedLabel);
 		mazeScreens.add(mazePaused, "Paused");
@@ -569,7 +574,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		//mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
 
 		gbc.gridy = 20;
-		JLabel ret = new JLabel("Press P or H to resume playing.");
+		JLabel ret = new JLabel("Press H to resume playing.");
 		mazeHelp.add(ret, gbc);
 		
 	}
