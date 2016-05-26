@@ -212,6 +212,7 @@ public class OptionsScreen extends JPanel {
 						
 						// If key is valid, start rebind process
 						} else if (validKeyList.contains(e.getKeyCode())) {
+							
 							// prevent user from changing to existing bound key
 							validKeyList.remove(Integer.valueOf(e.getKeyCode()));
 							
@@ -224,24 +225,34 @@ public class OptionsScreen extends JPanel {
 							// on whether user clicks confirm or cancel
 							switch (buttonToChange) {
 							case "Move Right ":
-								tmpRightKey = e.getKeyCode();
+//								tmpRightKey = e.getKeyCode();
 								validKeyList.add(moveRightKey);
+								moveRightKey = e.getKeyCode();
+								validKeyList.remove(Integer.valueOf(moveRightKey));
 								break;
 							case "Move Left ":
-								tmpLeftKey = e.getKeyCode();
+//								tmpLeftKey = e.getKeyCode();
 								validKeyList.add(moveLeftKey);
+								moveLeftKey = e.getKeyCode();
+								validKeyList.remove(Integer.valueOf(moveLeftKey));
 								break;
 							case "Move Up ":
-								tmpUpKey = e.getKeyCode();
+//								tmpUpKey = e.getKeyCode();
 								validKeyList.add(moveUpKey);
+								moveUpKey = e.getKeyCode();
+								validKeyList.remove(Integer.valueOf(moveUpKey));
 								break;
 							case "Move Down ":
-								tmpDownKey = e.getKeyCode();
+//								tmpDownKey = e.getKeyCode();
 								validKeyList.add(moveDownKey);
+								moveDownKey = e.getKeyCode();
+								validKeyList.remove(Integer.valueOf(moveDownKey));
 								break;
 							case "Shoot ":
-								tmpShootKey = e.getKeyCode();
+//								tmpShootKey = e.getKeyCode();
 								validKeyList.add(shootKey);
+								shootKey = e.getKeyCode();
+								validKeyList.remove(Integer.valueOf(shootKey));
 								break;
 							}
 							// close message after a valid key is entered
@@ -249,12 +260,11 @@ public class OptionsScreen extends JPanel {
 							keyRemapDialog.dispose();
 							
 						// Invalid key should display message to user and keep dialog 
-						//	open for further input
+						//open for further input
 						} else {
-							//TODO when cancel button pressed, revert label text to previous key
 							dialogMessage.setText("<html><body align=\"center\">"
 									+ "That key is invalid or already in use.<br>"
-									+ " Try another key or press Escape to cancel"
+									+ "Try another key or press Escape to cancel"
 									+ "</body><html>");
 						}
 					}
@@ -397,7 +407,7 @@ public class OptionsScreen extends JPanel {
 	private void initConfirmation() {
 		JPanel confirmation = new JPanel();
 		confirmation.setOpaque(false);
-		// confirm 
+		
 		JButton confirmButton = new JButton(new ImageIcon("resources/buttons/confirm.png"));
 		confirmButton.setContentAreaFilled(false);
 		confirmButton.setMargin(new Insets(0, 0, 0, 0));
@@ -408,11 +418,11 @@ public class OptionsScreen extends JPanel {
 				OptionsScreen.this.resolution = OptionsScreen.this.tmpResolution;
 				OptionsScreen.this.mainWindow.setSize(OptionsScreen.this.resolution);
 				OptionsScreen.this.difficulty = OptionsScreen.this.tmpDifficulty;
-				OptionsScreen.this.moveRightKey = tmpRightKey;
-				OptionsScreen.this.moveLeftKey = tmpLeftKey;
-				OptionsScreen.this.moveUpKey = tmpUpKey;
-				OptionsScreen.this.moveDownKey = tmpDownKey;
-				OptionsScreen.this.shootKey = tmpShootKey;
+//				OptionsScreen.this.moveRightKey = tmpRightKey;
+//				OptionsScreen.this.moveLeftKey = tmpLeftKey;
+//				OptionsScreen.this.moveUpKey = tmpUpKey;
+//				OptionsScreen.this.moveDownKey = tmpDownKey;
+//				OptionsScreen.this.shootKey = tmpShootKey;
 				OptionsScreen.this.mainWindow.switchToMenu();
 			}
 
@@ -429,33 +439,33 @@ public class OptionsScreen extends JPanel {
 				OptionsScreen.this.mainWindow.switchToMenu();
 				
 				// revert control button text and valid key list
-				for (String key : buttonMap.keySet()) {
-					switch (key) {
-					case "R":
-						buttonMap.get(key).setText("Right ("
-											+ KeyEvent.getKeyText(moveRightKey) +")");
-//						validKeyList.add(Integer.valueOf(tmpRightKey));
-//						validKeyList.remove(Integer.valueOf(moveRightKey));
-//						System.out.println(KeyEvent.getKeyText(tmpRightKey) +":"+KeyEvent.getKeyText(moveRightKey) );
-						break;
-					case "L":
-						buttonMap.get(key).setText("Left ("
-								+ KeyEvent.getKeyText(moveLeftKey) +")");
-						break;
-					case "U":
-						buttonMap.get(key).setText("Up ("
-								+ KeyEvent.getKeyText(moveUpKey) +")");
-						break;
-					case "D":
-						buttonMap.get(key).setText("Down ("
-								+ KeyEvent.getKeyText(moveDownKey) +")");
-						break;
-					case "S":
-						buttonMap.get(key).setText("Shoot ("
-								+ KeyEvent.getKeyText(shootKey) +")");
-						break;
-					}
-				}
+//				for (String key : buttonMap.keySet()) {
+//					switch (key) {
+//					case "R":
+//						buttonMap.get(key).setText("Right ("
+//											+ KeyEvent.getKeyText(moveRightKey) +")");
+////						validKeyList.add(Integer.valueOf(tmpRightKey));
+////						validKeyList.remove(Integer.valueOf(moveRightKey));
+////						System.out.println(KeyEvent.getKeyText(tmpRightKey) +":"+KeyEvent.getKeyText(moveRightKey) );
+//						break;
+//					case "L":
+//						buttonMap.get(key).setText("Left ("
+//								+ KeyEvent.getKeyText(moveLeftKey) +")");
+//						break;
+//					case "U":
+//						buttonMap.get(key).setText("Up ("
+//								+ KeyEvent.getKeyText(moveUpKey) +")");
+//						break;
+//					case "D":
+//						buttonMap.get(key).setText("Down ("
+//								+ KeyEvent.getKeyText(moveDownKey) +")");
+//						break;
+//					case "S":
+//						buttonMap.get(key).setText("Shoot ("
+//								+ KeyEvent.getKeyText(shootKey) +")");
+//						break;
+//					}
+//				}
 			}
 		});
 		confirmation.add(cancelButton);
