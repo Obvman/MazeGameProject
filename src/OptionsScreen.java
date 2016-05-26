@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 import java.awt.*;
@@ -12,7 +13,7 @@ public class OptionsScreen extends JPanel {
 	// options
 	Dimension resolution;
 	int difficulty; // 1, 2, or 3
-	ArrayList<Integer> validKeysArray;
+	ArrayList<Integer> validKeyList;
 	private int moveRightKey;
 	private int moveLeftKey;
 	private int moveUpKey;
@@ -26,7 +27,7 @@ public class OptionsScreen extends JPanel {
 	private int tmpLeftKey;
 	private int tmpUpKey;
 	private int tmpDownKey;
-	private int tmpSpaceKey;
+	private int tmpShootKey;
 
 
 	public OptionsScreen (MainWindow mainWindow) {
@@ -59,11 +60,11 @@ public class OptionsScreen extends JPanel {
 				KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4,
 				KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8,
 				KeyEvent.VK_9, KeyEvent.VK_0, KeyEvent.VK_TAB, KeyEvent.VK_SHIFT,
-				KeyEvent.VK_ALT, KeyEvent.VK_CONTROL, KeyEvent.VK_SPACE,
-				KeyEvent.VK_COMMA, KeyEvent.VK_PERIOD, KeyEvent.VK_SLASH,
+				KeyEvent.VK_ALT, KeyEvent.VK_CONTROL, KeyEvent.VK_COMMA, 
+				KeyEvent.VK_PERIOD, KeyEvent.VK_SLASH,
 				KeyEvent.VK_MINUS, KeyEvent.VK_PLUS};
 		// stick mappings into ArrayList for better adding/removing
-		ArrayList<Integer> validKeyList = new ArrayList<Integer>(validKeysTmp.length);
+		this.validKeyList = new ArrayList<Integer>(validKeysTmp.length);
 		for (int i = 0; i < validKeysTmp.length; ++i) {
 			validKeyList.add(validKeysTmp[i]);
 		}
@@ -187,7 +188,6 @@ public class OptionsScreen extends JPanel {
 	// list of buttons that bring up a dialog when clicked
 	// dialog prompts user to press the key they want to rebind to
 	// then disappears. Key is confirmed mapped when 'Confirm' button is clicked
-	// TODO each button shows the current key that it's mapped to
 	// valid keys do not include keys that are already mapped (prevents remapping to used keys)
 	// if the already mapped key is pressed with dialog open, nothing should happen
 	private void initControlSelector() {
@@ -201,14 +201,80 @@ public class OptionsScreen extends JPanel {
 		AbstractAction showDialog = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JDialog keyRemapDialog = new JDialog();
-				JPanel dialogMessage = new JPanel();
-				dialogMessage.add(new JLabel("Press the key you wish to rebind to"));
-				dialogMessage.add(new JLabel("or press Escape to cancel"));
+				final JDialog keyRemapDialog = new JDialog();
+				
+				final JLabel dialogMessage = new JLabel("<html><body align=\"center\">"
+						+ "Press the key you wish to rebind to<br>"
+						+ "or press Escape to cancel</body><html>");
+				dialogMessage.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+				
 				keyRemapDialog.setPreferredSize(new Dimension(300, 100));
 				keyRemapDialog.add(dialogMessage);
+				keyRemapDialog.setModal(true); // lock focus to the dialog
 				keyRemapDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				keyRemapDialog.setLocationRelativeTo(mainWindow);
+				
+				final JButton sourceButton = (JButton)e.getSource();
+				
+				keyRemapDialog.addKeyListener(new KeyListener() {
+					@Override
+					public void keyPressed(KeyEvent e) {
+						return;
+					}
+					
+					@Override
+					public void keyReleased(KeyEvent e) {
+						// Escape key closes dialog and cancels key rebinding process
+						if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+							keyRemapDialog.setVisible(false);
+							keyRemapDialog.dispose();
+						
+						// If key is valid, start rebind process
+						} else if (validKeyList.contains(e.getKeyCode())) {
+							validKeyList.remove(Integer.valueOf(e.getKeyCode()));
+							// TODO this needs to add the current key bound to the relevant action
+							validKeyList.add(0);
+							
+							// change button text to reflect new key
+							String keyAction = sourceButton.getText().split("\\(")[0];
+							sourceButton.setText(keyAction + "(" + e.getKeyChar() + ")");
+							
+							// change tmp variable which will be confirmed or rejected depending
+							// on whether user clicks confirm or cancel
+							switch (keyAction) {
+							case "Move Right ":
+								tmpRightKey = e.getKeyCode();
+								break;
+							case "Move Left ":
+								tmpLeftKey = e.getKeyCode();
+								break;
+							case "Move Up ":
+								tmpUpKey = e.getKeyCode();
+								break;
+							case "Move Down ":
+								tmpDownKey = e.getKeyCode();
+								break;
+							case "Shoot ":
+								tmpShootKey = e.getKeyCode();
+								break;
+							}
+							System.out.println(tmpShootKey);
+							
+							keyRemapDialog.setVisible(false);
+							keyRemapDialog.dispose();
+							
+						// Invalid key should display message to user and close the dialog
+						} else {
+							dialogMessage.setText("<html><body align=\"center\">Invalid key enterred.<br> Try another key or press Escape to cancel</body><html>");
+						}
+					}
+					
+					@Override
+					public void keyTyped(KeyEvent e) {
+						return;
+					}
+				});
+				
 				keyRemapDialog.pack();
 				keyRemapDialog.setVisible(true);
 			}
@@ -254,6 +320,9 @@ public class OptionsScreen extends JPanel {
 		shootRemap.addActionListener(showDialog);
 		shootRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(shootRemap, gbc);        
+		
+		HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
+		String buttonKeys[] = {"R", "L", "U", "P", " "};
 
 		this.add(controlPicker);
 	}
@@ -339,6 +408,11 @@ public class OptionsScreen extends JPanel {
 				OptionsScreen.this.resolution = OptionsScreen.this.tmpResolution;
 				OptionsScreen.this.mainWindow.setSize(OptionsScreen.this.resolution);
 				OptionsScreen.this.difficulty = OptionsScreen.this.tmpDifficulty;
+				OptionsScreen.this.moveRightKey = tmpRightKey;
+				OptionsScreen.this.moveLeftKey = tmpLeftKey;
+				OptionsScreen.this.moveUpKey = tmpUpKey;
+				OptionsScreen.this.moveDownKey = tmpDownKey;
+				OptionsScreen.this.shootKey = tmpShootKey;
 				OptionsScreen.this.mainWindow.switchToMenu();
 			}
 
