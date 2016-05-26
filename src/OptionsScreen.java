@@ -51,10 +51,10 @@ public class OptionsScreen extends JPanel {
 		
 		// initalise array of valid keys for remapping
 		Integer[] validKeysTmp = {KeyEvent.VK_Q, KeyEvent.VK_W, KeyEvent.VK_E,
-				KeyEvent.VK_R, KeyEvent.VK_T, KeyEvent.VK_Y, KeyEvent.VK_U,
-				KeyEvent.VK_I, KeyEvent.VK_O, KeyEvent.VK_P, KeyEvent.VK_A,
+				KeyEvent.VK_R, KeyEvent.VK_T, KeyEvent.VK_Y,
+				KeyEvent.VK_I, KeyEvent.VK_O, KeyEvent.VK_A,
 				KeyEvent.VK_S, KeyEvent.VK_D, KeyEvent.VK_F, KeyEvent.VK_G,
-				KeyEvent.VK_H, KeyEvent.VK_J, KeyEvent.VK_K, KeyEvent.VK_L,
+				KeyEvent.VK_J, KeyEvent.VK_K, KeyEvent.VK_L,
 				KeyEvent.VK_Z, KeyEvent.VK_Z, KeyEvent.VK_X, KeyEvent.VK_C,
 				KeyEvent.VK_V, KeyEvent.VK_B, KeyEvent.VK_N, KeyEvent.VK_M,
 				KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4,
@@ -207,40 +207,51 @@ public class OptionsScreen extends JPanel {
 						
 						// If key is valid, start rebind process
 						} else if (validKeyList.contains(e.getKeyCode())) {
+							// prevent user from changing to existing bound key
 							validKeyList.remove(Integer.valueOf(e.getKeyCode()));
-							// TODO this needs to add the current key bound to the relevant action
+							// allow user to change back to old key
 							validKeyList.add(0);
 							
 							// change button text to reflect new key
-							String keyAction = sourceButton.getText().split("\\(")[0];
-							sourceButton.setText(keyAction + "(" + e.getKeyChar() + ")");
+							String buttonToChange = sourceButton.getText().split("\\(")[0];
+							sourceButton.setText(buttonToChange + "(" 
+										+ KeyEvent.getKeyText(e.getKeyCode()) + ")");
 							
 							// change tmp variable which will be confirmed or rejected depending
 							// on whether user clicks confirm or cancel
-							switch (keyAction) {
+							switch (buttonToChange) {
 							case "Move Right ":
 								tmpRightKey = e.getKeyCode();
+								validKeyList.add(moveRightKey);
 								break;
 							case "Move Left ":
 								tmpLeftKey = e.getKeyCode();
+								validKeyList.add(moveLeftKey);
 								break;
 							case "Move Up ":
 								tmpUpKey = e.getKeyCode();
+								validKeyList.add(moveUpKey);
 								break;
 							case "Move Down ":
 								tmpDownKey = e.getKeyCode();
+								validKeyList.add(moveDownKey);
 								break;
 							case "Shoot ":
 								tmpShootKey = e.getKeyCode();
+								validKeyList.add(shootKey);
 								break;
 							}
-							
+							// close message after a valid key is entered
 							keyRemapDialog.setVisible(false);
 							keyRemapDialog.dispose();
 							
-						// Invalid key should display message to user and close the dialog
+						// Invalid key should display message to user and keep dialog 
+						//	open for further input
 						} else {
-							dialogMessage.setText("<html><body align=\"center\">Invalid key enterred.<br> Try another key or press Escape to cancel</body><html>");
+							dialogMessage.setText("<html><body align=\"center\">"
+									+ "That key is invalid or already in use.<br>"
+									+ " Try another key or press Escape to cancel"
+									+ "</body><html>");
 						}
 					}
 					
