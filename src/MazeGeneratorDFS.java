@@ -6,7 +6,7 @@ import java.util.Random;
  * All the walls are inserted before the algorithm starts connecting
  * all the PATH_TILE
  */
-public class MazeGenerateDfs implements MazeGenerationStrategy {
+public class MazeGeneratorDFS implements MazeGenerator {
 
 	public int[][] generateMaze(int mazeSize1, int mazeSize2) {
 		int[][] maze = new int[mazeSize1][mazeSize2];

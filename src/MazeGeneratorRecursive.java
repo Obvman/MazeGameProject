@@ -3,7 +3,7 @@ import java.util.Random;
 /**
  * A recursive maze generator
  */
-public class MazeGenerateRecursive implements MazeGenerationStrategy {
+public class MazeGeneratorRecursive implements MazeGenerator {
 
 	public int[][] generateMaze(int mazeSize1, int mazeSize2) {
 		int[][] maze = new int[mazeSize1][mazeSize2]; 

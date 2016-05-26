@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class MazeGenerateMix implements MazeGenerationStrategy {
+public class MazeGeneratorMix implements MazeGenerator {
 	private int[][] myMaze; 
 	
 	@Override
@@ -61,7 +61,7 @@ public class MazeGenerateMix implements MazeGenerationStrategy {
 	private void mazeTranslate(int xstart, int xend, int ystart, int yend){
 		int mazeSize1 = xend-xstart+1;
 		int mazeSize2 = yend-ystart+1;
-		int[][] cell = new MazeGenerateDfs().generateMaze(mazeSize1,mazeSize2);
+		int[][] cell = new MazeGeneratorDFS().generateMaze(mazeSize1,mazeSize2);
 		for (int i = 0; i<mazeSize1; i++){
 			for(int j = 0; j<mazeSize2; j++){
 				this.myMaze[i+xstart][j+ystart] = cell[i][j];

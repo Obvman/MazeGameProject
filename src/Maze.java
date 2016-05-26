@@ -31,7 +31,7 @@ public class Maze {
 	private int MAZE_SIZE_1;
     private int MAZE_SIZE_2;
     
-	private MazeGenerationStrategy mazeGenerator;
+	private MazeGenerator mazeGenerator;
 	private int[][] mazeGrid;
 	private Player player;
 	private LinkedList<Portal> portals;
@@ -52,7 +52,7 @@ public class Maze {
 		MAZE_SIZE_2 = 37 - 8 * (level < 3 ? 3 - level : 0);
 		
 		// generate maze
-		mazeGenerator = new MazeGenerateDfs();
+		mazeGenerator = new MazeGeneratorDFS();
 		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2);
 
 		// spawn player
