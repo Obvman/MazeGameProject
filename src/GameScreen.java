@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
@@ -301,6 +302,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		JButton mainMenu = new JButton(new ImageIcon("resources/buttons/main_menu.png"));
 		mainMenu.setContentAreaFilled(false);
 		mainMenu.setMargin(new Insets(0, 0, 0 ,0));
+		mainMenu.setFocusable(false);
 		
 		AbstractAction menuPressed = new AbstractAction() {
 			@Override
@@ -320,6 +322,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		final JButton pause = new JButton(new ImageIcon("resources/buttons/pause.png"));
 		pause.setContentAreaFilled(false);
 		pause.setMargin(new Insets(0, 0, 0 ,0));
+		pause.setFocusable(false);
 		
 		AbstractAction pausePressed = new AbstractAction() {
 			@Override
@@ -346,6 +349,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		JButton help = new JButton(new ImageIcon("resources/buttons/help.png"));
 		help.setContentAreaFilled(false);
 		help.setMargin(new Insets(0, 0, 0 ,0));
+		help.setFocusable(false);
 		
 		AbstractAction helpPressed = new AbstractAction() {
 			@Override
@@ -361,8 +365,8 @@ public class GameScreen extends JPanel implements ActionListener {
 		};
 		help.addActionListener(helpPressed);
 		// allow button to be activated by 'h' key as well as by clicking
-		pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_H,0), "pressH");
-		pause.getActionMap().put("pressH", helpPressed);
+		help.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_H,0), "pressH");
+		help.getActionMap().put("pressH", helpPressed);
 		statusButtons.add(help);
 		
 		//mute button
@@ -370,6 +374,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		JButton mute = new JButton("Mute");
 		mute.setContentAreaFilled(false);
 		mute.setMargin(new Insets(0, 0, 0 ,0));
+		mute.setFocusable(false);
 		
 		AbstractAction mutePressed = new AbstractAction() {
 			@Override
@@ -424,6 +429,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbcMaze.gridy = 1;
 		gbcMaze.gridheight = 10;
 		mazeScreens = new JPanel(new CardLayout());
+		mazeScreens.setOpaque(false);
 		mazeUI.add(mazeScreens, gbcMaze);
 
 		// maze playing
@@ -438,8 +444,10 @@ public class GameScreen extends JPanel implements ActionListener {
 		initHelp();
 		
 		mazePaused = new JPanel(new GridBagLayout());
-		mazePaused.add(new JLabel("Game Paused. TODO: make U instead of (H or P) the unpause button"));
-		mazePaused.setBackground(Color.LIGHT_GRAY);
+		mazePaused.setOpaque(false);
+		JLabel pausedLabel = new JLabel("Game Paused. TODO: make U instead of (H or P) the unpause button asd", SwingUtilities.CENTER);
+		pausedLabel.setForeground(Color.WHITE);
+		mazePaused.add(pausedLabel);
 		mazeScreens.add(mazePaused, "Paused");
 	}
 	
