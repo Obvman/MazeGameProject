@@ -148,7 +148,7 @@ public class GameScreen extends JPanel implements ActionListener {
 			duration += (double)updateTimer.getDelay()/1000;
 
 			// update status bar
-			if (maze.isKeyAcquired()) {
+			if (maze.getKey()) {
 				objective.setText("Objective: Unlock the door and escape!");
 			} else {
 				objective.setText("Objective: Get to the key!");
