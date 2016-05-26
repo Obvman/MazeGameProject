@@ -476,11 +476,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		mazePaused = new JPanel(new GridBagLayout());
 		mazePaused.setOpaque(false);
-<<<<<<< HEAD
-		JLabel pausedLabel = new JLabel("Game paused. Press U to unpause.", SwingUtilities.CENTER);
-=======
 		JLabel pausedLabel = new JLabel("Game Paused.", SwingUtilities.CENTER);
->>>>>>> 6182d988726aea9ea8c4cb9be6d67ae4f06d22f4
 		pausedLabel.setForeground(Color.WHITE);
 		mazePaused.add(pausedLabel);
 		mazeScreens.add(mazePaused, "Paused");
