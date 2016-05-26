@@ -152,7 +152,7 @@ public class OptionsScreen extends JPanel {
 
 	// list of buttons that bring up a dialog when clicked
 	// dialog prompts user to press the key they want to rebind to
-	// then disappears. Key is confirmed mapped when 'Confirm' button is clicked
+	// then disappears.
 	// valid keys do not include keys that are already mapped (prevents remapping to used keys)
 	// if the already mapped key is pressed with dialog open, nothing should happen
 	private void initControlSelector() {
@@ -199,7 +199,7 @@ public class OptionsScreen extends JPanel {
 						// If key is valid, start rebind process
 						} else if (validKeyList.contains(e.getKeyCode())) {
 							
-							// prevent user from changing to existing bound key
+							// prevent user from changing to already bound key
 							validKeyList.remove(Integer.valueOf(e.getKeyCode()));
 							
 							// change button text to reflect new key
@@ -207,35 +207,30 @@ public class OptionsScreen extends JPanel {
 							sourceButton.setText(buttonToChange + "(" 
 										+ KeyEvent.getKeyText(e.getKeyCode()) + ")");
 							
-							// change tmp variable which will be confirmed or rejected depending
-							// on whether user clicks confirm or cancel
+							// update controls according to input key and update list of 
+							// valid keys accordingly
 							switch (buttonToChange) {
 							case "Move Right ":
-//								tmpRightKey = e.getKeyCode();
 								validKeyList.add(moveRightKey);
 								moveRightKey = e.getKeyCode();
 								validKeyList.remove(Integer.valueOf(moveRightKey));
 								break;
 							case "Move Left ":
-//								tmpLeftKey = e.getKeyCode();
 								validKeyList.add(moveLeftKey);
 								moveLeftKey = e.getKeyCode();
 								validKeyList.remove(Integer.valueOf(moveLeftKey));
 								break;
 							case "Move Up ":
-//								tmpUpKey = e.getKeyCode();
 								validKeyList.add(moveUpKey);
 								moveUpKey = e.getKeyCode();
 								validKeyList.remove(Integer.valueOf(moveUpKey));
 								break;
 							case "Move Down ":
-//								tmpDownKey = e.getKeyCode();
 								validKeyList.add(moveDownKey);
 								moveDownKey = e.getKeyCode();
 								validKeyList.remove(Integer.valueOf(moveDownKey));
 								break;
 							case "Shoot ":
-//								tmpShootKey = e.getKeyCode();
 								validKeyList.add(shootKey);
 								shootKey = e.getKeyCode();
 								validKeyList.remove(Integer.valueOf(shootKey));
@@ -246,7 +241,7 @@ public class OptionsScreen extends JPanel {
 							keyRemapDialog.dispose();
 							
 						// Invalid key should display message to user and keep dialog 
-						//open for further input
+						// open for further input
 						} else {
 							dialogMessage.setText("<html><body align=\"center\">"
 									+ "That key is invalid or already in use.<br>"
