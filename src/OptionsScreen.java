@@ -14,6 +14,7 @@ public class OptionsScreen extends JPanel {
 	Dimension resolution;
 	int difficulty; // 1, 2, or 3
 	ArrayList<Integer> validKeyList;
+	HashMap<String, JButton> buttonMap;
 	private int moveRightKey;
 	private int moveLeftKey;
 	private int moveUpKey;
@@ -67,6 +68,12 @@ public class OptionsScreen extends JPanel {
 		this.validKeyList = new ArrayList<Integer>(validKeysTmp.length);
 		for (int i = 0; i < validKeysTmp.length; ++i) {
 			validKeyList.add(validKeysTmp[i]);
+		}
+		
+		buttonMap = new HashMap<String, JButton>();
+		String buttonKeys[] = {"R", "L", "U", "P", " "};
+		for (int i = 0; i < buttonKeys.length; ++i) {
+			
 		}
 	}
 
@@ -320,8 +327,6 @@ public class OptionsScreen extends JPanel {
 		shootRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(shootRemap, gbc);        
 		
-		HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
-		String buttonKeys[] = {"R", "L", "U", "P", " "};
 
 		this.add(controlPicker);
 	}
