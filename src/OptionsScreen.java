@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 import java.awt.*;
@@ -26,7 +27,7 @@ public class OptionsScreen extends JPanel {
 	private int tmpLeftKey;
 	private int tmpUpKey;
 	private int tmpDownKey;
-	private int tmpSpaceKey;
+	private int tmpShootKey;
 
 
 	public OptionsScreen (MainWindow mainWindow) {
@@ -182,7 +183,6 @@ public class OptionsScreen extends JPanel {
 	// list of buttons that bring up a dialog when clicked
 	// dialog prompts user to press the key they want to rebind to
 	// then disappears. Key is confirmed mapped when 'Confirm' button is clicked
-	// TODO each button shows the current key that it's mapped to
 	// valid keys do not include keys that are already mapped (prevents remapping to used keys)
 	// if the already mapped key is pressed with dialog open, nothing should happen
 	private void initControlSelector() {
@@ -205,8 +205,11 @@ public class OptionsScreen extends JPanel {
 				
 				keyRemapDialog.setPreferredSize(new Dimension(300, 100));
 				keyRemapDialog.add(dialogMessage);
+				keyRemapDialog.setModal(true); // lock focus to the dialog
 				keyRemapDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				keyRemapDialog.setLocationRelativeTo(mainWindow);
+				
+				final JButton sourceButton = (JButton)e.getSource();
 				
 				keyRemapDialog.addKeyListener(new KeyListener() {
 					@Override
@@ -223,14 +226,40 @@ public class OptionsScreen extends JPanel {
 						
 						// If key is valid, start rebind process
 						} else if (validKeyList.contains(e.getKeyCode())) {
-							System.out.println("Valid key!");
 							validKeyList.remove(Integer.valueOf(e.getKeyCode()));
 							// TODO this needs to add the current key bound to the relevant action
 							validKeyList.add(0);
 							
+							// change button text to reflect new key
+							String keyAction = sourceButton.getText().split("\\(")[0];
+							sourceButton.setText(keyAction + "(" + e.getKeyChar() + ")");
+							
+							// change tmp variable which will be confirmed or rejected depending
+							// on whether user clicks confirm or cancel
+							switch (keyAction) {
+							case "Move Right ":
+								tmpRightKey = e.getKeyCode();
+								break;
+							case "Move Left ":
+								tmpLeftKey = e.getKeyCode();
+								break;
+							case "Move Up ":
+								tmpUpKey = e.getKeyCode();
+								break;
+							case "Move Down ":
+								tmpDownKey = e.getKeyCode();
+								break;
+							case "Shoot ":
+								tmpShootKey = e.getKeyCode();
+								break;
+							}
+							System.out.println(tmpShootKey);
+							
+							keyRemapDialog.setVisible(false);
+							keyRemapDialog.dispose();
+							
 						// Invalid key should display message to user and close the dialog
 						} else {
-							System.out.println("Invalid key.");
 							dialogMessage.setText("<html><body align=\"center\">Invalid key enterred.<br> Try another key or press Escape to cancel</body><html>");
 						}
 					}
@@ -286,6 +315,9 @@ public class OptionsScreen extends JPanel {
 		shootRemap.addActionListener(showDialog);
 		shootRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(shootRemap, gbc);        
+		
+		HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
+		String buttonKeys[] = {"R", "L", "U", "P", " "};
 
 		this.add(controlPicker);
 	}
@@ -371,6 +403,11 @@ public class OptionsScreen extends JPanel {
 				OptionsScreen.this.resolution = OptionsScreen.this.tmpResolution;
 				OptionsScreen.this.mainWindow.setSize(OptionsScreen.this.resolution);
 				OptionsScreen.this.difficulty = OptionsScreen.this.tmpDifficulty;
+				OptionsScreen.this.moveRightKey = tmpRightKey;
+				OptionsScreen.this.moveLeftKey = tmpLeftKey;
+				OptionsScreen.this.moveUpKey = tmpUpKey;
+				OptionsScreen.this.moveDownKey = tmpDownKey;
+				OptionsScreen.this.shootKey = tmpShootKey;
 				OptionsScreen.this.mainWindow.switchToMenu();
 			}
 
