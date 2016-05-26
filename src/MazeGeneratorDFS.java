@@ -8,39 +8,39 @@ import java.util.Random;
  */
 public class MazeGeneratorDFS implements MazeGenerator {
 
-	public int[][] generateMaze(int mazeSize1, int mazeSize2) {
-		int[][] maze = new int[mazeSize1][mazeSize2];
-		for (int row = 0; row < mazeSize1; row++) {
-			for (int col = 0; col < mazeSize2; col++) {
+	public int[][] generateMaze(int height, int width) {
+		int[][] maze = new int[height][width];
+		for (int row = 0; row < height; row++) {
+			for (int col = 0; col < width; col++) {
 				maze[row][col] = Maze.PATH_TILE;
 			}
 		}
 		
-		int midX = mazeSize1/2;
+		int midX = height/2;
 		if ((midX % 2) == 1){
 			midX = midX +1;
 		}
-		int midY = mazeSize2/2;
+		int midY = width/2;
 		if ((midY % 2) == 1){
 			midY = midY +1;
 		}
 		Node currNode = new Node(midX, midY);
-		maze = insertWalls(mazeSize1, mazeSize2, maze);
+		maze = insertWalls(height, width, maze);
 		LinkedList<Node> visited = new LinkedList<Node>();
 		LinkedList<Node> curr = new LinkedList<Node>();
 		LinkedList<Node> neighbours;
 		//while all of the necessary path tile has not been gone through yet, keep looping
-		while(visited.size()<((mazeSize1/2+1)*(mazeSize2/2+1))){
+		while(visited.size()<((height/2+1)*(width/2+1))){
 			/*
 			 * if currNode has unvisited neighbours, randomly choose
 			 * 1 to visit until currNode has 0 unvisited neightbours
 			 */
-			while(getUnvisited(currNode, visited, mazeSize1, mazeSize2).size() > 0){
+			while(getUnvisited(currNode, visited, height, width).size() > 0){
 					if(!visited.contains(currNode)){
 						visited.push(currNode);
 					}
 					curr.push(currNode);
-					neighbours = getUnvisited(currNode, visited, mazeSize1, mazeSize2);
+					neighbours = getUnvisited(currNode, visited, height, width);
 					Node neighbour = neighbours.get(new Random().nextInt(neighbours.size()));
 					maze = breakWall(neighbour, currNode, maze);
 					currNode = neighbour;
@@ -51,12 +51,12 @@ public class MazeGeneratorDFS implements MazeGenerator {
 			 * unvisited nodes
 			 */
 			
-			while (getUnvisited(currNode, visited, mazeSize1, mazeSize2).size() == 0) {
+			while (getUnvisited(currNode, visited, height, width).size() == 0) {
 				if(!visited.contains(currNode)){
 					visited.push(currNode);
 				}
 				//end the algo if all nodes are in the visit list
-				if (visited.size() == ((mazeSize1 / 2 + 1) * (mazeSize2 / 2 + 1))) {
+				if (visited.size() == ((height / 2 + 1) * (width / 2 + 1))) {
 					break;
 				}
 				currNode = curr.pop();
@@ -64,7 +64,7 @@ public class MazeGeneratorDFS implements MazeGenerator {
 		}
 		
 		maze[0][0] = Maze.START_TILE;
-		maze[mazeSize1 - 1][mazeSize2 - 1] = Maze.END_TILE;
+		maze[height - 1][width - 1] = Maze.END_TILE;
 		return maze;
 	}
 	
@@ -75,7 +75,7 @@ public class MazeGeneratorDFS implements MazeGenerator {
 	 * @return
 	 */
 	private LinkedList<Node> getUnvisited(Node n, LinkedList<Node> visited,
-			int mazeSize1, int mazeSize2){
+			int height, int width){
 		LinkedList<Node> returnValue = new LinkedList<Node>();
 		LinkedList<Integer> xTodo = new LinkedList<Integer>();
 		LinkedList<Integer> yTodo = new LinkedList<Integer>();
@@ -84,7 +84,7 @@ public class MazeGeneratorDFS implements MazeGenerator {
 			xTodo.add(n.getx()-2);
 			tmp.add(0);
 		}
-		if(n.getx() + 2 < mazeSize1){
+		if(n.getx() + 2 < height){
 			xTodo.add(n.getx()+2);
 			tmp.add(0);
 		}
@@ -112,7 +112,7 @@ public class MazeGeneratorDFS implements MazeGenerator {
 			yTodo.add(n.gety()-2);
 			tmp.add(0);
 		}
-		if(n.gety() + 2 < mazeSize2) {
+		if(n.gety() + 2 < width) {
 			yTodo.add(n.gety()+2);
 			tmp.add(0);
 		}
@@ -141,14 +141,14 @@ public class MazeGeneratorDFS implements MazeGenerator {
 	/**
 	 * insert walls before the algo
 	 */
-	private int[][] insertWalls(int mazeSize1, int mazeSize2, int[][] maze) {
-		for (int i = 1; i < mazeSize1; i += 2) {
-			for (int j = 0; j < mazeSize2; j++){
+	private int[][] insertWalls(int height, int width, int[][] maze) {
+		for (int i = 1; i < height; i += 2) {
+			for (int j = 0; j < width; j++){
 				maze[i][j] = Maze.WALL_TILE;
 			}
 		}
-		for (int i = 1; i < mazeSize2; i += 2) {
-			for (int j = 0; j < mazeSize1; j++){
+		for (int i = 1; i < width; i += 2) {
+			for (int j = 0; j < height; j++){
 				maze[j][i] = Maze.WALL_TILE;
 			}
 		}
