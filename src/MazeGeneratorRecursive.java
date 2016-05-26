@@ -3,21 +3,21 @@ import java.util.Random;
 /**
  * A recursive maze generator
  */
-public class MazeGenerateRecursive implements MazeGenerationStrategy {
+public class MazeGeneratorRecursive implements MazeGenerator {
 
-	public int[][] generateMaze(int mazeSize1, int mazeSize2) {
-		int[][] maze = new int[mazeSize1][mazeSize2]; 
-		maze = new int[mazeSize1][mazeSize2];
+	public int[][] generateMaze(int height, int width) {
+		int[][] maze = new int[height][width]; 
+		maze = new int[height][width];
 
-		for (int row = 0; row < mazeSize1; row++) {
-			for (int col = 0; col < mazeSize2; col++) {
+		for (int row = 0; row < height; row++) {
+			for (int col = 0; col < width; col++) {
 				maze[row][col] = Maze.PATH_TILE;
 			}
 		}
-		maze = generateMazeRecursive(0, mazeSize1, 0, mazeSize2, maze);
+		maze = generateMazeRecursive(0, height, 0, width, maze);
 		// set start, end, and key tile
 		maze[0][0] = Maze.START_TILE;
-		maze[mazeSize1 - 1][mazeSize2 - 1] = Maze.END_TILE;
+		maze[height - 1][width - 1] = Maze.END_TILE;
 		
 		return maze;
 	}

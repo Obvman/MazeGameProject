@@ -31,7 +31,7 @@ public class Maze {
 	private int MAZE_SIZE_1;
     private int MAZE_SIZE_2;
     
-	private MazeGenerationStrategy mazeGenerator;
+	private MazeGenerator mazeGenerator;
 	private int[][] mazeGrid;
 	private Player player;
 	private LinkedList<Portal> portals;
@@ -42,22 +42,24 @@ public class Maze {
 	// game stats
 	private int numMonstersKilled;
 	private int numGemsCollected;
+	
+	//settings
+	private boolean muted;
 
 	public Maze(int level, int difficulty, int spellType) {
 		// set maze height and width according to level
 		MAZE_SIZE_1 = 21 - 4 * (level < 3 ? 3 - level : 0);
 		MAZE_SIZE_2 = 37 - 8 * (level < 3 ? 3 - level : 0);
 		
-		MAZE_SIZE_1 = 7;
-		MAZE_SIZE_2 = 7;
-		level = difficulty = 0;
-		
 		// generate maze
-		mazeGenerator = new MazeGenerateDfs();
+		mazeGenerator = new MazeGeneratorDFS();
 		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2);
 
 		// spawn player
 		player = new Player(spellType);
+		
+		//init mute
+		muted = false;
 		
 		// place key
 		while (true) {
@@ -170,6 +172,7 @@ public class Maze {
 		// check if player has been killed from monsters
 		for (Monster m: monsters) {
 			if (m.getBounds().intersects(player.getBounds())) {
+				playSound("resources/sound/death.wav");
 				player.setAlive(false);
 				return;
 			}
@@ -392,6 +395,7 @@ public class Maze {
 	}
 	
 	private void playSound(String soundName) {
+		if(!muted) {
 	       try 
 	       {
 	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
@@ -400,10 +404,23 @@ public class Maze {
 	        clip.start();
 	       }
 	       catch(Exception ex){
+	    	   ex.printStackTrace();
 	       }
+		}
 	}
 
 	public void playSoundWon() {
-		playSound("resources/sound/door.wav");
+		if (!muted) {
+			playSound("resources/sound/door.wav");
+		}
+	}
+
+	public void toggleMute() {
+		if (!muted) {
+			muted = true;
+		} else {
+			muted = false;
+		}
+		player.toggleMute();
 	}
 }

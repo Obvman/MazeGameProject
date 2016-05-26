@@ -334,7 +334,24 @@ public class GameScreen extends JPanel implements ActionListener {
 		pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_H,0), "pressH");
 		pause.getActionMap().put("pressH", helpPressed);
 		statusButtons.add(help);
-
+		
+		//mute button
+		//TODO Add the button image
+		JButton mute = new JButton("Mute");
+		mute.setContentAreaFilled(false);
+		mute.setMargin(new Insets(0, 0, 0 ,0));
+		
+		AbstractAction mutePressed = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				maze.toggleMute();
+			}
+		};
+		mute.addActionListener(mutePressed);
+		// allow button to be activated by 'm' key as well as by clicking
+		mute.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_M,0), "pressM");
+		mute.getActionMap().put("pressM", mutePressed);
+		statusButtons.add(mute);
 
 		// dynamically updated components
 		JPanel statusFields = new JPanel(new GridBagLayout());
@@ -535,7 +552,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeWon.add(numGemsCollected, gbc);
 		
 		gbc.gridy = 5;
-		int roundScore = (int) ((maze.getScore() + 200*(currLevel+difficulty)) * (double)duration/60);
+		int roundScore = (int) ((maze.getScore() + 200*(currLevel+difficulty)) * duration/60);
 		totalScore += roundScore;
 		JLabel roundScoreLabel = new JLabel("Round score: " + roundScore, SwingConstants.CENTER);
 		roundScoreLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
