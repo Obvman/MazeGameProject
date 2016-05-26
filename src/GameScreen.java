@@ -180,27 +180,48 @@ public class GameScreen extends JPanel implements ActionListener {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 1;
-
+		gbc.weighty = 1;
+		
 		// choose your spell label
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		gbc.weighty = 0.5;
-		JLabel chooseLabel = new JLabel("CHOOSE YOUR SPELL...");
+		JLabel chooseLabel = new JLabel("CHOOSE A SPELL TO USE IN COMBAT", SwingConstants.CENTER);
 		chooseLabel.setForeground(Color.ORANGE);
 		chooseLabel.setFont(new Font("Calibri", Font.BOLD, 16));
-		chooseLabel.setHorizontalAlignment(JLabel.CENTER);
 		spellSelect.add(chooseLabel, gbc);
 
+		gbc.weighty = 0;
 		gbc.gridy = 1;
+		
+		gbc.gridx = 0;
+		JLabel waterTitle = new JLabel("Water", SwingConstants.CENTER);
+		waterTitle.setForeground(Color.BLUE);
+		spellSelect.add(waterTitle, gbc);
+		
+		gbc.gridx = 1;
+		JLabel fireTitle = new JLabel("Fire", SwingConstants.CENTER);
+		fireTitle.setForeground(Color.RED);
+		spellSelect.add(fireTitle, gbc);
+		
+		gbc.gridx = 2;
+		JLabel airLabel = new JLabel("Air", SwingConstants.CENTER);
+		airLabel.setForeground(Color.WHITE);
+		spellSelect.add(airLabel, gbc);
+		
 		gbc.weighty = 1;
-		int scaledSize = mainWindow.getWidth() / 3;
+		gbc.gridy = 2;
+		int scaledSize = mainWindow.getWidth() / 4;
 
 		// water spell
 		gbc.gridx = 0;
-		JButton water = new JButton(getScaledImageIcon(new ImageIcon("resources/element-icon-water.png"), scaledSize, scaledSize));
-		water.setContentAreaFilled(false);
-		water.setFocusPainted(false);
-		water.addActionListener(new ActionListener() {
+		JPanel water = new JPanel();
+		water.setOpaque(false);
+		
+		JButton waterButton = new JButton(getScaledImageIcon(new ImageIcon("resources/element-icon-water.png"), scaledSize, scaledSize));
+		water.add(waterButton);
+		waterButton.setContentAreaFilled(false);
+		waterButton.setFocusPainted(false);
+		waterButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GameScreen.this.spellType = 1;
@@ -214,10 +235,13 @@ public class GameScreen extends JPanel implements ActionListener {
 
 		// fire spell
 		gbc.gridx = 1;
-		JButton fire = new JButton(getScaledImageIcon(new ImageIcon("resources/element-icon-fire.png"), scaledSize, scaledSize));
-		fire.setContentAreaFilled(false);
-		fire.setFocusPainted(false);
-		fire.addActionListener(new ActionListener() {
+		JPanel fire = new JPanel();
+		fire.setOpaque(false);
+		JButton fireButton = new JButton(getScaledImageIcon(new ImageIcon("resources/element-icon-fire.png"), scaledSize, scaledSize));
+		fire.add(fireButton);
+		fireButton.setContentAreaFilled(false);
+		fireButton.setFocusPainted(false);
+		fireButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GameScreen.this.spellType = 2;
@@ -230,10 +254,13 @@ public class GameScreen extends JPanel implements ActionListener {
 
 		// air spell
 		gbc.gridx = 2;
-		JButton air = new JButton(getScaledImageIcon(new ImageIcon("resources/element-icon-air.png"), scaledSize, scaledSize));
-		air.setContentAreaFilled(false);
-		air.setFocusPainted(false);
-		air.addActionListener(new ActionListener() {
+		JPanel air = new JPanel();
+		air.setOpaque(false);
+		JButton airButton = new JButton(getScaledImageIcon(new ImageIcon("resources/element-icon-air.png"), scaledSize, scaledSize));
+		air.add(airButton);
+		airButton.setContentAreaFilled(false);
+		airButton.setFocusPainted(false);
+		airButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GameScreen.this.spellType = 3;
@@ -278,6 +305,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		AbstractAction menuPressed = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				gamePause();
 				GameScreen.this.mainWindow.switchToMenu();
 			}
 		};
