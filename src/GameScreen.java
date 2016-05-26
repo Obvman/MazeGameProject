@@ -187,7 +187,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		// choose your spell label
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		JLabel chooseLabel = new JLabel("CHOOSE A SPELL TO USE IN COMBAT", SwingConstants.CENTER);
+		JLabel chooseLabel = new JLabel("CHOOSE THE THEME OF YOUR SPELL IN COMBAT", SwingConstants.CENTER);
 		chooseLabel.setForeground(Color.ORANGE);
 		chooseLabel.setFont(new Font("Calibri", Font.BOLD, 16));
 		spellSelect.add(chooseLabel, gbc);
@@ -475,7 +475,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		mazePaused = new JPanel(new GridBagLayout());
 		mazePaused.setOpaque(false);
-		JLabel pausedLabel = new JLabel("Game Paused. TODO: make U instead of (H or P) the unpause button asd", SwingUtilities.CENTER);
+		JLabel pausedLabel = new JLabel("Game paused. Press U to unpause.", SwingUtilities.CENTER);
 		pausedLabel.setForeground(Color.WHITE);
 		mazePaused.add(pausedLabel);
 		mazeScreens.add(mazePaused, "Paused");
