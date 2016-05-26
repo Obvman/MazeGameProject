@@ -45,12 +45,7 @@ public class Player implements MovableSprite, ActionListener {
 		this.spellType = spellType;
 		alive = true;
 
-		// set default keys to arrow keys and space
-//		moveRightKey = KeyEvent.VK_RIGHT;
-//		moveLeftKey = KeyEvent.VK_LEFT;
-//		moveUpKey = KeyEvent.VK_UP;
-//		moveDownKey = KeyEvent.VK_DOWN;
-//		shootKey = KeyEvent.VK_SPACE;
+		// set key mappings
 		moveRightKey = keys[0];
 		moveLeftKey = keys[1];
 		moveUpKey = keys[2];
@@ -253,13 +248,10 @@ public class Player implements MovableSprite, ActionListener {
 			}
 		}
 	}
-
-	public void setKeys(int right, int left, int up, int down, int shoot) {
-		this.moveRightKey = right;
-		this.moveLeftKey = left;
-		this.moveUpKey = up;
-		this.moveDownKey = down;
-		this.shootKey = shoot;
+	
+	public void releaseKeys() {
+		dx = 0;
+		dy = 0;
 	}
 
 

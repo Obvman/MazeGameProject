@@ -43,6 +43,7 @@ public class MazePanel extends JPanel implements ActionListener {
 			gameSpeedTimer.start();
 			portalTimer.start();
 		} else if (!isRunning && gameSpeedTimer.isRunning()){
+			maze.getPlayer().releaseKeys();
 			gameSpeedTimer.stop();
 			portalTimer.stop();
 		}
