@@ -292,7 +292,6 @@ public class OptionsScreen extends JPanel {
 		rightRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(rightRemap, gbc);
 
-
 		gbc.gridy = 2;
 		JButton leftRemap = new JButton("Move Left ("+ KeyEvent.getKeyText(moveLeftKey)+")");
 		leftRemap.setForeground(Color.BLACK);
@@ -329,13 +328,21 @@ public class OptionsScreen extends JPanel {
 
 	private void initDifficultyPicker() {
 		// resolution picker (dropdown list)
-		JPanel difficultyPicker = new JPanel();
+		JPanel difficultyPicker = new JPanel(new GridBagLayout());
 		difficultyPicker.setOpaque(false);
-		add(difficultyPicker);
-
-		JLabel difficultyLabel = new JLabel("Difficulty: ");
+		this.add(difficultyPicker);
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(5, 0, 0, 0);
+		
+		gbc.gridy = 0;
+		gbc.gridwidth = 3;
+		JLabel difficultyLabel = new JLabel("Difficulty: ", SwingConstants.CENTER);
 		difficultyLabel.setForeground(Color.WHITE);
+		
+		difficultyPicker.add(difficultyLabel, gbc);
 
+		gbc.gridy = 1;
+		gbc.gridwidth = 1;
 		ButtonGroup group = new ButtonGroup();
 
 		JRadioButton easyButton = new JRadioButton("Easy");
@@ -388,10 +395,9 @@ public class OptionsScreen extends JPanel {
 		group.add(easyButton);
 		group.add(mediumButton);
 		group.add(hardButton);
-		difficultyPicker.add(difficultyLabel);
-		difficultyPicker.add(easyButton);
-		difficultyPicker.add(mediumButton);
-		difficultyPicker.add(hardButton);
+		difficultyPicker.add(easyButton, gbc);
+		difficultyPicker.add(mediumButton, gbc);
+		difficultyPicker.add(hardButton, gbc);
 	}
 
 	private void initConfirmation() {
