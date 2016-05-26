@@ -209,8 +209,6 @@ public class OptionsScreen extends JPanel {
 						} else if (validKeyList.contains(e.getKeyCode())) {
 							// prevent user from changing to existing bound key
 							validKeyList.remove(Integer.valueOf(e.getKeyCode()));
-							// allow user to change back to old key
-							validKeyList.add(0);
 							
 							// change button text to reflect new key
 							String buttonToChange = sourceButton.getText().split("\\(")[0];
@@ -248,13 +246,13 @@ public class OptionsScreen extends JPanel {
 						// Invalid key should display message to user and keep dialog 
 						//	open for further input
 						} else {
+							//TODO when cancel button pressed, revert label text to previous key
 							dialogMessage.setText("<html><body align=\"center\">"
 									+ "That key is invalid or already in use.<br>"
 									+ " Try another key or press Escape to cancel"
 									+ "</body><html>");
 						}
 					}
-					
 					@Override
 					public void keyTyped(KeyEvent e) {
 						return;
@@ -410,7 +408,6 @@ public class OptionsScreen extends JPanel {
 				OptionsScreen.this.moveUpKey = tmpUpKey;
 				OptionsScreen.this.moveDownKey = tmpDownKey;
 				OptionsScreen.this.shootKey = tmpShootKey;
-//				mainWindow.setPlayerKeys(moveRightKey, moveLeftKey, moveDownKey, shootKey);
 				OptionsScreen.this.mainWindow.switchToMenu();
 			}
 
@@ -425,6 +422,35 @@ public class OptionsScreen extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				OptionsScreen.this.mainWindow.switchToMenu();
+				
+				// revert control button text and valid key list
+				for (String key : buttonMap.keySet()) {
+					switch (key) {
+					case "R":
+						buttonMap.get(key).setText("Right ("
+											+ KeyEvent.getKeyText(moveRightKey) +")");
+//						validKeyList.add(Integer.valueOf(tmpRightKey));
+//						validKeyList.remove(Integer.valueOf(moveRightKey));
+//						System.out.println(KeyEvent.getKeyText(tmpRightKey) +":"+KeyEvent.getKeyText(moveRightKey) );
+						break;
+					case "L":
+						buttonMap.get(key).setText("Left ("
+								+ KeyEvent.getKeyText(moveLeftKey) +")");
+						break;
+					case "U":
+						buttonMap.get(key).setText("Up ("
+								+ KeyEvent.getKeyText(moveUpKey) +")");
+						break;
+					case "D":
+						buttonMap.get(key).setText("Down ("
+								+ KeyEvent.getKeyText(moveDownKey) +")");
+						break;
+					case "S":
+						buttonMap.get(key).setText("Shoot ("
+								+ KeyEvent.getKeyText(shootKey) +")");
+						break;
+					}
+				}
 			}
 		});
 		confirmation.add(cancelButton);
