@@ -175,8 +175,8 @@ public class Player implements MovableSprite, ActionListener {
 
 	@Override
 	public void manualMove(int dx, int dy) {
-		x += dx * (double)Maze.MAZE_CELL_SIZE/32;
-		y += dy * (double)Maze.MAZE_CELL_SIZE/32;
+		x += dx * (double)Maze.MAZE_CELL_SIZE/16;
+		y += dy * (double)Maze.MAZE_CELL_SIZE/16;
 	}
 
 	public void keyPressed(KeyEvent e) {

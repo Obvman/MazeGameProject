@@ -90,8 +90,8 @@ public class Spell implements MovableSprite {
 	}
 
 	public void updatePosition() {
-		x += dx * (double)Maze.MAZE_CELL_SIZE/32;
-		y += dy * (double)Maze.MAZE_CELL_SIZE/32;
+		x += dx * (double)Maze.MAZE_CELL_SIZE/16;
+		y += dy * (double)Maze.MAZE_CELL_SIZE/16;
 
 		stage = (int)Math.sqrt(Math.pow(x - initialX, 2) + Math.pow(y - initialY, 2))/getImage().getWidth(null);
 	}

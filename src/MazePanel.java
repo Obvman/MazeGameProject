@@ -21,7 +21,7 @@ public class MazePanel extends JPanel implements ActionListener {
 
 		maze = new Maze(level, difficulty, spellType, keys);
 		tileGenerator = new TileGenerator();
-		gameSpeedTimer = new Timer(10, this);
+		gameSpeedTimer = new Timer(20, this);
 		gameSpeedTimer.start();
 		portalTimer = new Timer(8000, this);
 		portalTimer.start();
@@ -92,7 +92,7 @@ public class MazePanel extends JPanel implements ActionListener {
 				if (mazeGrid[i][j] == Maze.GEM_TILE) {
 					Image gemImage = tileGenerator.getGemImage(x, y);
 					g.drawImage(gemImage, x + (Maze.MAZE_CELL_SIZE/2 - gemImage.getWidth(this)/2), 
-									      y + (Maze.MAZE_CELL_SIZE/2 - gemImage.getHeight(this)/2), this);
+									      y + (Maze.MAZE_CELL_SIZE/2), this);
 				}
 
 				// create the illusion of connected wall tiles

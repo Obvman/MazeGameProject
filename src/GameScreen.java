@@ -187,7 +187,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		// choose your spell label
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		JLabel chooseLabel = new JLabel("CHOOSE THE THEME OF YOUR SPELL IN COMBAT", SwingConstants.CENTER);
+		JLabel chooseLabel = new JLabel("CHOOSE THE THEME OF YOUR SPELL DURING COMBAT", SwingConstants.CENTER);
 		chooseLabel.setForeground(Color.ORANGE);
 		chooseLabel.setFont(new Font("Calibri", Font.BOLD, 16));
 		spellSelect.add(chooseLabel, gbc);

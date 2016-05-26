@@ -105,8 +105,8 @@ public class FlyingMonster extends Monster implements MovableSprite, ActionListe
 	public void manualMove(int dx, int dy) {
 		this.dx = dx;
 		this.dy = dy;
-		x += dx * (double)Maze.MAZE_CELL_SIZE/32;
-		y += dy * (double)Maze.MAZE_CELL_SIZE/32;
+		x += dx * (double)Maze.MAZE_CELL_SIZE/16;
+		y += dy * (double)Maze.MAZE_CELL_SIZE/16;
 	}
 
 	// picks a random STRAIGHT line motion
