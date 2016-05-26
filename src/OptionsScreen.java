@@ -127,6 +127,11 @@ public class OptionsScreen extends JPanel {
 				iter.remove();
 			}
 		}
+		
+		// fail-safe resolution
+		if (resolutions.size() == 0) {
+			resolutions.add(nativeWidth+"x"+nativeHeight + " (Native)");
+		}
 
 		JComboBox resolutionCB = new JComboBox(resolutions);
 		resolutionCB.addActionListener(new ActionListener() {
