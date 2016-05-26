@@ -12,7 +12,7 @@ public class OptionsScreen extends JPanel {
 	// options
 	Dimension resolution;
 	int difficulty; // 1, 2, or 3
-	ArrayList<Integer> validKeysArray;
+	ArrayList<Integer> validKeyList;
 	private int moveRightKey;
 	private int moveLeftKey;
 	private int moveUpKey;
@@ -59,11 +59,11 @@ public class OptionsScreen extends JPanel {
 				KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4,
 				KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8,
 				KeyEvent.VK_9, KeyEvent.VK_0, KeyEvent.VK_TAB, KeyEvent.VK_SHIFT,
-				KeyEvent.VK_ALT, KeyEvent.VK_CONTROL, KeyEvent.VK_SPACE,
-				KeyEvent.VK_COMMA, KeyEvent.VK_PERIOD, KeyEvent.VK_SLASH,
+				KeyEvent.VK_ALT, KeyEvent.VK_CONTROL, KeyEvent.VK_COMMA, 
+				KeyEvent.VK_PERIOD, KeyEvent.VK_SLASH,
 				KeyEvent.VK_MINUS, KeyEvent.VK_PLUS};
 		// stick mappings into ArrayList for better adding/removing
-		ArrayList<Integer> validKeyList = new ArrayList<Integer>(validKeysTmp.length);
+		this.validKeyList = new ArrayList<Integer>(validKeysTmp.length);
 		for (int i = 0; i < validKeysTmp.length; ++i) {
 			validKeyList.add(validKeysTmp[i]);
 		}
@@ -196,14 +196,51 @@ public class OptionsScreen extends JPanel {
 		AbstractAction showDialog = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JDialog keyRemapDialog = new JDialog();
-				JPanel dialogMessage = new JPanel();
-				dialogMessage.add(new JLabel("Press the key you wish to rebind to"));
-				dialogMessage.add(new JLabel("or press Escape to cancel"));
+				final JDialog keyRemapDialog = new JDialog();
+				
+				final JLabel dialogMessage = new JLabel("<html><body align=\"center\">"
+						+ "Press the key you wish to rebind to<br>"
+						+ "or press Escape to cancel</body><html>");
+				dialogMessage.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+				
 				keyRemapDialog.setPreferredSize(new Dimension(300, 100));
 				keyRemapDialog.add(dialogMessage);
 				keyRemapDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				keyRemapDialog.setLocationRelativeTo(mainWindow);
+				
+				keyRemapDialog.addKeyListener(new KeyListener() {
+					@Override
+					public void keyPressed(KeyEvent e) {
+						return;
+					}
+					
+					@Override
+					public void keyReleased(KeyEvent e) {
+						// Escape key closes dialog and cancels key rebinding process
+						if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+							keyRemapDialog.setVisible(false);
+							keyRemapDialog.dispose();
+						
+						// If key is valid, start rebind process
+						} else if (validKeyList.contains(e.getKeyCode())) {
+							System.out.println("Valid key!");
+							validKeyList.remove(Integer.valueOf(e.getKeyCode()));
+							// TODO this needs to add the current key bound to the relevant action
+							validKeyList.add(0);
+							
+						// Invalid key should display message to user and close the dialog
+						} else {
+							System.out.println("Invalid key.");
+							dialogMessage.setText("<html><body align=\"center\">Invalid key enterred.<br> Try another key or press Escape to cancel</body><html>");
+						}
+					}
+					
+					@Override
+					public void keyTyped(KeyEvent e) {
+						return;
+					}
+				});
+				
 				keyRemapDialog.pack();
 				keyRemapDialog.setVisible(true);
 			}
