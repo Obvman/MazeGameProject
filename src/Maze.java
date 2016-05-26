@@ -1,12 +1,7 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 
 public class Maze {
@@ -43,9 +38,6 @@ public class Maze {
 	private int numMonstersKilled;
 	private int numGemsCollected;
 	
-	//settings
-	private boolean muted;
-
 	public Maze(int level, int difficulty, int spellType, int[] keys) {
 		// set maze height and width according to level
 		MAZE_HEIGHT = 21 - 4 * (level < 3 ? 3 - level : 0);
@@ -57,9 +49,6 @@ public class Maze {
 
 		// spawn player
 		player = new Player(spellType, keys);
-		
-		//init mute
-		muted = false;
 		
 		// place key
 		while (true) {
@@ -172,7 +161,6 @@ public class Maze {
 		// check if player has been killed from monsters
 		for (Monster m: monsters) {
 			if (m.getBounds().intersects(player.getBounds())) {
-				playSound("resources/sound/death.wav");
 				player.setAlive(false);
 				return;
 			}
@@ -186,7 +174,6 @@ public class Maze {
 				Monster m = monsterIter.next();
 				if (s.getBounds().intersects(m.getBounds())) {
 					numMonstersKilled++;
-					playSound("resources/sound/ripmonster.wav");
 					spellIter.remove();
 					monsterIter.remove();
 					canKillPortal = false;
@@ -199,7 +186,6 @@ public class Maze {
 			for (Iterator<Portal> portalIter = portals.iterator(); portalIter.hasNext(); ) {
 				Portal p = portalIter.next();
 				if (s.getBounds().intersects(p.getBounds())) {
-					playSound("resources/sound/portaldes.wav");
 					spellIter.remove();
 					portalIter.remove();
 					portals.remove(p);
@@ -210,7 +196,6 @@ public class Maze {
 
 		// check if key picked up
 		if (mazeGrid[playerCellY][playerCellX] == KEY_TILE) {
-			playSound("resources/sound/key.wav");
 			keyAcquired = true;
 			mazeGrid[playerCellY][playerCellX] = PATH_TILE;
 		}
@@ -218,7 +203,6 @@ public class Maze {
 		// check if gem picked up
 		if (mazeGrid[playerCellY][playerCellX] == GEM_TILE) {
 			numGemsCollected++;
-			playSound("resources/sound/gem.wav");
 			mazeGrid[playerCellY][playerCellX] = PATH_TILE;
 		}
 
@@ -392,35 +376,5 @@ public class Maze {
 			}
 
 		return false;
-	}
-	
-	private void playSound(String soundName) {
-		if(!muted) {
-	       try 
-	       {
-	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
-	        Clip clip = AudioSystem.getClip();
-	        clip.open(audioInputStream);
-	        clip.start();
-	       }
-	       catch(Exception ex){
-	    	   ex.printStackTrace();
-	       }
-		}
-	}
-
-	public void playSoundWon() {
-		if (!muted) {
-			playSound("resources/sound/door.wav");
-		}
-	}
-
-	public void toggleMute() {
-		if (!muted) {
-			muted = true;
-		} else {
-			muted = false;
-		}
-		player.toggleMute();
 	}
 }

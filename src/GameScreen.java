@@ -139,7 +139,6 @@ public class GameScreen extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (maze.isGameWon()) {
-			maze.playSoundWon();
 			gamePause();
 			switchToMazeWon();
 		} else if (maze.isGameLost()) {
@@ -400,25 +399,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		help.getActionMap().put("pressH", helpPressed);
 		statusButtons.add(help);
 		
-		//mute button
-		//TODO Add the button image
-		JButton mute = new JButton("Mute");
-		mute.setContentAreaFilled(false);
-		mute.setMargin(new Insets(0, 0, 0 ,0));
-		mute.setFocusable(false);
-		
-		AbstractAction mutePressed = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				maze.toggleMute();
-			}
-		};
-		mute.addActionListener(mutePressed);
-		// allow button to be activated by 'm' key as well as by clicking
-		mute.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_M,0), "pressM");
-		mute.getActionMap().put("pressM", mutePressed);
-		statusButtons.add(mute);
-
 		// dynamically updated components
 		JPanel statusFields = new JPanel(new GridBagLayout());
 		statusFields.setOpaque(false);

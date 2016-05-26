@@ -24,12 +24,6 @@ public class OptionsScreen extends JPanel {
 	// tmp options
 	Dimension tmpResolution;
 	int tmpDifficulty;
-	private int tmpRightKey;
-	private int tmpLeftKey;
-	private int tmpUpKey;
-	private int tmpDownKey;
-	private int tmpShootKey;
-
 
 	public OptionsScreen (MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
@@ -133,11 +127,12 @@ public class OptionsScreen extends JPanel {
 			resolutions.add(nativeWidth+"x"+nativeHeight + " (Native)");
 		}
 
-		JComboBox resolutionCB = new JComboBox(resolutions);
+		JComboBox<String> resolutionCB = new JComboBox<String>(resolutions);
 		resolutionCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JComboBox cb = (JComboBox)e.getSource();
+				@SuppressWarnings("unchecked")
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 				String resolution = (String)cb.getSelectedItem();
 				String[] dimensions = resolution.substring(0, resolution.indexOf(" ")).split("x");
 				OptionsScreen.this.tmpResolution = new Dimension(Integer.parseInt(dimensions[0]), Integer.parseInt(dimensions[1]));
@@ -171,14 +166,6 @@ public class OptionsScreen extends JPanel {
 		controlLabel.setForeground(Color.WHITE);
 		controlLabel.setPreferredSize(new Dimension(180,20));
 		
-		// set temp keys to the defaults so they don't overwrite the key bindings when confirm button
-		// is clicked
-		tmpRightKey = moveRightKey;
-		tmpLeftKey = moveLeftKey;
-		tmpUpKey = moveUpKey;
-		tmpDownKey = moveDownKey;
-		tmpShootKey = shootKey;
-
 		AbstractAction showDialog = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
