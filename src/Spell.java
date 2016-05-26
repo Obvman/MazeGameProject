@@ -35,19 +35,19 @@ public class Spell implements MovableSprite {
 		int scaledSize = (3 * Maze.MAZE_CELL_SIZE) / 4;
 
 		if (spellType == GameScreen.FIRE) {
-			image1 = (new ImageIcon("resources/32_flame_1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			image2 = (new ImageIcon("resources/32_flame_2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			image3 = (new ImageIcon("resources/32_flame_3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image1 = (new ImageIcon("resources/spells/fire1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image2 = (new ImageIcon("resources/spells/fire2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image3 = (new ImageIcon("resources/spells/fire3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 			if (!muted) playSound("resources/sound/fire.wav");
 		} else if (spellType == GameScreen.WATER) {
-			image1 = (new ImageIcon("resources/water1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			image2 = (new ImageIcon("resources/water2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			image3 = (new ImageIcon("resources/water3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image1 = (new ImageIcon("resources/spells/water1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image2 = (new ImageIcon("resources/spells/water2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image3 = (new ImageIcon("resources/spells/water3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 			if (!muted) playSound("resources/sound/water.wav");
 		} else if (spellType == GameScreen.AIR) {
-			image1 = (new ImageIcon("resources/air1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			image2 = (new ImageIcon("resources/air2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			image3 = (new ImageIcon("resources/air3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image1 = (new ImageIcon("resources/spells/air1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image2 = (new ImageIcon("resources/spells/air2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image3 = (new ImageIcon("resources/spells/air3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 			if (!muted) playSound("resources/sound/wind.wav");
 		}
 

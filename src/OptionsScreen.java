@@ -398,7 +398,7 @@ public class OptionsScreen extends JPanel {
 		JPanel confirmation = new JPanel();
 		confirmation.setOpaque(false);
 		// confirm 
-		JButton confirmButton = new JButton(new ImageIcon("resources/confirm.png"));
+		JButton confirmButton = new JButton(new ImageIcon("resources/buttons/confirm.png"));
 		confirmButton.setContentAreaFilled(false);
 		confirmButton.setMargin(new Insets(0, 0, 0, 0));
 		confirmButton.addActionListener(new ActionListener() {
@@ -420,7 +420,7 @@ public class OptionsScreen extends JPanel {
 		confirmation.add(confirmButton);
 
 		// cancel
-		JButton cancelButton = new JButton(new ImageIcon("resources/cancel.png"));
+		JButton cancelButton = new JButton(new ImageIcon("resources/buttons/cancel.png"));
 		cancelButton.setContentAreaFilled(false);
 		cancelButton.setMargin(new Insets(0, 0, 0, 0));
 		cancelButton.addActionListener(new ActionListener() {

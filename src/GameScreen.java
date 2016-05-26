@@ -269,7 +269,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		statusButtons.setOpaque(false);
 		statusBar.add(statusButtons, BorderLayout.WEST);
 		
-		JButton mainMenu = new JButton(new ImageIcon("resources/main_menu.png"));
+		JButton mainMenu = new JButton(new ImageIcon("resources/buttons/main_menu.png"));
 		mainMenu.setContentAreaFilled(false);
 		mainMenu.setMargin(new Insets(0, 0, 0 ,0));
 		
@@ -287,7 +287,7 @@ public class GameScreen extends JPanel implements ActionListener {
 
 
 		// pause button
-		final JButton pause = new JButton(new ImageIcon("resources/pause.png"));
+		final JButton pause = new JButton(new ImageIcon("resources/buttons/pause.png"));
 		pause.setContentAreaFilled(false);
 		pause.setMargin(new Insets(0, 0, 0 ,0));
 		
@@ -295,11 +295,11 @@ public class GameScreen extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (updateTimer.isRunning()) {
-					pause.setIcon(new ImageIcon("resources/unpause.png"));
+					pause.setIcon(new ImageIcon("resources/buttons/unpause.png"));
 					gamePause();
 					switchToMazePaused();
 				} else {
-					pause.setIcon(new ImageIcon("resources/pause.png"));
+					pause.setIcon(new ImageIcon("resources/buttons/pause.png"));
 					gameResume();
 					switchToMazePlaying();
 				}
@@ -313,7 +313,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		statusButtons.add(pause);
 
 		// help button
-		JButton help = new JButton(new ImageIcon("resources/help.png"));
+		JButton help = new JButton(new ImageIcon("resources/buttons/help.png"));
 		help.setContentAreaFilled(false);
 		help.setMargin(new Insets(0, 0, 0 ,0));
 		
@@ -571,7 +571,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		JPanel mazeWonButtons = new JPanel();
 		mazeWonButtons.setOpaque(false);
 		
-		JButton nextLevelButton = new JButton(new ImageIcon("resources/next_level.png"));
+		JButton nextLevelButton = new JButton(new ImageIcon("resources/buttons/next_level.png"));
 		nextLevelButton.setContentAreaFilled(false);
 		nextLevelButton.setMargin(new Insets(0, 0, 0, 0));
 		nextLevelButton.addActionListener(new ActionListener() {
@@ -586,7 +586,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		});
 		mazeWonButtons.add(nextLevelButton);
 
-		JButton menuButton = new JButton(new ImageIcon("resources/main_menu.png"));
+		JButton menuButton = new JButton(new ImageIcon("resources/buttons/main_menu.png"));
 		menuButton.setContentAreaFilled(false);
 		menuButton.setMargin(new Insets(0, 0, 0, 0));
 		menuButton.addActionListener(new ActionListener() {
@@ -664,7 +664,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		JPanel mazeLostButtons = new JPanel();
 		mazeLostButtons.setOpaque(false);
 		
-		JButton startButton = new JButton(new ImageIcon("resources/start_again.png"));
+		JButton startButton = new JButton(new ImageIcon("resources/buttons/start_again.png"));
 		startButton.setContentAreaFilled(false);
 		startButton.setMargin(new Insets(0, 0, 0, 0));
 		startButton.addActionListener(new ActionListener() {
@@ -675,7 +675,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		});
 		mazeLostButtons.add(startButton);
 		
-		JButton menuButton = new JButton(new ImageIcon("resources/main_menu.png"));
+		JButton menuButton = new JButton(new ImageIcon("resources/buttons/main_menu.png"));
 		menuButton.setContentAreaFilled(false);
 		menuButton.setMargin(new Insets(0, 0, 0, 0));
 		menuButton.addActionListener(new ActionListener() {

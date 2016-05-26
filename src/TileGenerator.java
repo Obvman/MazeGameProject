@@ -20,16 +20,16 @@ public class TileGenerator {
 	public TileGenerator() {
 		int cellSize = Maze.MAZE_CELL_SIZE;
 		
-		pathTile = (new ImageIcon("resources/leon_path.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-		wallTile = (new ImageIcon("resources/leon_wall_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-		startTile = (new ImageIcon("resources/leon_open_door.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-		endTile = (new ImageIcon("resources/leon_closed_door.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-		keyTile = (new ImageIcon("resources/key_tile.gif")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_DEFAULT);
+		pathTile = (new ImageIcon("resources/tiles/leon_path.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		wallTile = (new ImageIcon("resources/tiles/leon_wall_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		startTile = (new ImageIcon("resources/tiles/leon_open_door.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		endTile = (new ImageIcon("resources/tiles/leon_closed_door.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		keyTile = (new ImageIcon("resources/tiles/key_tile.gif")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_DEFAULT);
 		
-		wallTileN = (new ImageIcon("resources/leon_wall_top_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-		wallTileW = (new ImageIcon("resources/leon_wall_left_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-		wallTileS = (new ImageIcon("resources/leon_wall_bottom_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-		wallTileE = (new ImageIcon("resources/leon_wall_right_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		wallTileN = (new ImageIcon("resources/tiles/leon_wall_top_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		wallTileW = (new ImageIcon("resources/tiles/leon_wall_left_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		wallTileS = (new ImageIcon("resources/tiles/leon_wall_bottom_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+		wallTileE = (new ImageIcon("resources/tiles/leon_wall_right_cover_lava.png")).getImage().getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
 		
 		gemImages = new Image[40];
 		for (int i = 0; i < 40; i++) {

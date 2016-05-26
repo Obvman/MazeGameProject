@@ -28,7 +28,7 @@ public class MenuScreen extends JPanel {
         
 		// add the buttons
 		// start button
-		JButton startButton = new JButton(new ImageIcon("resources/start_game.png"));
+		JButton startButton = new JButton(new ImageIcon("resources/buttons/start_game.png"));
 		startButton.setContentAreaFilled(false);
 		startButton.setMargin(new Insets(0, 0, 0, 0));
 		startButton.setFocusPainted(false);
@@ -47,7 +47,7 @@ public class MenuScreen extends JPanel {
 		startButton.getActionMap().put("pressEnter", startPressed);
 		
 		// tutorial button
-		JButton tutorialButton = new JButton(new ImageIcon("resources/tutorial.png"));
+		JButton tutorialButton = new JButton(new ImageIcon("resources/buttons/tutorial.png"));
 		tutorialButton.setContentAreaFilled(false);
 		tutorialButton.setMargin(new Insets(0, 0, 0, 0));
 		tutorialButton.setFocusPainted(false);
@@ -62,7 +62,7 @@ public class MenuScreen extends JPanel {
 		});
 		
 		// options button
-		JButton optionsButton = new JButton(new ImageIcon("resources/options.png"));
+		JButton optionsButton = new JButton(new ImageIcon("resources/buttons/options.png"));
 		optionsButton.setContentAreaFilled(false);
 		optionsButton.setMargin(new Insets(0, 0, 0, 0));
 		optionsButton.setFocusPainted(false);
@@ -77,7 +77,7 @@ public class MenuScreen extends JPanel {
 		});
 		
 		// exit button
-		JButton exitButton = new JButton(new ImageIcon("resources/quit.png"));
+		JButton exitButton = new JButton(new ImageIcon("resources/buttons/quit.png"));
 		exitButton.setOpaque(false);
 		exitButton.setContentAreaFilled(false);
 		exitButton.setMargin(new Insets(0, 0, 0, 0));
