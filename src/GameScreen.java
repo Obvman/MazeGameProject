@@ -22,6 +22,8 @@ public class GameScreen extends JPanel implements ActionListener {
 	private MazePanel mazePlaying;
 	private JPanel mazePaused;
 	private JPanel mazeHelp; // check if we need
+	private boolean isPaused;
+	private boolean isOnHelp;
 
 	// model
 	private Maze maze;
@@ -329,29 +331,34 @@ public class GameScreen extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (updateTimer.isRunning()) {
-					
-					pause.setIcon(new ImageIcon("resources/buttons/unpause.png"));
-					// allow user to press P to pause
-					pause.getActionMap().clear();
-					pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).clear();
-					pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-						.put(KeyStroke.getKeyStroke(KeyEvent.VK_U,0), "pressPause");
-					
-					pause.getActionMap().put("pressPause", this);
-					gamePause();
-					switchToMazePaused();
+					if (!isOnHelp) {
+						pause.setIcon(new ImageIcon("resources/buttons/unpause.png"));
+						// allow user to press P to pause
+						pause.getActionMap().clear();
+						pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).clear();
+						pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+							.put(KeyStroke.getKeyStroke(KeyEvent.VK_U,0), "pressPause");
+						pause.getActionMap().put("pressPause", this);
+						
+						isPaused = true;
+						gamePause();
+						switchToMazePaused();
+					}
 				} else {
-					pause.setIcon(new ImageIcon("resources/buttons/pause.png"));
-					
-					// allow user to press U to unpause
-					pause.getActionMap().clear();
-					pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).clear();
-					pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-						.put(KeyStroke.getKeyStroke(KeyEvent.VK_P,0), "pressPause");
-					pause.getActionMap().put("pressPause", this);
-
-					gameResume();
-					switchToMazePlaying();
+					if (isPaused) {
+						pause.setIcon(new ImageIcon("resources/buttons/pause.png"));
+						
+						// allow user to press U to unpause
+						pause.getActionMap().clear();
+						pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).clear();
+						pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+							.put(KeyStroke.getKeyStroke(KeyEvent.VK_P,0), "pressPause");
+						pause.getActionMap().put("pressPause", this);
+	
+						isPaused = false;
+						gameResume();
+						switchToMazePlaying();
+					}
 				}
 			}
 		};
@@ -373,11 +380,17 @@ public class GameScreen extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (updateTimer.isRunning()) {
-					gamePause();
-					switchToMazeHelp();
+					if (!isPaused) {
+						isOnHelp = true;
+						gamePause();
+						switchToMazeHelp();
+					}
 				} else {
-					gameResume();
-					switchToMazePlaying();
+					if (isOnHelp) {
+						isOnHelp = false;
+						gameResume();
+						switchToMazePlaying();
+					}
 				}
 			}
 		};
