@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 import java.awt.*;
@@ -13,8 +12,7 @@ public class OptionsScreen extends JPanel {
 	// options
 	Dimension resolution;
 	int difficulty; // 1, 2, or 3
-	ArrayList<Integer> validKeyList;
-	HashMap<String, JButton> buttonMap;
+	ArrayList<Integer> validKeyList; // contains selected valid keys and currently bound keys
 	private int moveRightKey;
 	private int moveLeftKey;
 	private int moveUpKey;
@@ -25,6 +23,14 @@ public class OptionsScreen extends JPanel {
 	Dimension tmpResolution;
 	int tmpDifficulty;
 
+	/**
+	 * Constructor.
+	 * Creates layout for sub-components. Sets default values for movement and shoot
+	 * keys. Initializes collection of valid keys that can be rebound by user.
+	 * Creates resolution picker, controls sub-menu, difficulty picker and return to
+	 * menu button.
+	 * @param mainWindow
+	 */
 	public OptionsScreen (MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 
@@ -41,7 +47,7 @@ public class OptionsScreen extends JPanel {
 		initResolutionPicker();
 		initControlSelector();
 		initDifficultyPicker();
-		initConfirmation();
+		initBackButton();
 		
 		// initalise array of valid keys for remapping
 		Integer[] validKeysTmp = {KeyEvent.VK_Q, KeyEvent.VK_W, KeyEvent.VK_E,
@@ -64,19 +70,34 @@ public class OptionsScreen extends JPanel {
 		}
 	}
 
+	/**
+	 * 
+	 * @return current resolution the window is displayed at.
+	 */
 	public Dimension getResolution() {
 		return resolution;
 	}
 
+	/**
+	 * 
+	 * @return currently selected difficulty setting
+	 */
 	public int getDifficulty() {
 		return difficulty;
 	}
 	
+	/**
+	 * 
+	 * @return array of keycodes for currently selected control scheme
+	 */
 	public int[] getKeyArray() {
 		int[] keys = {moveRightKey, moveLeftKey, moveUpKey, moveDownKey, shootKey};
 		return keys;
 	}
 
+	/**
+	 * paints background image from file to cover window size.
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -84,6 +105,13 @@ public class OptionsScreen extends JPanel {
 		g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
 	}
 
+	/**
+	 * creates resolution drop-down menu. Doesn't display resolutions larger than
+	 * the user's display resolution. If the user's resolution is lower than 
+	 * all the default options, a new resolution is created that is small enough. 
+	 * This resolution is a backup and is not guaranteed to display all components
+	 * properly.
+	 */
 	private void initResolutionPicker() {
 		// resolution picker (dropdown list)
 		JPanel resolutionPicker = new JPanel(new GridBagLayout());
@@ -150,11 +178,12 @@ public class OptionsScreen extends JPanel {
 		resolutionPicker.add(resolutionCB, gbc);
 	}
 
-	// list of buttons that bring up a dialog when clicked
-	// dialog prompts user to press the key they want to rebind to
-	// then disappears.
-	// valid keys do not include keys that are already mapped (prevents remapping to used keys)
-	// if the already mapped key is pressed with dialog open, nothing should happen
+	/**
+	 * list of buttons that bring up a dialog when clicked.
+	 * dialog prompts user to press the key they want to re-bind to then disappears
+	 * If a key is selected that does not belong to the validKeyList, the dialog
+	 * message informs the user of invalid input and prompts a different key.
+	 */
 	private void initControlSelector() {
 		JPanel controlPicker = new JPanel(new GridBagLayout());
 		controlPicker.setOpaque(false);
@@ -264,8 +293,6 @@ public class OptionsScreen extends JPanel {
 		gbc.gridy = 0;
 		controlPicker.add(controlLabel);
 		
-		buttonMap = new HashMap<String, JButton>();
-
 		gbc.gridy = 1;
 		gbc.gridwidth = 40;
 		JButton rightRemap = new JButton("Move Right ("+ KeyEvent.getKeyText(moveRightKey)+")");
@@ -301,16 +328,14 @@ public class OptionsScreen extends JPanel {
 		shootRemap.addActionListener(showDialog);
 		shootRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(shootRemap, gbc);        
-		
-		buttonMap.put("R", rightRemap);
-		buttonMap.put("L", leftRemap);
-		buttonMap.put("U", upRemap);
-		buttonMap.put("D", downRemap);
-		buttonMap.put("S", shootRemap);
 
 		this.add(controlPicker);
 	}
 
+	/**
+	 * Creates 3 radio buttons that can determine the maze difficulty when selected
+	 * Difficulties are easy, medium and hard
+	 */
 	private void initDifficultyPicker() {
 		// resolution picker (dropdown list)
 		JPanel difficultyPicker = new JPanel(new GridBagLayout());
@@ -383,7 +408,10 @@ public class OptionsScreen extends JPanel {
 		difficultyPicker.add(hardButton, gbc);
 	}
 
-	private void initConfirmation() {
+	/**
+	 * Creates button to return to main menu
+	 */
+	private void initBackButton() {
 		JPanel backToMenu = new JPanel();
 		backToMenu.setOpaque(false);
 		
