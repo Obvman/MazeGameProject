@@ -29,6 +29,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	private int difficulty;
 	private int spellType;
 	private double duration;
+	private int[] playerKeys;
 
 	// status bar components to be updated dynamically
 	JLabel objective;
@@ -44,11 +45,12 @@ public class GameScreen extends JPanel implements ActionListener {
 	 * @param mainWindow The JFrame containing the GameScreen
 	 * @param difficulty The difficulty level of the game
 	 */
-	public GameScreen(MainWindow mainWindow, int difficulty) {
+	public GameScreen(MainWindow mainWindow, int difficulty, int[] keys) {
 		this.mainWindow = mainWindow;
 		this.currLevel = 1;
 		this.difficulty = difficulty;
 		this.updateTimer = new Timer(10, this);
+		this.playerKeys = keys;
 
 		setLayout(new CardLayout());
 
@@ -397,7 +399,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeUI.add(mazeScreens, gbcMaze);
 
 		// maze playing
-		mazePlaying = new MazePanel(currLevel, difficulty, spellType);
+		mazePlaying = new MazePanel(currLevel, difficulty, spellType, playerKeys);
 		maze = mazePlaying.getMaze();
 		mazeScreens.add(mazePlaying, "Playing");
 		

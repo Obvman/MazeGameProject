@@ -46,7 +46,7 @@ public class Maze {
 	//settings
 	private boolean muted;
 
-	public Maze(int level, int difficulty, int spellType) {
+	public Maze(int level, int difficulty, int spellType, int[] keys) {
 		// set maze height and width according to level
 		MAZE_SIZE_1 = 21 - 4 * (level < 3 ? 3 - level : 0);
 		MAZE_SIZE_2 = 37 - 8 * (level < 3 ? 3 - level : 0);
@@ -56,7 +56,7 @@ public class Maze {
 		mazeGrid = mazeGenerator.generateMaze(MAZE_SIZE_1, MAZE_SIZE_2);
 
 		// spawn player
-		player = new Player(spellType);
+		player = new Player(spellType, keys);
 		
 		//init mute
 		muted = false;

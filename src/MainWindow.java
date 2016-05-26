@@ -43,7 +43,7 @@ public class MainWindow extends JFrame {
 	
 	public void switchToGame() {
 		// create a game with the options chosen in the OptionsScreen (or default if none chosen)
-		screens.add(new GameScreen(this, options.getDifficulty()), "Game");
+		screens.add(new GameScreen(this, options.getDifficulty(), options.getKeyArray()), "Game" );
 		CardLayout cl = (CardLayout) screens.getLayout();
 		cl.show(screens, "Game");
 	}
