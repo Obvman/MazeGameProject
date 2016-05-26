@@ -8,7 +8,16 @@ public class MainWindow extends JFrame {
 	private JPanel screens; // contains all the screens of the game
 	private MenuScreen menu;
 	private OptionsScreen options; // used to control game settings
+	private TutorialScreen tutorial;
+	private GameScreen game;
 	
+	/**
+	 * Constructor.
+	 * Creates JPanel that contains all components of the program.
+	 * Initializes a cardlayout which holds the options screen, menu screen
+	 * and tutorial screen.
+	 * Displays menu screen once constructed
+	 */
 	public MainWindow() {
 		screens = new JPanel(new CardLayout());
 		add(screens);
@@ -38,9 +47,16 @@ public class MainWindow extends JFrame {
 		menu = new MenuScreen(this);
 		screens.add(menu, "Menu");
 		
+		// tutorial screen
+		tutorial = new TutorialScreen(this);
+		screens.add(tutorial, "Tutorial");
+		
 		switchToMenu(); // starting screen
 	}
 	
+	/**
+	 * Create a new GameScreen and switches to it.
+	 */
 	public void switchToGame() {
 		// create a game with the options chosen in the OptionsScreen (or default if none chosen)
 		screens.add(new GameScreen(this, options.getDifficulty(), options.getKeyArray()), "Game" );
@@ -48,17 +64,25 @@ public class MainWindow extends JFrame {
 		cl.show(screens, "Game");
 	}
 	
+	/**
+	 * displays to main menu screen
+	 */
 	public void switchToMenu() {
 		CardLayout cl = (CardLayout) screens.getLayout();
 		cl.show(screens, "Menu");
 	}
 	
+	/**
+	 * displays tutorial screen
+	 */
 	public void switchToTutorial() {
-		screens.add(new TutorialScreen(this), "Tutorial");
 		CardLayout cl = (CardLayout) screens.getLayout();
 		cl.show(screens, "Tutorial");
 	}
 	
+	/**
+	 * displays options screen
+	 */
 	public void switchToOptions() {
 		CardLayout cl = (CardLayout) screens.getLayout();
 		cl.show(screens, "Options");

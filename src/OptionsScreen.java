@@ -29,7 +29,7 @@ public class OptionsScreen extends JPanel {
 	 * keys. Initializes collection of valid keys that can be rebound by user.
 	 * Creates resolution picker, controls sub-menu, difficulty picker and return to
 	 * menu button.
-	 * @param mainWindow
+	 * @param mainWindow The MainWindow this screen belongs to
 	 */
 	public OptionsScreen (MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
