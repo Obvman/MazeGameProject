@@ -117,7 +117,7 @@ public class TutorialScreen extends JPanel {
 
 		gbc.gridy = 17;
 		// Main menu button
-		JButton menuButton = new JButton(new ImageIcon("resources/buttons/main_menu.png"));
+		JButton menuButton = new JButton(new ImageIcon("resources/buttons/back.png"));
 		menuButton.setContentAreaFilled(false);
 		menuButton.setMargin(new Insets(0, 0, 0, 0));
 		menuButton.setFocusPainted(false);

@@ -80,7 +80,6 @@ public class TileGenerator {
 	 * @return
 	 */
 	public Image getGemImage(int x, int y) {
-		// return a random gem
 		return gemImages[(x*31+y*67) % gemImages.length];
 	}
 }

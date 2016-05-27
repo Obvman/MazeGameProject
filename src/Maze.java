@@ -1,22 +1,11 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-
-
 public class Maze {
-	// MAZE CONSTANTS
-	// maze configuration
-	
+	// maze constants
 	public static final int MAZE_CELL_SIZE = 32;
-
-	// TODO: enum?
-	// types of tiles
 	public static final int PATH_TILE = 0;
 	public static final int WALL_TILE = 1;
 	public static final int START_TILE = 2;
@@ -25,27 +14,34 @@ public class Maze {
 	public static final int GEM_TILE = 5;
 	public static final int PORTAL_TILE = 6;
 
-	// GAME CONFIGURATION
-	// maze and characters
-	
+	// game configuration
 	private int MAZE_HEIGHT;
     private int MAZE_WIDTH;
+    private int maxMonsters;
     
+    // game elements
 	private MazeGenerator mazeGenerator;
 	private int[][] mazeGrid;
 	private Player player;
 	private LinkedList<Portal> portals;
 	private LinkedList<Monster> monsters;
-	private int maxMonsters;
-	private boolean keyAcquired;
 	
-	// game stats
+	// game statistics
 	private int numMonstersKilled;
 	private int numGemsCollected;
+	private boolean keyAcquired;	
 	
-	//settings
-	private boolean muted;
-
+	/**
+	 * Constructor
+	 * Generates a new maze and populates it with portals, enemies, items
+	 * and the player. The size of the maze depends on the level the player
+	 * has reached
+	 * @param level The stage the player has reached. Influences maze size
+	 * @param difficulty The selected difficulty. Influences number of enemies, portals
+	 * and the score
+	 * @param spellType The spell appearance the player has chosen
+	 * @param keys Array of keycodes chosen in the options menu
+	 */
 	public Maze(int level, int difficulty, int spellType, int[] keys) {
 		// set maze height and width according to level
 		MAZE_HEIGHT = 21 - 4 * (level < 3 ? 3 - level : 0);
@@ -57,9 +53,6 @@ public class Maze {
 
 		// spawn player
 		player = new Player(spellType, keys);
-		
-		//init mute
-		muted = false;
 		
 		// place key
 		while (true) {
@@ -107,54 +100,87 @@ public class Maze {
 
 	}
 	
+	/**
+	 * Add a Monster object m to the monsters list
+	 * @param m The monster to add to monsters list
+	 */
 	public void addMonster(Monster m) {
 		this.monsters.add(m);
 	}
 	
+	/**
+	 * @return linked list of portal objects
+	 */
 	public LinkedList<Portal> getPortals() {
 		return this.portals;
 	}
 	
+	/**
+	 * @return true if key has been picked up, false otherwise
+	 */
 	public boolean getKey(){
 		return keyAcquired;
 	}
 
+	/**
+	 * @return 2D matrix representation of the maze
+	 */
 	public int[][] getGrid() {
 		return mazeGrid;
 	}
 
+	/**
+	 * @return Player object
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 
+	/**
+	 * @return linked list of Monster objects belonging to the maze
+	 */
 	public LinkedList<Monster> getMonsters() {
 		return monsters;
 	}
 	
-	public boolean isKeyAcquired(){
-		return keyAcquired;
-	}
-	
+	/**
+	 * @return number of monsters the player has killed
+	 */
 	public int getNumMonstersKilled() {
 		return numMonstersKilled;
 	}
 	
+	/**
+	 * @return number of gems the player has collected
+	 */
 	public int getNumGemsCollected() {
 		return numGemsCollected;
 	}
 	
+	/**
+	 * @return the player's score, 100*(monsters killed) + 50*(gems collected)
+	 */
 	public int getScore() {
 		return 100 * getNumMonstersKilled() + 50 * getNumGemsCollected();
 	}
 
+	/**
+	 * @return true if player is dead, false if player is alive
+	 */
 	public boolean isGameLost() {
 		return !player.isAlive();
 	}
 
+	/**
+	 * @return true if player has collected the key and is standing on the exit point
+	 */
 	public boolean isGameWon() {
 		return keyAcquired && player.getX()/MAZE_CELL_SIZE == MAZE_WIDTH - 1 && player.getY()/MAZE_CELL_SIZE == MAZE_HEIGHT - 1;
 	}
 	
+	/**
+	 * Makes every active portal spawn a new monster
+	 */
 	public void activatePortals() {
 		for (Portal p : portals) {
 			if (monsters.size() > maxMonsters) {
@@ -165,6 +191,12 @@ public class Maze {
 		}
 	}
 
+	/**
+	 * Updates status of tiles and sprites for drawing graphics.
+	 * If player, spell or enemy sprites have moved, updates their new positions.
+	 * If gems or keys have been collected, sets their tiles to be empty
+	 * @param e ActionEvent that triggers update
+	 */
 	public void updateSprites(ActionEvent e) {
 		int playerCellX = player.getX() / MAZE_CELL_SIZE;
 		int playerCellY = player.getY() / MAZE_CELL_SIZE;
@@ -172,7 +204,6 @@ public class Maze {
 		// check if player has been killed from monsters
 		for (Monster m: monsters) {
 			if (m.getBounds().intersects(player.getBounds())) {
-				playSound("resources/sound/death.wav");
 				player.setAlive(false);
 				return;
 			}
@@ -186,7 +217,6 @@ public class Maze {
 				Monster m = monsterIter.next();
 				if (s.getBounds().intersects(m.getBounds())) {
 					numMonstersKilled++;
-					playSound("resources/sound/ripmonster.wav");
 					spellIter.remove();
 					monsterIter.remove();
 					canKillPortal = false;
@@ -199,7 +229,6 @@ public class Maze {
 			for (Iterator<Portal> portalIter = portals.iterator(); portalIter.hasNext(); ) {
 				Portal p = portalIter.next();
 				if (s.getBounds().intersects(p.getBounds())) {
-					playSound("resources/sound/portaldes.wav");
 					spellIter.remove();
 					portalIter.remove();
 					portals.remove(p);
@@ -210,7 +239,6 @@ public class Maze {
 
 		// check if key picked up
 		if (mazeGrid[playerCellY][playerCellX] == KEY_TILE) {
-			playSound("resources/sound/key.wav");
 			keyAcquired = true;
 			mazeGrid[playerCellY][playerCellX] = PATH_TILE;
 		}
@@ -218,7 +246,6 @@ public class Maze {
 		// check if gem picked up
 		if (mazeGrid[playerCellY][playerCellX] == GEM_TILE) {
 			numGemsCollected++;
-			playSound("resources/sound/gem.wav");
 			mazeGrid[playerCellY][playerCellX] = PATH_TILE;
 		}
 
@@ -269,7 +296,7 @@ public class Maze {
 				}
 			} else if (!(m instanceof FlyingMonster)) {
 				boolean[][] pathToPlayer = solveMaze(monsterCellX, monsterCellY, playerCellX, playerCellY);
-
+				
 				int nextCellX = monsterCellX;
 				int nextCellY = monsterCellY;
 				if (withinMaze(monsterCellX, monsterCellY + 1) && pathToPlayer[monsterCellY + 1][monsterCellX]) {
@@ -278,9 +305,10 @@ public class Maze {
 					nextCellX -= 1;
 				} else if (withinMaze(monsterCellX, monsterCellY - 1) && pathToPlayer[monsterCellY - 1][monsterCellX]) {
 					nextCellY -= 1;
-				} else {
+				} else if (withinMaze(monsterCellX + 1, monsterCellY) && pathToPlayer[monsterCellY][monsterCellX + 1]){
 					nextCellX += 1;
 				}
+				
 
 				if (nextCellX != monsterCellX) {
 					// move horizontally
@@ -309,16 +337,29 @@ public class Maze {
 		}
 	}
 
+	/**
+	 * checks if a point is inside the maze
+	 * @param x x coordinate to check
+	 * @param y y coordinate to check
+	 * @return true if both coordinates lie inside the maze bounds
+	 */
 	private boolean withinMaze(int x, int y) {
 		return x >= 0 && y >= 0 && x < MAZE_WIDTH && y < MAZE_HEIGHT;
 	}
 
+	/**
+	 * Checks if a sprite is attempting to move into a maze wall
+	 * @param sprite The sprite attempting to move
+	 * @param dx movement distance along x axis
+	 * @param dy movement distance along y axis
+	 * @return true if movement is valid
+	 */
 	private boolean isLegalMove(MovableSprite sprite, int dx, int dy) {
 		Rectangle spriteRect = sprite.getBounds();
 		spriteRect.translate(dx, dy);
 		
 		if (spriteRect.getX() < 0 || spriteRect.getX() >= MAZE_WIDTH * MAZE_CELL_SIZE - spriteRect.getWidth()
-			|| spriteRect.getY() < 0 || spriteRect.getY() >= MAZE_HEIGHT * MAZE_CELL_SIZE - spriteRect.getHeight()) {
+			|| spriteRect.getY() < 0 || spriteRect.getY() >= MAZE_HEIGHT * MAZE_CELL_SIZE - spriteRect.getHeight() - 1) {
 			return false;
 		}
 		
@@ -341,7 +382,15 @@ public class Maze {
 
 		return true;
 	}
-
+	
+	/**
+	 * Performs a search from point X to Y and returns solution in form of a matrix
+	 * @param startX Starting X coordinate
+	 * @param startY Starting Y coordinate
+	 * @param goalX goal X coordinate
+	 * @param goalY goal Y coordinate
+	 * @return boolean matrix containing path from start to goal
+	 */
 	public boolean[][] solveMaze(int startX, int startY, int goalX, int goalY) {
 		boolean[][] visited = new boolean[MAZE_HEIGHT][MAZE_WIDTH];
 		boolean[][] solution = new boolean[MAZE_HEIGHT][MAZE_WIDTH];
@@ -357,6 +406,16 @@ public class Maze {
 		return solution;
 	}
 
+	/**
+	 * Recursively search for path from the given start to end points
+	 * @param x Starting X coordinate
+	 * @param y Starting Y coordinate
+	 * @param goalX Goal X coordinate
+	 * @param goalY Goal Y coordinate
+	 * @param visited boolean matrix with true in points that have been visited
+	 * @param solution boolean matrix containing current path solution
+	 * @return
+	 */
 	private boolean recursiveSolve(int x, int y, int goalX, int goalY, boolean[][] visited, boolean[][] solution) {
 		if (x == goalX && y == goalY) {
 			solution[y][x] = true;
@@ -392,35 +451,5 @@ public class Maze {
 			}
 
 		return false;
-	}
-	
-	private void playSound(String soundName) {
-		if(!muted) {
-	       try 
-	       {
-	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
-	        Clip clip = AudioSystem.getClip();
-	        clip.open(audioInputStream);
-	        clip.start();
-	       }
-	       catch(Exception ex){
-	    	   // Do nothing
-	       }
-		}
-	}
-
-	public void playSoundWon() {
-		if (!muted) {
-			playSound("resources/sound/door.wav");
-		}
-	}
-
-	public void toggleMute() {
-		if (!muted) {
-			muted = true;
-		} else {
-			muted = false;
-		}
-		player.toggleMute();
 	}
 }

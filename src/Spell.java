@@ -1,27 +1,19 @@
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.io.File;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 
 public class Spell implements MovableSprite {
 
 	private int initialX;
 	private int initialY;
-	double x;
-	double y;
+	private double x;
+	private double y;
 	private int dx;
 	private int dy;
-	private Image image1;
-	private Image image2;
-	private Image image3;
-	private int stage; 
-	private boolean muted;
+	private Image image[];
+	private int scaledSize;
 
-	public Spell(int startX, int startY, int dx, int dy, int spellType, boolean muted) {
+	public Spell(int startX, int startY, int dx, int dy, int spellType) {
 		initialX = startX;
 		initialY = startY;
 
@@ -30,25 +22,21 @@ public class Spell implements MovableSprite {
 		this.dx = dx;
 		this.dy = dy;
 		
-		this.muted = muted;
+		scaledSize = (3 * Maze.MAZE_CELL_SIZE) / 4;
 
-		int scaledSize = (3 * Maze.MAZE_CELL_SIZE) / 4;
-
+		image = new Image[3];
 		if (spellType == GameScreen.FIRE) {
-			image1 = (new ImageIcon("resources/spells/fire1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			image2 = (new ImageIcon("resources/spells/fire2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			image3 = (new ImageIcon("resources/spells/fire3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			if (!muted) playSound("resources/sound/fire.wav");
+			image[0] = (new ImageIcon("resources/spells/fire1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image[1] = (new ImageIcon("resources/spells/fire2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image[2] = (new ImageIcon("resources/spells/fire3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 		} else if (spellType == GameScreen.WATER) {
-			image1 = (new ImageIcon("resources/spells/water1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			image2 = (new ImageIcon("resources/spells/water2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			image3 = (new ImageIcon("resources/spells/water3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			if (!muted) playSound("resources/sound/water.wav");
+			image[0] = (new ImageIcon("resources/spells/water1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image[1] = (new ImageIcon("resources/spells/water2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image[2] = (new ImageIcon("resources/spells/water3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 		} else if (spellType == GameScreen.AIR) {
-			image1 = (new ImageIcon("resources/spells/air1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			image2 = (new ImageIcon("resources/spells/air2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			image3 = (new ImageIcon("resources/spells/air3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
-			if (!muted) playSound("resources/sound/wind.wav");
+			image[0] = (new ImageIcon("resources/spells/air1.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image[1] = (new ImageIcon("resources/spells/air2.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
+			image[2] = (new ImageIcon("resources/spells/air3.png")).getImage().getScaledInstance(scaledSize, scaledSize, Image.SCALE_SMOOTH);
 		}
 
 	}
@@ -75,33 +63,12 @@ public class Spell implements MovableSprite {
 
 	@Override
 	public Image getImage() {
-		if (stage == 0) {
-			return image1;
-		} else if (stage == 1) {
-			return image2;
-		} else {
-			return image3;
-		}
+		return image[getStage() > 2 ? 2 : getStage()];
 	}
 
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(getX(), getY(), getImage().getWidth(null), getImage().getHeight(null));
-	}
-
-	public void updatePosition() {
-		x += dx * (double)Maze.MAZE_CELL_SIZE/32;
-		y += dy * (double)Maze.MAZE_CELL_SIZE/32;
-
-		stage = (int)Math.sqrt(Math.pow(x - initialX, 2) + Math.pow(y - initialY, 2))/getImage().getWidth(null);
-	}
-
-	public int getStage() {
-		return stage;
-	}
-
-	public void updateStage() {
-		stage++;
+		return new Rectangle(getX(), getY(), scaledSize, scaledSize);
 	}
 
 	@Override
@@ -109,17 +76,12 @@ public class Spell implements MovableSprite {
 		x += dx;
 		y += dy;
 	}
-
-	private void playSound(String soundName) {
-		try 
-		{
-			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioInputStream);
-			clip.start();
-		}
-		catch(Exception ex){
-			// Do nothing
-		}
+	
+	public void updatePosition() {
+		x += dx * (double)Maze.MAZE_CELL_SIZE/16;
+		y += dy * (double)Maze.MAZE_CELL_SIZE/16;
+	}
+	public int getStage() {
+		return (int)Math.sqrt(Math.pow(x - initialX, 2) + Math.pow(y - initialY, 2))/scaledSize;
 	}
 }

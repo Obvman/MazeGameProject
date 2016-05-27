@@ -75,8 +75,8 @@ public class Monster implements MovableSprite {
     public void manualMove(int dx, int dy) {
 		this.dx = dx;
 		this.dy = dy;
-    	x += dx * (double)Maze.MAZE_CELL_SIZE/32 * 0.5;
-    	y += dy * (double)Maze.MAZE_CELL_SIZE/32 * 0.5;
+    	x += dx;
+    	y += dy;
     }
 	
 	// picks a random STRAIGHT line motion
@@ -93,6 +93,9 @@ public class Monster implements MovableSprite {
 		} else {
 			dy = -1;
 		}
+		
+		dx *= (double)Maze.MAZE_CELL_SIZE/32;
+		dy *= (double)Maze.MAZE_CELL_SIZE/32;
 	}
 	
 	public void setPosition (int x, int y) {

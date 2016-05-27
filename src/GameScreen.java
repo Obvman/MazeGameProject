@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
@@ -20,28 +19,26 @@ public class GameScreen extends JPanel implements ActionListener {
 	public static final int AIR = 3;
 
 	// screens
-	private JPanel spellSelect;
-	private JPanel mazeUI;
-	private JPanel mazeScreens; // screen controller for mazePlaying & mazePaused
+	private JPanel mazeScreens; // screen controller for maze panel
 	private MazePanel mazePlaying;
-	private JPanel mazePaused;
-	private JPanel mazeHelp; // check if we need
+	private boolean isPauseActive;
+	private boolean isHelpActive;
 
-	// model
+	// maze elements
 	private Maze maze;
-	private int totalScore;
+	private int[] playerKeys;
+	private int spellType;
 	private int currLevel;
 	private int difficulty;
-	private int spellType;
+	private int totalScore;
 	private double duration;
-	private int[] playerKeys;
 
 	// status bar components to be updated dynamically
-	JLabel objective;
-	JLabel monstersSlain;
-	JLabel gemsCollected;
-	JLabel time;
-	JLabel level;
+	private JLabel objective;
+	private JLabel monstersSlain;
+	private JLabel gemsCollected;
+	private JLabel time;
+	private JLabel level;
 
 	private Timer updateTimer;
 	
@@ -142,7 +139,6 @@ public class GameScreen extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (maze.isGameWon()) {
-			maze.playSoundWon();
 			gamePause();
 			switchToMazeWon();
 		} else if (maze.isGameLost()) {
@@ -152,7 +148,7 @@ public class GameScreen extends JPanel implements ActionListener {
 			duration += (double)updateTimer.getDelay()/1000;
 
 			// update status bar
-			if (maze.isKeyAcquired()) {
+			if (maze.getKey()) {
 				objective.setText("Objective: Unlock the door and escape!");
 			} else {
 				objective.setText("Objective: Get to the key!");
@@ -178,7 +174,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	 * Initialises elements of the spell select screen
 	 */
 	private void initSpellSelect() {
-		spellSelect = new JPanel(new GridBagLayout());
+		JPanel spellSelect = new JPanel(new GridBagLayout());
 		spellSelect.setOpaque(false);
 		add(spellSelect, "Spell");
 
@@ -190,7 +186,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		// choose your spell label
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		JLabel chooseLabel = new JLabel("CHOOSE A SPELL TO USE IN COMBAT", SwingConstants.CENTER);
+		JLabel chooseLabel = new JLabel("CHOOSE THE LOOK OF YOUR SPELL DURING COMBAT", SwingConstants.CENTER);
 		chooseLabel.setForeground(Color.ORANGE);
 		chooseLabel.setFont(new Font("Calibri", Font.BOLD, 16));
 		spellSelect.add(chooseLabel, gbc);
@@ -282,7 +278,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	 * Initialises elements of the maze UI (status bar, maze panel)
 	 */
 	private void initMazeUI() {
-		mazeUI = new JPanel(new GridBagLayout());
+		JPanel mazeUI = new JPanel(new GridBagLayout());
 		mazeUI.setOpaque(false);
 		this.add(mazeUI, "MazeUI");
 
@@ -317,8 +313,10 @@ public class GameScreen extends JPanel implements ActionListener {
 		};
 		mainMenu.addActionListener(menuPressed);
 		// allow button to be activated by 'Esc' key as well as by clicking
-		mainMenu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "pressEsc");
+		mainMenu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+			.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "pressEsc");
 		mainMenu.getActionMap().put("pressEsc", menuPressed);
+		mainMenu.setFocusable(false);
 		statusButtons.add(mainMenu);
 
 
@@ -332,29 +330,34 @@ public class GameScreen extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (updateTimer.isRunning()) {
-					
-					pause.setIcon(new ImageIcon("resources/buttons/unpause.png"));
-					// allow user to press P to pause
-					pause.getActionMap().clear();
-					pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).clear();
-					pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-					.put(KeyStroke.getKeyStroke(KeyEvent.VK_P,0), "pressPause");
-					
-					pause.getActionMap().put("pressPause", this);
-					gamePause();
-					switchToMazePaused();
+					if (!isHelpActive) {
+						pause.setIcon(new ImageIcon("resources/buttons/unpause.png"));
+						// allow user to press P to pause
+						pause.getActionMap().clear();
+						pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).clear();
+						pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+							.put(KeyStroke.getKeyStroke(KeyEvent.VK_U,0), "pressPause");
+						pause.getActionMap().put("pressPause", this);
+						
+						isPauseActive = true;
+						gamePause();
+						switchToMazePaused();
+					}
 				} else {
-					pause.setIcon(new ImageIcon("resources/buttons/pause.png"));
-					
-					// allow user to press U to unpause
-					pause.getActionMap().clear();
-					pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).clear();
-					pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-					.put(KeyStroke.getKeyStroke(KeyEvent.VK_U,0), "pressPause");
-					pause.getActionMap().put("pressPause", this);
-
-					gamePause();
-					switchToMazePaused();
+					if (isPauseActive) {
+						pause.setIcon(new ImageIcon("resources/buttons/pause.png"));
+						
+						// allow user to press U to unpause
+						pause.getActionMap().clear();
+						pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).clear();
+						pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+							.put(KeyStroke.getKeyStroke(KeyEvent.VK_P,0), "pressPause");
+						pause.getActionMap().put("pressPause", this);
+	
+						isPauseActive = false;
+						gameResume();
+						switchToMazePlaying();
+					}
 				}
 			}
 		};
@@ -376,11 +379,17 @@ public class GameScreen extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (updateTimer.isRunning()) {
-					gamePause();
-					switchToMazeHelp();
+					if (!isPauseActive) {
+						isHelpActive = true;
+						gamePause();
+						switchToMazeHelp();
+					}
 				} else {
-					gameResume();
-					switchToMazePlaying();
+					if (isHelpActive) {
+						isHelpActive = false;
+						gameResume();
+						switchToMazePlaying();
+					}
 				}
 			}
 		};
@@ -390,25 +399,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		help.getActionMap().put("pressH", helpPressed);
 		statusButtons.add(help);
 		
-		//mute button
-		//TODO Add the button image
-		JButton mute = new JButton("Mute");
-		mute.setContentAreaFilled(false);
-		mute.setMargin(new Insets(0, 0, 0 ,0));
-		mute.setFocusable(false);
-		
-		AbstractAction mutePressed = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				maze.toggleMute();
-			}
-		};
-		mute.addActionListener(mutePressed);
-		// allow button to be activated by 'm' key as well as by clicking
-		mute.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_M,0), "pressM");
-		mute.getActionMap().put("pressM", mutePressed);
-		statusButtons.add(mute);
-
 		// dynamically updated components
 		JPanel statusFields = new JPanel(new GridBagLayout());
 		statusFields.setOpaque(false);
@@ -464,9 +454,9 @@ public class GameScreen extends JPanel implements ActionListener {
 
 		initHelp();
 		
-		mazePaused = new JPanel(new GridBagLayout());
+		JPanel mazePaused = new JPanel(new GridBagLayout());
 		mazePaused.setOpaque(false);
-		JLabel pausedLabel = new JLabel("Game Paused. TODO: make U instead of (H or P) the unpause button asd", SwingUtilities.CENTER);
+		JLabel pausedLabel = new JLabel("Game Paused.", SwingUtilities.CENTER);
 		pausedLabel.setForeground(Color.WHITE);
 		mazePaused.add(pausedLabel);
 		mazeScreens.add(mazePaused, "Paused");
@@ -476,7 +466,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	 * Initialises elements of the help panel 
 	 */
 	private void initHelp() {
-		mazeHelp = new JPanel(new GridBagLayout());
+		JPanel mazeHelp = new JPanel(new GridBagLayout());
 		mazeHelp.setBackground(Color.LIGHT_GRAY);
 		mazeScreens.add(mazeHelp, "Help");
 		
@@ -560,7 +550,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		//mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
 
 		gbc.gridy = 20;
-		JLabel ret = new JLabel("Press P or H to resume playing.");
+		JLabel ret = new JLabel("Press H to resume playing.");
 		mazeHelp.add(ret, gbc);
 		
 	}
@@ -810,7 +800,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	 * @param height the height of the new ImageIcon
 	 * @return
 	 */
-	private Icon getScaledImageIcon(ImageIcon img, int width, int height) {
+	private ImageIcon getScaledImageIcon(ImageIcon img, int width, int height) {
 		return new ImageIcon(img.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
 }
