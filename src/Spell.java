@@ -42,6 +42,12 @@ public class Spell implements MovableSprite {
 	}
 
 	@Override
+	public void setPosition (int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	@Override
 	public int getX() {
 		return (int)x;
 	}

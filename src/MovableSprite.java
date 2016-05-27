@@ -2,6 +2,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 
 public interface MovableSprite {
+	void setPosition(int x, int y);
 	int getX();
 	int getY();
 	int getDX();
