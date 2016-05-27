@@ -87,7 +87,6 @@ public class Spell implements MovableSprite {
 		x += dx * (double)Maze.MAZE_CELL_SIZE/16;
 		y += dy * (double)Maze.MAZE_CELL_SIZE/16;
 	}
-
 	public int getStage() {
 		return (int)Math.sqrt(Math.pow(x - initialX, 2) + Math.pow(y - initialY, 2))/scaledSize;
 	}
