@@ -9,6 +9,10 @@ import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+/**
+ * Class for a player in the game - A movable sprite which is controlled 
+ * 	by the user, and navigates the maze.
+ */
 public class Player implements MovableSprite, ActionListener {
 	private double x;
 	private double y;
@@ -38,6 +42,12 @@ public class Player implements MovableSprite, ActionListener {
 	private Timer timer;
 	private int spriteCounter;
 	
+	/**
+	 * Constructor for Player - makes a new player given the chosen spell type,
+	 *    and the current Key configuration.
+	 * @param spellType Chosen spell
+	 * @param keys Key configuration
+	 */
 	public Player(int spellType, int[] keys)  {
 		spells = new LinkedList<Spell>();
 		this.spellType = spellType;
@@ -53,6 +63,7 @@ public class Player implements MovableSprite, ActionListener {
 		// sprites
 		scaledHeight = (3 * Maze.MAZE_CELL_SIZE) / 4;
 		
+		// Set images for each facing direction of the player
 		image_N = new BufferedImage[6];
 		image_NE = new BufferedImage[6];
 		image_E = new BufferedImage[6];
@@ -78,43 +89,64 @@ public class Player implements MovableSprite, ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
+		
+		// start timer
 		timer = new Timer(200, this); 
 		timer.start();
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		spriteCounter = (spriteCounter + 1) % 6;
 	}
 
+	
+	/**
+	 * Given X and Y coordinates, set the location of the player
+	 * @param x X coordinate
+	 * @param y Y coordinate
+	 */
 	@Override
 	public void setPosition (int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 	
+	/**
+	 * @return X coordinate of player
+	 */
 	@Override
 	public int getX() {
 		return (int)x;
 	}
-
+	
+	/**
+	 * @return Y coordinate of player
+	 */
 	@Override
 	public int getY() {
 		return (int)y;
 	}
 
+	/**
+	 * @return DX coordinate of player
+	 */
 	@Override
 	public int getDX() {
 		return (int) (dx * (double)Maze.MAZE_CELL_SIZE/16);
 	}
 
+	/**
+	 * @return DY coordinate of player
+	 */
 	@Override
 	public int getDY() {
 		return (int) (dy * (double)Maze.MAZE_CELL_SIZE/16);
 	}
 	
+	/**
+	 * @return image of sprite as BufferedImage
+	 */
 	@Override
 	public BufferedImage getImage() {
 		BufferedImage[] image = null;
@@ -151,11 +183,18 @@ public class Player implements MovableSprite, ActionListener {
 		return image[spriteCounter];
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), scaledHeight, scaledHeight);
 	}
 
+	/**
+	 * Get the list of spells spawned by player
+	 * @return List of spells
+	 */
 	public LinkedList<Spell> getSpells() {
 		for (Iterator<Spell> iterator = spells.iterator(); iterator.hasNext(); ) {
 			if (iterator.next().getStage() > 2) {
@@ -165,20 +204,36 @@ public class Player implements MovableSprite, ActionListener {
 		return spells;
 	}		
 
+	/**
+	 * Returns if the player is currently alive or not.
+	 * @return alive
+	 */
 	public boolean isAlive() {
 		return alive;
 	}
 
+	/**
+	 * Change "alive" status of player.
+	 * @param alive True or false to set player to alive or not alive
+	 */
 	public void setAlive(boolean alive) {
 		this.alive = alive;
 	}
 
+	/**
+	 * Moves the location given X and Y values for the degree movement of the player.
+	 * @param dx DX coordinate
+	 */
 	@Override
 	public void manualMove(int dx, int dy) {
 		x += dx;
 		y += dy;
 	}
 
+	/**
+	 * Controls movement of player based on keypress movement keys
+	 * @param e
+	 */
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		if (key == moveLeftKey) {
@@ -198,6 +253,10 @@ public class Player implements MovableSprite, ActionListener {
 		}
 	}
 
+	/**
+	 * On key release stop player's movement in that direction.
+	 * @param e
+	 */
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
@@ -249,11 +308,21 @@ public class Player implements MovableSprite, ActionListener {
 		}
 	}
 	
+	/**
+	 * Stop player's movement when keys released.
+	 */
 	public void releaseKeys() {
 		dx = 0;
 		dy = 0;
 	}
 
+	/**
+	 * Gets a scaled buffered image.
+	 * @param src BufferedImage of image to scale
+	 * @param w Scaled width of image
+	 * @param h Scaled height of image
+	 * @return Scaled image
+	 */
 	private BufferedImage getScaledBufferedImage(BufferedImage src, int w, int h){
 		int finalw = w;
 		int finalh = h;
