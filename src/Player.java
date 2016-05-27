@@ -21,6 +21,8 @@ public class Player implements MovableSprite, ActionListener {
 	private LinkedList<Spell> spells;
 	private int spellType;
 	private boolean alive;
+	
+	// Keys chosen by user for player navigation
 	private int moveRightKey;
 	private int moveLeftKey;
 	private int moveUpKey;
@@ -184,7 +186,8 @@ public class Player implements MovableSprite, ActionListener {
 	}
 
 	/**
-	 * 
+	 * Gets rectangle for bounds of the image location.
+	 * @return rectangle
 	 */
 	@Override
 	public Rectangle getBounds() {
