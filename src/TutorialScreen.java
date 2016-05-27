@@ -7,6 +7,11 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class TutorialScreen extends JPanel {
 
+	/**
+	 * Constructor.
+	 * Calls the intialization function for the window.
+	 * @param mainWindow The MainWindow this screen belongs to
+	 */
 	public TutorialScreen(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 
@@ -15,6 +20,9 @@ public class TutorialScreen extends JPanel {
 		initTutorial();
 	}
 
+	/**
+	 * Paints the background image to the size of the screen
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -22,6 +30,14 @@ public class TutorialScreen extends JPanel {
 		g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
 	}
 
+	/**
+	 * Initialises the tutorial screen.
+	 * Creates JPanel which contains all screen components.
+	 * Initializes the grid bag layout which positions the
+	 * screen elements. Adds labels which detail how to play
+	 * the game.
+	 * Displays the screen.
+	 */
 	private void initTutorial() {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(3, 3, 3, 3);
@@ -130,7 +146,7 @@ public class TutorialScreen extends JPanel {
 		gemsImages.add(new JLabel(new ImageIcon("resources/gemssmall.png")));
 		gbcGems.gridy = 1;
 		gems.add(gemsImages, gbcGems);
-
+		
 		add(gems, gbc);
 
 		// Main menu button
