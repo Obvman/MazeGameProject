@@ -569,7 +569,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		JPanel titlePanel = new JPanel();
 		titlePanel.setOpaque(false);
 		titlePanel.add(new JLabel(new ImageIcon("resources/winscreen.png"), SwingConstants.CENTER));
-		JLabel titleTextLabel = new JLabel(Integer.toString(currLevel), SwingConstants.CENTER);
+		JLabel titleTextLabel = new JLabel("" + currLevel, SwingConstants.CENTER);
 		titleTextLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 90));
 		titleTextLabel.setForeground(new Color(153, 0, 0));
 		titlePanel.add(titleTextLabel);
