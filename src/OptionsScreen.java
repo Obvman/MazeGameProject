@@ -9,19 +9,16 @@ import javax.swing.*;
 public class OptionsScreen extends JPanel {
 	private MainWindow mainWindow;
 
-	// options
-	Dimension resolution;
-	int difficulty; // 1, 2, or 3
-	ArrayList<Integer> validKeyList; // contains selected valid keys and currently bound keys
+	private Dimension resolution;
+	
+	private ArrayList<Integer> validKeyList; // contains selected valid keys and currently bound keys
 	private int moveRightKey;
 	private int moveLeftKey;
 	private int moveUpKey;
 	private int moveDownKey;
 	private int shootKey;
-
-	// tmp options
-	Dimension tmpResolution;
-	int tmpDifficulty;
+	
+	private int difficulty; // 1, 2, or 3
 
 	/**
 	 * Constructor.
@@ -49,7 +46,7 @@ public class OptionsScreen extends JPanel {
 		initDifficultyPicker();
 		initBackButton();
 		
-		// initalise array of valid keys for remapping
+		// initialise array of valid keys for remapping
 		Integer[] validKeysTmp = {KeyEvent.VK_Q, KeyEvent.VK_W, KeyEvent.VK_E,
 				KeyEvent.VK_R, KeyEvent.VK_T, KeyEvent.VK_Y,
 				KeyEvent.VK_I, KeyEvent.VK_O, KeyEvent.VK_A,

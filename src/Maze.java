@@ -3,14 +3,9 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-
 public class Maze {
-	// MAZE CONSTANTS
-	// maze configuration
-	
+	// maze constants
 	public static final int MAZE_CELL_SIZE = 32;
-
-	// types of tiles
 	public static final int PATH_TILE = 0;
 	public static final int WALL_TILE = 1;
 	public static final int START_TILE = 2;
@@ -19,23 +14,22 @@ public class Maze {
 	public static final int GEM_TILE = 5;
 	public static final int PORTAL_TILE = 6;
 
-	// GAME CONFIGURATION
-	// maze and characters
-	
+	// game configuration
 	private int MAZE_HEIGHT;
     private int MAZE_WIDTH;
+    private int maxMonsters;
     
+    // game elements
 	private MazeGenerator mazeGenerator;
 	private int[][] mazeGrid;
 	private Player player;
 	private LinkedList<Portal> portals;
 	private LinkedList<Monster> monsters;
-	private int maxMonsters;
-	private boolean keyAcquired;
 	
-	// game stats
+	// game statistics
 	private int numMonstersKilled;
 	private int numGemsCollected;
+	private boolean keyAcquired;	
 	
 	/**
 	 * Constructor
@@ -302,7 +296,7 @@ public class Maze {
 				}
 			} else if (!(m instanceof FlyingMonster)) {
 				boolean[][] pathToPlayer = solveMaze(monsterCellX, monsterCellY, playerCellX, playerCellY);
-
+				
 				int nextCellX = monsterCellX;
 				int nextCellY = monsterCellY;
 				if (withinMaze(monsterCellX, monsterCellY + 1) && pathToPlayer[monsterCellY + 1][monsterCellX]) {
@@ -311,9 +305,10 @@ public class Maze {
 					nextCellX -= 1;
 				} else if (withinMaze(monsterCellX, monsterCellY - 1) && pathToPlayer[monsterCellY - 1][monsterCellX]) {
 					nextCellY -= 1;
-				} else {
+				} else if (withinMaze(monsterCellX + 1, monsterCellY) && pathToPlayer[monsterCellY][monsterCellX + 1]){
 					nextCellX += 1;
 				}
+				
 
 				if (nextCellX != monsterCellX) {
 					// move horizontally
@@ -364,7 +359,7 @@ public class Maze {
 		spriteRect.translate(dx, dy);
 		
 		if (spriteRect.getX() < 0 || spriteRect.getX() >= MAZE_WIDTH * MAZE_CELL_SIZE - spriteRect.getWidth()
-			|| spriteRect.getY() < 0 || spriteRect.getY() >= MAZE_HEIGHT * MAZE_CELL_SIZE - spriteRect.getHeight()) {
+			|| spriteRect.getY() < 0 || spriteRect.getY() >= MAZE_HEIGHT * MAZE_CELL_SIZE - spriteRect.getHeight() - 1) {
 			return false;
 		}
 		

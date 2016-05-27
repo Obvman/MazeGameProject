@@ -9,7 +9,6 @@ public class MainWindow extends JFrame {
 	private MenuScreen menu;
 	private OptionsScreen options; // used to control game settings
 	private TutorialScreen tutorial;
-	private GameScreen game;
 	
 	/**
 	 * Constructor.

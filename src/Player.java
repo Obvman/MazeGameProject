@@ -33,13 +33,11 @@ public class Player implements MovableSprite, ActionListener {
 	private BufferedImage[] image_W;
 	private BufferedImage[] image_NW;
 	private BufferedImage[] lastImage;
-	private int scaledHeight = 3/4 * Maze.MAZE_CELL_SIZE;
+	private int scaledHeight;
 
 	private Timer timer;
-	private int spriteCounter = 0;
+	private int spriteCounter;
 	
-	private boolean muted;
-
 	public Player(int spellType, int[] keys)  {
 		spells = new LinkedList<Spell>();
 		this.spellType = spellType;
@@ -55,9 +53,6 @@ public class Player implements MovableSprite, ActionListener {
 		// sprites
 		scaledHeight = (3 * Maze.MAZE_CELL_SIZE) / 4;
 		
-		//mute val
-		muted = false;
-
 		image_N = new BufferedImage[6];
 		image_NE = new BufferedImage[6];
 		image_E = new BufferedImage[6];
@@ -70,18 +65,17 @@ public class Player implements MovableSprite, ActionListener {
 
 		try {
 			for (int i = 0; i < 6; i++) {
-				image_N[i] = getScaledImage(ImageIO.read(new File("resources/player/playerN" + (i+1) + ".png")), scaledHeight, scaledHeight);
-				image_NE[i] = getScaledImage(ImageIO.read(new File("resources/player/playerNE" + (i+1) + ".png")), scaledHeight, scaledHeight);
-				image_E[i] = getScaledImage(ImageIO.read(new File("resources/player/playerE" + (i+1) + ".png")), scaledHeight, scaledHeight);
-				image_SE[i] = getScaledImage(ImageIO.read(new File("resources/player/playerSE" + (i+1) + ".png")), scaledHeight, scaledHeight);
-				image_S[i] = getScaledImage(ImageIO.read(new File("resources/player/playerS" + (i+1) + ".png")), scaledHeight, scaledHeight);
-				image_SW[i] = getScaledImage(ImageIO.read(new File("resources/player/playerSW" + (i+1) + ".png")), scaledHeight, scaledHeight);
-				image_W[i] = getScaledImage(ImageIO.read(new File("resources/player/playerW" + (i+1) + ".png")), scaledHeight, scaledHeight);
-				image_NW[i] = getScaledImage(ImageIO.read(new File("resources/player/playerNW" + (i+1) + ".png")), scaledHeight, scaledHeight);
+				image_N[i] = getScaledBufferedImage(ImageIO.read(new File("resources/player/playerN" + (i+1) + ".png")), scaledHeight, scaledHeight);
+				image_NE[i] = getScaledBufferedImage(ImageIO.read(new File("resources/player/playerNE" + (i+1) + ".png")), scaledHeight, scaledHeight);
+				image_E[i] = getScaledBufferedImage(ImageIO.read(new File("resources/player/playerE" + (i+1) + ".png")), scaledHeight, scaledHeight);
+				image_SE[i] = getScaledBufferedImage(ImageIO.read(new File("resources/player/playerSE" + (i+1) + ".png")), scaledHeight, scaledHeight);
+				image_S[i] = getScaledBufferedImage(ImageIO.read(new File("resources/player/playerS" + (i+1) + ".png")), scaledHeight, scaledHeight);
+				image_SW[i] = getScaledBufferedImage(ImageIO.read(new File("resources/player/playerSW" + (i+1) + ".png")), scaledHeight, scaledHeight);
+				image_W[i] = getScaledBufferedImage(ImageIO.read(new File("resources/player/playerW" + (i+1) + ".png")), scaledHeight, scaledHeight);
+				image_NW[i] = getScaledBufferedImage(ImageIO.read(new File("resources/player/playerNW" + (i+1) + ".png")), scaledHeight, scaledHeight);
 			}
 			lastImage = image_S;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -107,12 +101,12 @@ public class Player implements MovableSprite, ActionListener {
 
 	@Override
 	public int getDX() {
-		return dx;
+		return (int) (dx * (double)Maze.MAZE_CELL_SIZE/16);
 	}
 
 	@Override
 	public int getDY() {
-		return dy;
+		return (int) (dy * (double)Maze.MAZE_CELL_SIZE/16);
 	}
 	
 	@Override
@@ -175,8 +169,8 @@ public class Player implements MovableSprite, ActionListener {
 
 	@Override
 	public void manualMove(int dx, int dy) {
-		x += dx * (double)Maze.MAZE_CELL_SIZE/16;
-		y += dy * (double)Maze.MAZE_CELL_SIZE/16;
+		x += dx;
+		y += dy;
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -244,7 +238,7 @@ public class Player implements MovableSprite, ActionListener {
 				int imageHeight = getImage().getHeight(null);
 
 				spells.add(new Spell(getX() + lastDX * imageWidth, 
-						getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY, spellType, getMuted()));
+						getY() + lastDY * imageHeight, 2*lastDX, 2*lastDY, spellType));
 			}
 		}
 	}
@@ -254,12 +248,7 @@ public class Player implements MovableSprite, ActionListener {
 		dy = 0;
 	}
 
-
-	private boolean getMuted() {
-		return this.muted;
-	}
-
-	private BufferedImage getScaledImage(BufferedImage src, int w, int h){
+	private BufferedImage getScaledBufferedImage(BufferedImage src, int w, int h){
 		int finalw = w;
 		int finalh = h;
 		double factor = 1.0d;
@@ -277,13 +266,5 @@ public class Player implements MovableSprite, ActionListener {
 		g2.drawImage(src, 0, 0, finalw, finalh, null);
 		g2.dispose();
 		return resizedImg;
-	}
-
-	public void toggleMute() {
-		if (!muted) {
-			muted = true;
-		} else {
-			muted = false;
-		}
 	}
 }
