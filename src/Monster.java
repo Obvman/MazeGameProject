@@ -18,7 +18,7 @@ public class Monster implements MovableSprite {
 			image_W = getScaledImage(ImageIO.read(new File("resources/monster_left.png")), scaledHeight, scaledHeight);
 			image_S = getScaledImage(ImageIO.read(new File("resources/monster_down.png")), scaledHeight, scaledHeight);
 		} catch (IOException e) {
-			e.printStackTrace();
+			// do nothing
 		}
 	}
 

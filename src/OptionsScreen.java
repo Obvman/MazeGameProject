@@ -400,7 +400,6 @@ public class OptionsScreen extends JPanel {
 	private void initBackButton() {
 		JPanel backToMenu = new JPanel();
 		backToMenu.setOpaque(false);
-		
 
 		// cancel
 		JButton backButton = new JButton(new ImageIcon("resources/buttons/back.png"));

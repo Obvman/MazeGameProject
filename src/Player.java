@@ -49,7 +49,7 @@ public class Player implements MovableSprite, ActionListener {
 			}
 			lastImage = image_S;
 		} catch (IOException e) {
-			e.printStackTrace();
+			// do nothing
 		}
 
 

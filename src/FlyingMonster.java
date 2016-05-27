@@ -27,7 +27,7 @@ public class FlyingMonster extends Monster implements ActionListener {
 				image_E[i] = getScaledBufferedImage(ImageIO.read(new File("resources/dragon/dragonE" + (i+1) + ".png")), scaledHeight, scaledHeight);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			// do nothing
 		}
 
 		animationTimer = new Timer(300, this); 
