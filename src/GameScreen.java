@@ -534,7 +534,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
 		
 		gbc.gridy = 17;
-		JLabel ret = new JLabel("Press H to resume playing.");
+		JLabel ret = new JLabel("Press 'H' to resume playing.");
 		ret.setForeground(Color.ORANGE);
 		mazeHelp.add(ret, gbc);
 		
