@@ -727,10 +727,10 @@ public class GameScreen extends JPanel implements ActionListener {
 		resultsPanel.setOpaque(false);
 		ImageIcon factionImage = getScaledImageIcon(new ImageIcon("resources/element-icon-water.png"), 20, 20);
 		String factionText = "Chosen spell: Water";
-		if (spellType == 2) {
+		if (spellType == GameScreen.FIRE) {
 			factionText = "Chosen spell: Fire"; 
 			factionImage = getScaledImageIcon(new ImageIcon("resources/element-icon-fire.png"), 20, 20);
-		} else if (spellType == 3) {
+		} else if (spellType == GameScreen.AIR) {
 			factionText = "Chosen spell: Air";
 			factionImage = getScaledImageIcon(new ImageIcon("resources/element-icon-air.png"), 20, 20);
 		}
