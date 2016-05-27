@@ -1,13 +1,14 @@
 import java.util.LinkedList;
 import java.util.Random;
 
-/**
- * Generates a new maze using DFS
- * All the walls are inserted before the algorithm starts connecting
- * all the PATH_TILE
- */
 public class MazeGeneratorDFS implements MazeGenerator {
-
+	
+	/**
+	 * Returns a maze with the given height and width.
+	 * @param height
+	 * @param width
+	 * @return
+	 */
 	public int[][] generateMaze(int height, int width) {
 		int[][] maze = new int[height][width];
 		for (int row = 0; row < height; row++) {
@@ -69,7 +70,7 @@ public class MazeGeneratorDFS implements MazeGenerator {
 	}
 	
 	/**
-	 * returns a list of unvisited neighbours of a certain node
+	 * Returns a list of unvisited neighbors of a certain node
 	 * @param n
 	 * @param visited
 	 * @return
@@ -138,7 +139,11 @@ public class MazeGeneratorDFS implements MazeGenerator {
 	}
 
 	/**
-	 * insert walls before the algo
+	 * Insert walls before the algorithm.
+	 * @param height
+	 * @param width
+	 * @param maze
+	 * @return
 	 */
 	private int[][] insertWalls(int height, int width, int[][] maze) {
 		for (int i = 1; i < height; i += 2) {
@@ -165,9 +170,7 @@ public class MazeGeneratorDFS implements MazeGenerator {
 	}
 
 	/**
-	 * ADT to store data for BFS
-	 * @author Charlotte
-	 *
+	 * ADT to store data for DFS
 	 */
 	private class Node {
 		int x;
