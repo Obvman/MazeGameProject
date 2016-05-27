@@ -19,8 +19,7 @@ public class OptionsScreen extends JPanel {
 	public OptionsScreen (MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 
-		GridLayout layout = new GridLayout(0, 1);
-		this.setLayout(layout);
+		this.setLayout(new GridBagLayout());
 		
 		// set default keys
 		moveRightKey = KeyEvent.VK_RIGHT;
@@ -48,6 +47,7 @@ public class OptionsScreen extends JPanel {
 				KeyEvent.VK_ALT, KeyEvent.VK_CONTROL, KeyEvent.VK_COMMA, 
 				KeyEvent.VK_PERIOD, KeyEvent.VK_SLASH,
 				KeyEvent.VK_MINUS, KeyEvent.VK_PLUS};
+		
 		// stick mappings into ArrayList for better adding/removing
 		this.validKeyList = new ArrayList<Integer>(validKeysTmp.length);
 		for (int i = 0; i < validKeysTmp.length; ++i) {
@@ -98,10 +98,12 @@ public class OptionsScreen extends JPanel {
 	 * properly.
 	 */
 	private void initResolutionPicker() {
-		// resolution picker (dropdown list)
 		JPanel resolutionPicker = new JPanel(new GridBagLayout());
 		resolutionPicker.setOpaque(false);
-		add(resolutionPicker);
+		GridBagConstraints gbcPanel = new GridBagConstraints();
+		gbcPanel.gridy = 0;
+		gbcPanel.weighty = 1;
+		add(resolutionPicker, gbcPanel);
 
 		GridBagConstraints gbc = new GridBagConstraints();
 
@@ -121,6 +123,7 @@ public class OptionsScreen extends JPanel {
 		resolutions.add("1600x900  	(16:9)");
 		resolutions.add("1440x900  	(16:10)");
 		resolutions.add("1360x768 	(16:9)");
+		resolutions.add("1216x760 (charlotte)"); // TODO : remove
 
 		Dimension nativeScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		int nativeWidth = (int)(nativeScreen.getWidth() * 0.95);
@@ -172,6 +175,11 @@ public class OptionsScreen extends JPanel {
 	private void initControlSelector() {
 		JPanel controlPicker = new JPanel(new GridBagLayout());
 		controlPicker.setOpaque(false);
+		GridBagConstraints gbcPanel = new GridBagConstraints();
+		gbcPanel.gridy = 1;
+		gbcPanel.weighty = 1;
+		add(controlPicker, gbcPanel);
+		
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 0 , 0, 0);
 
@@ -314,8 +322,6 @@ public class OptionsScreen extends JPanel {
 		shootRemap.addActionListener(showDialog);
 		shootRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(shootRemap, gbc);        
-
-		this.add(controlPicker);
 	}
 
 	/**
@@ -323,10 +329,14 @@ public class OptionsScreen extends JPanel {
 	 * Difficulties are easy, medium and hard
 	 */
 	private void initDifficultyPicker() {
-		// resolution picker (dropdown list)
 		JPanel difficultyPicker = new JPanel(new GridBagLayout());
 		difficultyPicker.setOpaque(false);
-		this.add(difficultyPicker);
+		GridBagConstraints gbcPanel = new GridBagConstraints();
+		gbcPanel.gridy = 2;
+		gbcPanel.weighty = 1;
+		add(difficultyPicker, gbcPanel);
+		
+		
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 0, 0, 0);
 		
@@ -400,7 +410,11 @@ public class OptionsScreen extends JPanel {
 	private void initBackButton() {
 		JPanel backToMenu = new JPanel();
 		backToMenu.setOpaque(false);
-
+		GridBagConstraints gbcPanel = new GridBagConstraints();
+		gbcPanel.gridy = 3;
+		gbcPanel.weighty = 1;
+		add(backToMenu, gbcPanel);
+		
 		// cancel
 		JButton backButton = new JButton(new ImageIcon("resources/buttons/back.png"));
 		backButton.setContentAreaFilled(false);
@@ -413,7 +427,7 @@ public class OptionsScreen extends JPanel {
 		});
 		backToMenu.add(backButton);
 
-		add(backToMenu);
+		
 	}
 
 	private MainWindow mainWindow;
