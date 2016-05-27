@@ -7,11 +7,19 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class TutorialScreen extends JPanel {
 
+	/**
+	 * Constructor.
+	 * Calls the intialization function for the window.
+	 * @param mainWindow The MainWindow this screen belongs to
+	 */
 	public TutorialScreen(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		initTutorial();
 	}
 
+	/**
+	 * Paints the background image to the screen, to the size of the screen.
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -19,7 +27,16 @@ public class TutorialScreen extends JPanel {
 		g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
 	}
 
+	/**
+	 * Initialises the tutorial screen.
+	 * Creates JPanel which contains all screen components.
+	 * Initializes the grid bag layout which positions the
+	 * screen elements. Adds labels which detail how to play
+	 * the game.
+	 * Displays the screen.
+	 */
 	private void initTutorial() {
+		//Set up JPanel and gbc constrains
 		JPanel tutorialScreen = new JPanel(new GridBagLayout());
 		tutorialScreen.setOpaque(false);
 		add(tutorialScreen, "Tutorial Screen");
@@ -31,7 +48,8 @@ public class TutorialScreen extends JPanel {
 		gbc.gridy = 0;
 		JLabel t1 = new JLabel(new ImageIcon("resources/tut.png"));
 		tutorialScreen.add(t1, gbc);
-
+		
+		//Spacing
 		gbc.gridy = 1;
 		tutorialScreen.add(Box.createRigidArea(new Dimension(0, 25)), gbc);
 		
@@ -99,6 +117,7 @@ public class TutorialScreen extends JPanel {
 		gbc.gridy = 13;
 		tutorialScreen.add(Box.createRigidArea(new Dimension(0, 25)), gbc);
 
+		//Gems and score
 		gbc.gridy = 14;
 		JLabel g1 = new JLabel("Improve your score by collecting gems scattered throughout the maze", SwingConstants.CENTER);
 		g1.setForeground(Color.WHITE);
@@ -112,9 +131,9 @@ public class TutorialScreen extends JPanel {
 
 		gbc.gridy = 16;
 		tutorialScreen.add(Box.createRigidArea(new Dimension(0, 25)), gbc);
-
-		gbc.gridy = 17;
+		
 		// Main menu button
+		gbc.gridy = 17;
 		JButton menuButton = new JButton(new ImageIcon("resources/buttons/back.png"));
 		menuButton.setContentAreaFilled(false);
 		menuButton.setMargin(new Insets(0, 0, 0, 0));
