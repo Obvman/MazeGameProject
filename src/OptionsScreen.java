@@ -276,9 +276,9 @@ public class OptionsScreen extends JPanel {
 
 		gbc.ipady = 5;
 		gbc.gridy = 0;
-		controlPicker.add(controlLabel);
+		controlPicker.add(controlLabel, gbc);
 		
-		gbc.gridwidth = 40;
+		//gbc.gridwidth = 40;
 		
 		gbc.gridy = 1;
 		JButton upRemap = new JButton("Move Up ("+ KeyEvent.getKeyText(moveUpKey)+")");
