@@ -569,7 +569,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		JPanel titlePanel = new JPanel(new FlowLayout());
 	    BufferedImage loseTitlePicture;
 		try {
-			loseTitlePicture = ImageIO.read(this.getClass().getResource("resources/winscreen.png"));
+			loseTitlePicture = ImageIO.read(new File("resources/winscreen.png"));
 			JLabel loseTitleLabel = new JLabel(new ImageIcon(new ImageIcon(loseTitlePicture)
 			.getImage().getScaledInstance(1000, 100, Image.SCALE_SMOOTH)), SwingConstants.CENTER);
 			loseTitleLabel.setOpaque(false);
@@ -692,7 +692,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	    JPanel titlePanel = new JPanel(new FlowLayout());
 	    BufferedImage loseTitlePicture;
 		try {
-			loseTitlePicture = ImageIO.read(this.getClass().getResource("resources/losescreen.png"));
+			loseTitlePicture = ImageIO.read(new File("resources/losescreen.png"));
 			JLabel loseTitleLabel = new JLabel(new ImageIcon(new ImageIcon(loseTitlePicture)
 			.getImage().getScaledInstance(1000, 100, Image.SCALE_SMOOTH)), SwingConstants.CENTER);
 			loseTitleLabel.setOpaque(false);
