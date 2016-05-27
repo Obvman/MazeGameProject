@@ -186,7 +186,7 @@ public class Player implements MovableSprite, ActionListener {
 	}
 
 	/**
-	 * Gets rectangle for bounds of the image location.
+	 * Gets rectangle for bounds of the Player location.
 	 * @return rectangle
 	 */
 	@Override

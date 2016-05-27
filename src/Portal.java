@@ -73,7 +73,7 @@ public class Portal {
 	}
 
 	/**
-	 * Gets rectangle for bounds of the image location.
+	 * Gets rectangle for bounds of the Portal location.
 	 * @return rectangle
 	 */
 	public Rectangle getBounds() {
