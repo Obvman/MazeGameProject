@@ -6,6 +6,37 @@ import javax.swing.border.EmptyBorder;
 @SuppressWarnings("serial")
 public class GameScreen extends JPanel implements ActionListener {
 
+	private MainWindow mainWindow;
+
+	// constants for this class
+	public static final int WATER = 1;
+	public static final int FIRE = 2;
+	public static final int AIR = 3;
+
+	// screens
+	private JPanel mazeScreens; // screen controller for maze panel
+	private MazePanel mazePlaying;
+	private boolean isPauseActive;
+	private boolean isHelpActive;
+
+	// maze elements
+	private Maze maze;
+	private int[] playerKeys;
+	private int spellType;
+	private int currLevel;
+	private int difficulty;
+	private int totalScore;
+	private double duration;
+
+	// status bar components to be updated dynamically
+	private JLabel objective;
+	private JLabel monstersSlain;
+	private JLabel gemsCollected;
+	private JLabel time;
+	private JLabel level;
+
+	private Timer updateTimer;
+	
 	/**
 	 * Creates a GameScreen starting at level 1 and the given difficulty
 	 * @param mainWindow The JFrame containing the GameScreen
@@ -374,15 +405,15 @@ public class GameScreen extends JPanel implements ActionListener {
 		objective.setForeground(Color.WHITE);
 		statusFields.add(objective, gbcFields);
 
-		monstersSlain = new JLabel(getScaledImageIcon(new ImageIcon("resources/monstersKilled.png"), -1, Maze.MAZE_CELL_SIZE));
+		monstersSlain = new JLabel(getScaledImageIcon(new ImageIcon("resources/monstersKilled.png"), Maze.MAZE_CELL_SIZE*2/3, Maze.MAZE_CELL_SIZE*2/3));
 		monstersSlain.setForeground(Color.WHITE);
 		statusFields.add(monstersSlain, gbcFields);
 
-		gemsCollected = new JLabel(getScaledImageIcon(new ImageIcon("resources/gems/gems-6.png"), Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE));
+		gemsCollected = new JLabel(getScaledImageIcon(new ImageIcon("resources/gems/gems-6.png"), Maze.MAZE_CELL_SIZE*4/5, Maze.MAZE_CELL_SIZE*4/5));
 		gemsCollected.setForeground(Color.WHITE);
 		statusFields.add(gemsCollected, gbcFields);
 
-		time = new JLabel(getScaledImageIcon(new ImageIcon("resources/clock.png"), Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE));
+		time = new JLabel(getScaledImageIcon(new ImageIcon("resources/clock.png"), Maze.MAZE_CELL_SIZE*4/5, Maze.MAZE_CELL_SIZE*4/5));
 		time.setForeground(Color.WHITE);
 		statusFields.add(time, gbcFields);
 
@@ -420,12 +451,9 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		JPanel mazePaused = new JPanel(new GridBagLayout());
 		mazePaused.setOpaque(false);
-		JLabel pausedLabel1 = new JLabel("Game paused. ", SwingUtilities.CENTER);
-		pausedLabel1.setForeground(Color.WHITE);
-		mazePaused.add(pausedLabel1);
-		JLabel pausedLabel2 = new JLabel("Press 'U' to unpause.", SwingUtilities.CENTER);
-		pausedLabel2.setForeground(Color.ORANGE);
-		mazePaused.add(pausedLabel2);
+		JLabel pausedLabel = new JLabel("Game Paused.", SwingUtilities.CENTER);
+		pausedLabel.setForeground(Color.WHITE);
+		mazePaused.add(pausedLabel);
 		mazeScreens.add(mazePaused, "Paused");
 	}
 	
@@ -435,107 +463,89 @@ public class GameScreen extends JPanel implements ActionListener {
 	private void initHelp() {
 		JPanel mazeHelp = new JPanel(new GridBagLayout());
 		mazeHelp.setBackground(Color.LIGHT_GRAY);
-		mazeHelp.setOpaque(false);
 		mazeScreens.add(mazeHelp, "Help");
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 		
+		gbc.ipady = 30;
+		gbc.gridy = 2;
+		JLabel help = new JLabel("IN-GAME HELP SCREEN");
+		mazeHelp.add(help, gbc);
+		
+		
 	
 		//OBJECTIVE
-		gbc.gridy = 0;
+		gbc.ipady = 0;
+		gbc.gridy = 3;
 		JLabel o1 = new JLabel("OBJECTIVE");
-		o1.setForeground(Color.WHITE);
 		mazeHelp.add(o1, gbc);
 		
-		gbc.gridy = 1;
-		JLabel o3 = new JLabel("Retrieve the key and unlock the steel door the next level");
-		o3.setForeground(Color.WHITE);
+		gbc.gridy = 4;
+		JLabel o2 = new JLabel("The objective is to reach the end of the maze with the highest score.");
+		mazeHelp.add(o2, gbc);
+		
+		gbc.gridy = 5;
+		JLabel o3 = new JLabel("First retrieve the key from it's hiding place, then use it to unlock the steel door.");
 		mazeHelp.add(o3, gbc);
 		
-		gbc.gridy = 2;
-		JPanel key = new JPanel();
-		key.setOpaque(false);
-		key.add(new JLabel(new ImageIcon("resources/tiles/key_tile.gif")));
-		key.add(new JLabel(new ImageIcon("resources/tiles/leon_closed_door.png")));
-		mazeHelp.add(key, gbc);
+		gbc.ipady = 10;
+		gbc.gridy = 6;
+		JLabel oi1 = new JLabel(new ImageIcon("resources/obj.png"));
+		mazeHelp.add(oi1, gbc);
 		
-		gbc.gridy = 3;
-		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
+		//mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
 		
 		//CONTROLS
 		gbc.ipady = 0;
-		gbc.gridy = 4;
-		JLabel c1 = new JLabel("CONTROLS (DEFAULT)");
-		c1.setForeground(Color.WHITE);
+		gbc.gridy = 7;
+		JLabel c1 = new JLabel("CONTROLS");
 		mazeHelp.add(c1, gbc);
 		
-		gbc.gridy = 5;
-		JLabel c2 = new JLabel("Use the arrow keys to move and the space bar to shoot a spell.");
-		c2.setForeground(Color.WHITE);
+		gbc.gridy = 8;
+		JLabel c2 = new JLabel("Use the arrow keys (default) to navigate the maze. Press space to shoot a spell.");
 		mazeHelp.add(c2, gbc);
 		
-		gbc.gridy = 6;
-		JPanel controls = new JPanel();
-		controls.setOpaque(false);
-		controls.add(new JLabel(new ImageIcon("resources/arrows.png")));
-		controls.add(new JLabel(new ImageIcon("resources/space.png")));
-		controls.add(new JLabel(new ImageIcon("resources/spells/water2.png")));
-		controls.add(new JLabel(new ImageIcon("resources/spells/fire2.png")));
-		controls.add(new JLabel(new ImageIcon("resources/spells/air2.png")));
-		mazeHelp.add(controls, gbc);
-		
-		gbc.gridy = 7;
-		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
+		gbc.gridy = 9;
+		JLabel ci1 = new JLabel(new ImageIcon("resources/controls.png"));
+		mazeHelp.add(ci1, gbc);
 		
 		//ENEMIES
 		gbc.ipady = 0;
-		gbc.gridy = 8;
+		gbc.gridy = 10;
 		JLabel e1 = new JLabel("ENEMIES");
-		e1.setForeground(Color.WHITE);
 		mazeHelp.add(e1, gbc);
 		
-		gbc.gridy = 9;
-		JLabel e2 = new JLabel("Use spells to kill enemies and destroy portals to stop them from respawning");
-		e2.setForeground(Color.WHITE);
+		gbc.gridy = 11;
+		JLabel e2 = new JLabel("Spells are used to kill monsters and dragons, and destroy portals.");
 		mazeHelp.add(e2, gbc);
 		
-		gbc.gridy = 10;
-		JLabel e3 = new JLabel("Beware! Dragons can fly over lava.");
-		e3.setForeground(Color.WHITE);
+		gbc.gridy = 12;
+		JLabel e3 = new JLabel("Monsters are restriced to navigating the maze, whereas dragons can"
+				+ "fly over the lava to find you.");
 		mazeHelp.add(e3, gbc);
 		
-		gbc.gridy = 11;
-		JPanel monsters = new JPanel();
-		monsters.setOpaque(false);
-		monsters.add(new JLabel(new ImageIcon("resources/monster_down.png")));
-		monsters.add(new JLabel(new ImageIcon("resources/dragon/dragonE4.png")));
-		monsters.add(new JLabel(new ImageIcon("resources/blue_portal_32.gif")));
-		mazeHelp.add(monsters, gbc);
-		
-		gbc.gridy = 12;
-		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
-		
+		gbc.ipady = 10;
 		gbc.gridy = 13;
-		JLabel d1 = new JLabel("SCORE");
-		d1.setForeground(Color.WHITE);
-		mazeHelp.add(d1,  gbc);
+		JLabel ei1 = new JLabel(new ImageIcon("resources/enemies.png"));
+		mazeHelp.add(ei1, gbc);
 		
-		gbc.gridy = 14; 
-		JLabel d2 = new JLabel("Improve your score by collecting gems scattered throughout the maze");
-		d2.setForeground(Color.WHITE);
-		mazeHelp.add(d2, gbc);
+		//mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
 		
-		gbc.gridy = 15;
-		JLabel d3 = new JLabel(new ImageIcon("resources/gemssmall.png"));
-		d3.setForeground(Color.WHITE);
-		mazeHelp.add(d3, gbc);
-		
-		gbc.gridy  = 16;
-		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
+		//GEMS
+		gbc.ipady = 0;
+		gbc.ipady = 0;
+		gbc.gridy = 16;
+		JLabel g1 = new JLabel("Collect gems to increase your score.");
+		mazeHelp.add(g1, gbc);
 		
 		gbc.gridy = 17;
-		JLabel ret = new JLabel("Press 'H' to resume playing.");
-		ret.setForeground(Color.ORANGE);
+		JLabel gi1 = new JLabel(new ImageIcon("resources/gemssmall.png"));
+		mazeHelp.add(gi1, gbc);
+		
+		//mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
+
+		gbc.gridy = 20;
+		JLabel ret = new JLabel("Press H to resume playing.");
 		mazeHelp.add(ret, gbc);
 		
 	}
@@ -555,39 +565,53 @@ public class GameScreen extends JPanel implements ActionListener {
 		titlePanel.setOpaque(false);
 		titlePanel.add(new JLabel(new ImageIcon("resources/winscreen.png"), SwingConstants.CENTER));
 		JLabel titleTextLabel = new JLabel("" + currLevel, SwingConstants.CENTER);
-		titleTextLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 90));
+		titleTextLabel.setFont(new Font("Devanagari MT", Font.BOLD, 90));
 		titleTextLabel.setForeground(new Color(153, 0, 0));
 		titlePanel.add(titleTextLabel);
 		mazeWon.add(titlePanel);
 		
 		
+		
 		gbc.gridy = 1;
-		int roundScore = (int) ((maze.getScore() + 200*(currLevel+difficulty)) * duration/60);
-		totalScore += roundScore;
-		JLabel roundScoreLabel = new JLabel("Round score: " + roundScore, SwingConstants.CENTER);
-		roundScoreLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
+		JLabel roundScoreLabel = new JLabel("Round score: ", SwingConstants.CENTER);
+		roundScoreLabel.setFont(new Font("Devanagari MT", Font.BOLD, 15));
 		roundScoreLabel.setForeground(Color.WHITE);
 		mazeWon.add(roundScoreLabel, gbc);
 		
-		
 		gbc.gridy = 2;
-		JLabel totalScore = new JLabel("Total score: " + this.totalScore, SwingConstants.CENTER);
-		totalScore.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
-		totalScore.setForeground(Color.WHITE);
+		int roundScore = (int) ((maze.getScore() + 200*(currLevel+difficulty)) * duration/60);
+		totalScore += roundScore;
+		JLabel score = new JLabel(Integer.toString(roundScore), SwingConstants.CENTER);
+		score.setFont(new Font("Devanagari MT", Font.BOLD, 20));
+		score.setForeground(Color.YELLOW);
+		mazeWon.add(score, gbc);
+		
+		
+		gbc.gridy = 3;
+		JLabel totalScoreLabel = new JLabel("Total score: ", SwingConstants.CENTER);
+		totalScoreLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
+		totalScoreLabel.setForeground(Color.WHITE);
+		mazeWon.add(totalScoreLabel, gbc);
+		
+		gbc.gridy = 4;
+		JLabel totalScore = new JLabel(Integer.toString(this.totalScore), SwingConstants.CENTER);
+		totalScore.setFont(new Font("Devanagari MT", Font.BOLD, 30));
+		totalScore.setForeground(Color.YELLOW);
 		mazeWon.add(totalScore, gbc);
         
-		gbc.gridy = 3;
-		JLabel timeTaken = new JLabel();
+		gbc.gridy = 5;
+		ImageIcon clockImage = getScaledImageIcon(new ImageIcon("resources/clock.png"), 20, 20);
+		String timeTakenString = "Time taken: " + (int)duration + "s";
 		if (duration >= 60) {
-			timeTaken.setText("Time taken: " + (int)duration/60 + "m " + (int)duration%60 + "s");
-		} else {
-			timeTaken.setText("Time taken: " + (int)duration + "s");
+			timeTakenString = "Time taken: " + (int)duration/60 + "m " + (int)duration%60 + "s";
 		}
+		JLabel timeTaken = new JLabel(timeTakenString, clockImage, SwingConstants.CENTER);
+		timeTaken.setHorizontalTextPosition(JLabel.LEFT);
 		timeTaken.setFont(new Font("Devanagari MT", Font.BOLD, 15));
 		timeTaken.setForeground(Color.WHITE);
 		mazeWon.add(timeTaken, gbc);
 		
-		gbc.gridy = 4;
+		gbc.gridy = 6;
 		JPanel resultsPanel = new JPanel(new FlowLayout(SwingConstants.CENTER, 20, 20));
 		resultsPanel.setOpaque(false);
 		
@@ -612,10 +636,10 @@ public class GameScreen extends JPanel implements ActionListener {
 	
 		mazeWon.add(resultsPanel, gbc);
 		
-		gbc.gridy = 5;
+		gbc.gridy = 7;
 
 		gbc.ipady = 0;
-		gbc.gridy = 7;
+		gbc.gridy = 8;
 		JPanel mazeWonButtons = new JPanel();
 		mazeWonButtons.setOpaque(false);
 		
@@ -704,7 +728,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		faction.setForeground(Color.WHITE);
 		resultsPanel.add(faction, gbc);
 
-		ImageIcon monstersImage = getScaledImageIcon(new ImageIcon("resources/monstersKilled.png"), -1, 20);
+		ImageIcon monstersImage = getScaledImageIcon(new ImageIcon("resources/monster_down.png"), 20, 20);
 		JLabel monstersSlain = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), 
 				monstersImage, SwingConstants.CENTER);
 		monstersSlain.setHorizontalTextPosition(JLabel.LEFT);
@@ -712,7 +736,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		monstersSlain.setForeground(Color.WHITE);
 		resultsPanel.add(monstersSlain, gbc);
 		
-		ImageIcon gemsImage = getScaledImageIcon(new ImageIcon("resources/gems/gems-6.png"), 20, 20);
+		ImageIcon gemsImage = getScaledImageIcon(new ImageIcon("resources/gems/gems-6"), 20, 20);
 		JLabel gemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), 
 				gemsImage, SwingConstants.LEFT);
 		gemsCollected.setHorizontalTextPosition(JLabel.LEFT);
@@ -762,35 +786,4 @@ public class GameScreen extends JPanel implements ActionListener {
 	private ImageIcon getScaledImageIcon(ImageIcon img, int width, int height) {
 		return new ImageIcon(img.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
-	
-	private MainWindow mainWindow;
-
-	// constants for this class
-	public static final int WATER = 1;
-	public static final int FIRE = 2;
-	public static final int AIR = 3;
-
-	// screens
-	private JPanel mazeScreens; // screen controller for maze panel
-	private MazePanel mazePlaying;
-	private boolean isPauseActive;
-	private boolean isHelpActive;
-
-	// maze elements
-	private Maze maze;
-	private int[] playerKeys;
-	private int spellType;
-	private int currLevel;
-	private int difficulty;
-	private int totalScore;
-	private double duration;
-
-	// status bar components to be updated dynamically
-	private JLabel objective;
-	private JLabel monstersSlain;
-	private JLabel gemsCollected;
-	private JLabel time;
-	private JLabel level;
-
-	private Timer updateTimer;
 }
