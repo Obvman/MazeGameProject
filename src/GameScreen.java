@@ -374,15 +374,15 @@ public class GameScreen extends JPanel implements ActionListener {
 		objective.setForeground(Color.WHITE);
 		statusFields.add(objective, gbcFields);
 
-		monstersSlain = new JLabel(getScaledImageIcon(new ImageIcon("resources/monstersKilled.png"), Maze.MAZE_CELL_SIZE*2/3, Maze.MAZE_CELL_SIZE*2/3));
+		monstersSlain = new JLabel(getScaledImageIcon(new ImageIcon("resources/monstersKilled.png"), -1, Maze.MAZE_CELL_SIZE));
 		monstersSlain.setForeground(Color.WHITE);
 		statusFields.add(monstersSlain, gbcFields);
 
-		gemsCollected = new JLabel(getScaledImageIcon(new ImageIcon("resources/gems/gems-6.png"), Maze.MAZE_CELL_SIZE*4/5, Maze.MAZE_CELL_SIZE*4/5));
+		gemsCollected = new JLabel(getScaledImageIcon(new ImageIcon("resources/gems/gems-6.png"), Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE));
 		gemsCollected.setForeground(Color.WHITE);
 		statusFields.add(gemsCollected, gbcFields);
 
-		time = new JLabel(getScaledImageIcon(new ImageIcon("resources/clock.png"), Maze.MAZE_CELL_SIZE*4/5, Maze.MAZE_CELL_SIZE*4/5));
+		time = new JLabel(getScaledImageIcon(new ImageIcon("resources/clock.png"), Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE));
 		time.setForeground(Color.WHITE);
 		statusFields.add(time, gbcFields);
 
