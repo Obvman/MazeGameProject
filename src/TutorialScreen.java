@@ -18,7 +18,7 @@ public class TutorialScreen extends JPanel {
 	}
 
 	/**
-	 * Paints the background image to the screen, to the size of the screen.
+	 * Paints the background image to the size of the screen
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -72,8 +72,8 @@ public class TutorialScreen extends JPanel {
 		gbc.gridy = 5;
 		JPanel key = new JPanel();
 		key.setOpaque(false);
-		key.add(new JLabel(new ImageIcon("resources/tiles/key_tile.gif")));
-		key.add(new JLabel(new ImageIcon("resources/tiles/leon_closed_door.png")));
+		key.add(new JLabel(new ImageIcon("resources/key_tile.gif")));
+		key.add(new JLabel(new ImageIcon("resources/leon_closed_door.png")));
 		tutorialScreen.add(key, gbc);	
 
 		gbc.gridy = 6;

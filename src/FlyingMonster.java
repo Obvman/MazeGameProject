@@ -9,6 +9,13 @@ import javax.swing.*;
 
 public class FlyingMonster extends Monster implements ActionListener {
 
+	/**
+	 * Constructor
+	 * Randomises the initial direction
+	 * Sets the height of the sprite image, sets the sprite images
+	 * for each direction. Starts the animation timer for the 
+	 * animated images.
+	 */
 	public FlyingMonster() {
 		randomiseDirection();
 		
@@ -18,7 +25,8 @@ public class FlyingMonster extends Monster implements ActionListener {
 		image_W = new BufferedImage[4];
 		image_S = new BufferedImage[4];
 		image_E = new BufferedImage[4];
-
+		
+		//Sprite images
 		try {
 			for (int i = 0; i < 4; i++) {
 				image_N[i] = getScaledBufferedImage(ImageIO.read(new File("resources/dragon/dragonN" + (i+1) + ".png")), scaledHeight, scaledHeight);
@@ -27,15 +35,21 @@ public class FlyingMonster extends Monster implements ActionListener {
 				image_E[i] = getScaledBufferedImage(ImageIO.read(new File("resources/dragon/dragonE" + (i+1) + ".png")), scaledHeight, scaledHeight);
 			}
 		} catch (IOException e) {
-			// do nothing
+			//do nothing
 		}
 
+		//Starts the timer for the animated dragon
 		animationTimer = new Timer(300, this); 
 		animationTimer.start();
 		changeDirectionTimer = new Timer(2000, this);
 		changeDirectionTimer.start();
 	}
 
+	/**
+	 * Returns the sprite image of the monster corresponding to
+	 * its current x and y direction.
+	 * @return Image The sprite image
+	 */
 	@Override
 	public Image getImage() {
 		Image[] image = image_W;
@@ -53,6 +67,10 @@ public class FlyingMonster extends Monster implements ActionListener {
 		return image[spriteCounter];
 	}
 
+	/**
+	 * Picks a random straight line direction for the monster
+	 * to move in. Updates the dx and dy accordingly.
+	 */
 	@Override
 	public void randomiseDirection() {
 		Double rand = Math.random();
@@ -72,16 +90,29 @@ public class FlyingMonster extends Monster implements ActionListener {
 		setDY((int) (dy * (double)Maze.MAZE_CELL_SIZE/16));
 	}
 	
+	/**
+	 * Returns a value indicating whether this movableSprite can
+	 * fly.
+	 * @return True This is a flying monster.
+	 */
 	@Override
 	public boolean canFly() {
 		return true;
 	}
 	
+	/**
+	 * Gets the hitbox of a sprite, used to tell when two sprites intersect
+	 * @return Rectangle representing the thibox
+	 */
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), scaledHeight, scaledHeight);
 	}
 
+	/**
+	 * Updates the dragons image when the timer tells it to
+	 * @param e The action event triggered by the timer
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		spriteCounter = (spriteCounter + 1) % 4;
@@ -91,6 +122,13 @@ public class FlyingMonster extends Monster implements ActionListener {
 		}
 	}
 
+	/**
+	 * Returns a scaled instance of an ImageIcon
+	 * @param img the ImageIcon to be scaled
+	 * @param width the width of the new ImageIcon
+	 * @param height the height of the new ImageIcon
+	 * @return The resized instance
+	 */
 	private BufferedImage getScaledBufferedImage(BufferedImage src, int w, int h){
 		int finalw = w;
 		int finalh = h;
