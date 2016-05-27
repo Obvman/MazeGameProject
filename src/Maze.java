@@ -21,8 +21,6 @@ public class Maze {
 		MAZE_HEIGHT = 21 - 4 * (level < 3 ? 3 - level : 0);
 		MAZE_WIDTH = 37 - 8 * (level < 3 ? 3 - level : 0);
 
-		MAZE_HEIGHT = 7;
-		MAZE_WIDTH = 7;
 		// generate maze
 		mazeGenerator = new MazeGeneratorDFS();
 		mazeGrid = mazeGenerator.generateMaze(MAZE_HEIGHT, MAZE_WIDTH);
