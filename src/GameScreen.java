@@ -566,23 +566,13 @@ public class GameScreen extends JPanel implements ActionListener {
 		GridBagConstraints gbc = new GridBagConstraints();
 		
 		gbc.gridy = 0;
-		JPanel titlePanel = new JPanel(new FlowLayout());
-	    BufferedImage loseTitlePicture;
-		try {
-			loseTitlePicture = ImageIO.read(new File("resources/winscreen.png"));
-			JLabel loseTitleLabel = new JLabel(new ImageIcon(new ImageIcon(loseTitlePicture)
-			.getImage().getScaledInstance(1000, 100, Image.SCALE_SMOOTH)), SwingConstants.CENTER);
-			loseTitleLabel.setOpaque(false);
-			titlePanel.add(loseTitleLabel);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		JPanel titlePanel = new JPanel();
+		titlePanel.setOpaque(false);
+		titlePanel.add(new JLabel(new ImageIcon("resources/winscreen.png"), SwingConstants.CENTER));
 		JLabel titleTextLabel = new JLabel(Integer.toString(currLevel), SwingConstants.CENTER);
-		titleTextLabel.setFont(new Font("Devanagari MT", Font.BOLD, 60));
+		titleTextLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 90));
 		titleTextLabel.setForeground(new Color(153, 0, 0));
 		titlePanel.add(titleTextLabel);
-		titlePanel.setOpaque(false);
 		mazeWon.add(titlePanel);
 		
 		
@@ -689,25 +679,14 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbc.gridy = 0;
 	    gbc.gridx = 0;
 	    
-	    JPanel titlePanel = new JPanel(new FlowLayout());
-	    BufferedImage loseTitlePicture;
-		try {
-			loseTitlePicture = ImageIO.read(new File("resources/losescreen.png"));
-			JLabel loseTitleLabel = new JLabel(new ImageIcon(new ImageIcon(loseTitlePicture)
-			.getImage().getScaledInstance(1000, 100, Image.SCALE_SMOOTH)), SwingConstants.CENTER);
-			loseTitleLabel.setOpaque(false);
-			titlePanel.add(loseTitleLabel);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		JLabel titleTextLabel = new JLabel(Integer.toString(currLevel), SwingConstants.CENTER);
-		titleTextLabel.setFont(new Font("Devanagari MT", Font.BOLD, 60));
+	    JPanel titlePanel = new JPanel();
+	    titlePanel.setOpaque(false);
+	    titlePanel.add(new JLabel(new ImageIcon("resources/losescreen.png")));
+		JLabel titleTextLabel = new JLabel("" + currLevel, SwingConstants.CENTER);
+		titleTextLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 90));
 		titleTextLabel.setForeground(new Color(153, 0, 0));
 		titlePanel.add(titleTextLabel);
-		titlePanel.setOpaque(false);
 		mazeLost.add(titlePanel);
-		
 		
 		gbc.gridy = 2;
 		gbc.ipady = 5; // gaps between lines
