@@ -123,7 +123,6 @@ public class OptionsScreen extends JPanel {
 		resolutions.add("1600x900  	(16:9)");
 		resolutions.add("1440x900  	(16:10)");
 		resolutions.add("1360x768 	(16:9)");
-		resolutions.add("1216x760 (charlotte)"); // TODO : remove
 
 		Dimension nativeScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		int nativeWidth = (int)(nativeScreen.getWidth() * 0.95);
