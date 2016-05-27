@@ -1,6 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
@@ -572,41 +576,27 @@ public class GameScreen extends JPanel implements ActionListener {
 		GridBagConstraints gbc = new GridBagConstraints();
 		
 		gbc.gridy = 0;
-		JLabel level = new JLabel("DEFEATED LEVEL " + currLevel, SwingConstants.CENTER);
-		level.setFont(new Font("Herculanum", Font.PLAIN, 70));
-		level.setForeground(new Color(255,215,0));
-		mazeWon.add(level, gbc);
-
-		gbc.gridy = 1;
-		JLabel roundInfo = new JLabel("Round Results", SwingConstants.CENTER);
-		roundInfo.setFont(new Font("Devanagari MT", Font.PLAIN, 30));
-		roundInfo.setForeground(Color.WHITE);
-		mazeWon.add(roundInfo, gbc);
-        
-		gbc.gridy = 2;
-		JLabel timeTaken = new JLabel();
-		if (duration >= 60) {
-			timeTaken.setText("Time taken: " + (int)duration/60 + "m " + (int)duration%60 + "s");
-		} else {
-			timeTaken.setText("Time taken: " + (int)duration + "s");
+		JPanel titlePanel = new JPanel(new FlowLayout());
+	    BufferedImage loseTitlePicture;
+		try {
+			loseTitlePicture = ImageIO.read(this.getClass().getResource("resources/winscreen.png"));
+			JLabel loseTitleLabel = new JLabel(new ImageIcon(new ImageIcon(loseTitlePicture)
+			.getImage().getScaledInstance(1000, 100, Image.SCALE_SMOOTH)), SwingConstants.CENTER);
+			loseTitleLabel.setOpaque(false);
+			titlePanel.add(loseTitleLabel);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		timeTaken.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
-		timeTaken.setForeground(Color.WHITE);
-		mazeWon.add(timeTaken, gbc);
+		JLabel titleTextLabel = new JLabel(Integer.toString(currLevel), SwingConstants.CENTER);
+		titleTextLabel.setFont(new Font("Devanagari MT", Font.BOLD, 60));
+		titleTextLabel.setForeground(new Color(153, 0, 0));
+		titlePanel.add(titleTextLabel);
+		titlePanel.setOpaque(false);
+		mazeWon.add(titlePanel);
 		
-		gbc.gridy = 3;
-		JLabel numMonstersKilled = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), SwingConstants.CENTER);
-		numMonstersKilled.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
-		numMonstersKilled.setForeground(Color.WHITE);
-		mazeWon.add(numMonstersKilled, gbc);
-
-		gbc.gridy = 4;
-		JLabel numGemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), SwingConstants.CENTER);
-		numGemsCollected.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
-		numGemsCollected.setForeground(Color.WHITE);
-		mazeWon.add(numGemsCollected, gbc);
 		
-		gbc.gridy = 5;
+		gbc.gridy = 1;
 		int roundScore = (int) ((maze.getScore() + 200*(currLevel+difficulty)) * duration/60);
 		totalScore += roundScore;
 		JLabel roundScoreLabel = new JLabel("Round score: " + roundScore, SwingConstants.CENTER);
@@ -615,11 +605,49 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeWon.add(roundScoreLabel, gbc);
 		
 		
-		gbc.gridy = 6;
+		gbc.gridy = 2;
 		JLabel totalScore = new JLabel("Total score: " + this.totalScore, SwingConstants.CENTER);
 		totalScore.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
 		totalScore.setForeground(Color.WHITE);
 		mazeWon.add(totalScore, gbc);
+        
+		gbc.gridy = 3;
+		JLabel timeTaken = new JLabel();
+		if (duration >= 60) {
+			timeTaken.setText("Time taken: " + (int)duration/60 + "m " + (int)duration%60 + "s");
+		} else {
+			timeTaken.setText("Time taken: " + (int)duration + "s");
+		}
+		timeTaken.setFont(new Font("Devanagari MT", Font.BOLD, 15));
+		timeTaken.setForeground(Color.WHITE);
+		mazeWon.add(timeTaken, gbc);
+		
+		gbc.gridy = 4;
+		JPanel resultsPanel = new JPanel(new FlowLayout(SwingConstants.CENTER, 20, 20));
+		resultsPanel.setOpaque(false);
+		
+		ImageIcon monstersImage = new ImageIcon(new ImageIcon("resources/monster_down.png").getImage()
+		.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		JLabel monstersSlain = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), 
+				monstersImage, SwingConstants.CENTER);
+		monstersSlain.setHorizontalTextPosition(JLabel.LEFT);
+		monstersSlain.setFont(new Font("Devanagari MT", Font.BOLD, 15));
+		monstersSlain.setForeground(Color.WHITE);
+		resultsPanel.add(monstersSlain, gbc);
+		
+		
+		ImageIcon gemsImage = new ImageIcon(new ImageIcon("resources/gems/gems-6.png").getImage()
+				.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		JLabel gemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), 
+				gemsImage, SwingConstants.LEFT);
+		gemsCollected.setHorizontalTextPosition(JLabel.LEFT);
+		gemsCollected.setFont(new Font("Devanagari MT", Font.BOLD, 15));
+		gemsCollected.setForeground(Color.WHITE);
+		resultsPanel.add(gemsCollected, gbc);
+	
+		mazeWon.add(resultsPanel, gbc);
+		
+		gbc.gridy = 5;
 
 		gbc.ipady = 0;
 		gbc.gridy = 7;
@@ -669,50 +697,81 @@ public class GameScreen extends JPanel implements ActionListener {
 	    gbc.weightx = 1;
 	    
 		gbc.gridy = 0;
+	    gbc.gridx = 0;
 	    
-		JLabel lostLevelLabel = new JLabel("YOU DIED AT LEVEL " + currLevel, SwingConstants.CENTER);
-		lostLevelLabel.setForeground(new Color(255,215,0));
-		lostLevelLabel.setFont(new Font("Herculanum", Font.PLAIN, 70));
-		mazeLost.add(lostLevelLabel, gbc);
-		
-		gbc.gridy = 1;
-		JLabel gameInfo= new JLabel("Game Results", SwingConstants.CENTER);
-		gameInfo.setForeground(Color.WHITE);
-		gameInfo.setFont(new Font("Devanagari MT", Font.PLAIN, 30));
-		mazeLost.add(gameInfo, gbc);
+	    JPanel titlePanel = new JPanel(new FlowLayout());
+	    BufferedImage loseTitlePicture;
+		try {
+			loseTitlePicture = ImageIO.read(this.getClass().getResource("resources/losescreen.png"));
+			JLabel loseTitleLabel = new JLabel(new ImageIcon(new ImageIcon(loseTitlePicture)
+			.getImage().getScaledInstance(1000, 100, Image.SCALE_SMOOTH)), SwingConstants.CENTER);
+			loseTitleLabel.setOpaque(false);
+			titlePanel.add(loseTitleLabel);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		JLabel titleTextLabel = new JLabel(Integer.toString(currLevel), SwingConstants.CENTER);
+		titleTextLabel.setFont(new Font("Devanagari MT", Font.BOLD, 60));
+		titleTextLabel.setForeground(new Color(153, 0, 0));
+		titlePanel.add(titleTextLabel);
+		titlePanel.setOpaque(false);
+		mazeLost.add(titlePanel);
 		
 		
 		gbc.gridy = 2;
-		JLabel faction = new JLabel("", SwingConstants.CENTER);
-		if (spellType == 1) {
-			faction.setText("Chosen spell: Water");
-		} else if (spellType == 2) {
-			faction.setText("Chosen spell: Fire");
-		} else if (spellType == 3) {
-			faction.setText("Chosen spell: Air");
-		}
-		faction.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
-		faction.setForeground(Color.WHITE);
-		mazeLost.add(faction, gbc);
-		
-		gbc.gridy = 3;
-		JLabel monstersSlain = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), SwingConstants.CENTER);
-		monstersSlain.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
-		monstersSlain.setForeground(Color.WHITE);
-		mazeLost.add(monstersSlain, gbc);
-		
-		gbc.gridy = 4;
-		JLabel gemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), SwingConstants.CENTER);
-		gemsCollected.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
-		gemsCollected.setForeground(Color.WHITE);
-		mazeLost.add(gemsCollected, gbc);
-		
-		gbc.gridy = 5;
 		gbc.ipady = 5; // gaps between lines
-		JLabel numGemsCollected = new JLabel("Final score: " + maze.getScore(), SwingConstants.CENTER);
-		numGemsCollected.setFont(new Font("Devanagari MT", Font.PLAIN, 15));
+		JLabel numGemsCollected = new JLabel("Final score: ", SwingConstants.CENTER);
+		numGemsCollected.setFont(new Font("Devanagari MT", Font.BOLD, 15));
 		numGemsCollected.setForeground(Color.WHITE);
 		mazeLost.add(numGemsCollected, gbc);
+		
+		gbc.gridy = 3;
+		JLabel score = new JLabel(Integer.toString(maze.getScore()), SwingConstants.CENTER);
+		score.setFont(new Font("Devanagari MT", Font.BOLD, 40));
+		score.setForeground(Color.YELLOW);
+		mazeLost.add(score, gbc);
+		
+		gbc.gridy = 4;
+		JPanel resultsPanel = new JPanel(new FlowLayout(SwingConstants.CENTER, 20, 20));
+		resultsPanel.setOpaque(false);
+		ImageIcon factionImage = new ImageIcon(new ImageIcon("resources/element-icon-water.png")
+			.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		String factionText = "Chosen spell: Water";
+		if (spellType == 2) {
+			factionText = "Chosen spell: Fire"; 
+			factionImage = new ImageIcon(new ImageIcon("resources/element-icon-fire.png")
+			.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		} else if (spellType == 3) {
+			factionText = "Chosen spell: Air";
+			factionImage = new ImageIcon(new ImageIcon("resources/element-icon-air.png")
+			.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		}
+		JLabel faction = new JLabel(factionText, factionImage, SwingConstants.RIGHT);
+		faction.setHorizontalTextPosition(JLabel.LEFT);
+		faction.setFont(new Font("Devanagari MT", Font.BOLD, 15));
+		faction.setForeground(Color.WHITE);
+		resultsPanel.add(faction, gbc);
+
+		ImageIcon monstersImage = new ImageIcon(new ImageIcon("resources/monster_down.png").getImage()
+		.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		JLabel monstersSlain = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), 
+				monstersImage, SwingConstants.CENTER);
+		monstersSlain.setHorizontalTextPosition(JLabel.LEFT);
+		monstersSlain.setFont(new Font("Devanagari MT", Font.BOLD, 15));
+		monstersSlain.setForeground(Color.WHITE);
+		resultsPanel.add(monstersSlain, gbc);
+		
+		ImageIcon gemsImage = new ImageIcon(new ImageIcon("resources/gems/gems-6.png").getImage()
+				.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		JLabel gemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), 
+				gemsImage, SwingConstants.LEFT);
+		gemsCollected.setHorizontalTextPosition(JLabel.LEFT);
+		gemsCollected.setFont(new Font("Devanagari MT", Font.BOLD, 15));
+		gemsCollected.setForeground(Color.WHITE);
+		resultsPanel.add(gemsCollected, gbc);
+	
+		mazeLost.add(resultsPanel, gbc);
 		
 		gbc.gridy = 6;
 		gbc.ipady = 0;
