@@ -67,7 +67,10 @@ public class Player implements MovableSprite, ActionListener {
 		this.x = x;
 		this.y = y;
 	}
-	
+
+	/**
+	 * test
+	 */
 	@Override
 	public int getX() {
 		return (int)x;

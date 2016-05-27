@@ -420,9 +420,12 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		JPanel mazePaused = new JPanel(new GridBagLayout());
 		mazePaused.setOpaque(false);
-		JLabel pausedLabel = new JLabel("Game paused. Press 'U' to unpause.", SwingUtilities.CENTER);
-		pausedLabel.setForeground(Color.WHITE);
-		mazePaused.add(pausedLabel);
+		JLabel pausedLabel1 = new JLabel("Game paused. ", SwingUtilities.CENTER);
+		pausedLabel1.setForeground(Color.WHITE);
+		mazePaused.add(pausedLabel1);
+		JLabel pausedLabel2 = new JLabel("Press 'U' to unpause.", SwingUtilities.CENTER);
+		pausedLabel2.setForeground(Color.ORANGE);
+		mazePaused.add(pausedLabel2);
 		mazeScreens.add(mazePaused, "Paused");
 	}
 	
@@ -432,87 +435,107 @@ public class GameScreen extends JPanel implements ActionListener {
 	private void initHelp() {
 		JPanel mazeHelp = new JPanel(new GridBagLayout());
 		mazeHelp.setBackground(Color.LIGHT_GRAY);
+		mazeHelp.setOpaque(false);
 		mazeScreens.add(mazeHelp, "Help");
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 		
-		gbc.ipady = 30;
-		gbc.gridy = 2;
-		JLabel help = new JLabel("IN-GAME HELP SCREEN");
-		mazeHelp.add(help, gbc);
 	
 		//OBJECTIVE
-		gbc.ipady = 0;
-		gbc.gridy = 3;
+		gbc.gridy = 0;
 		JLabel o1 = new JLabel("OBJECTIVE");
+		o1.setForeground(Color.WHITE);
 		mazeHelp.add(o1, gbc);
 		
-		gbc.gridy = 4;
-		JLabel o2 = new JLabel("The objective is to reach the end of the maze with the highest score.");
-		mazeHelp.add(o2, gbc);
-		
-		gbc.gridy = 5;
-		JLabel o3 = new JLabel("First retrieve the key from it's hiding place, then use it to unlock the steel door.");
+		gbc.gridy = 1;
+		JLabel o3 = new JLabel("Retrieve the key and unlock the steel door the next level");
+		o3.setForeground(Color.WHITE);
 		mazeHelp.add(o3, gbc);
 		
-		gbc.ipady = 10;
-		gbc.gridy = 6;
-		JLabel oi1 = new JLabel(new ImageIcon("resources/obj.png"));
-		mazeHelp.add(oi1, gbc);
+		gbc.gridy = 2;
+		JPanel key = new JPanel();
+		key.setOpaque(false);
+		key.add(new JLabel(new ImageIcon("resources/tiles/key_tile.gif")));
+		key.add(new JLabel(new ImageIcon("resources/tiles/leon_closed_door.png")));
+		mazeHelp.add(key, gbc);
 		
-		//mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
+		gbc.gridy = 3;
+		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
 		
 		//CONTROLS
 		gbc.ipady = 0;
-		gbc.gridy = 7;
-		JLabel c1 = new JLabel("CONTROLS");
+		gbc.gridy = 4;
+		JLabel c1 = new JLabel("CONTROLS (DEFAULT)");
+		c1.setForeground(Color.WHITE);
 		mazeHelp.add(c1, gbc);
 		
-		gbc.gridy = 8;
-		JLabel c2 = new JLabel("Use the arrow keys (default) to navigate the maze. Press space to shoot a spell.");
+		gbc.gridy = 5;
+		JLabel c2 = new JLabel("Use the arrow keys to move and the space bar to shoot a spell.");
+		c2.setForeground(Color.WHITE);
 		mazeHelp.add(c2, gbc);
 		
-		gbc.gridy = 9;
-		JLabel ci1 = new JLabel(new ImageIcon("resources/controls.png"));
-		mazeHelp.add(ci1, gbc);
+		gbc.gridy = 6;
+		JPanel controls = new JPanel();
+		controls.setOpaque(false);
+		controls.add(new JLabel(new ImageIcon("resources/arrows.png")));
+		controls.add(new JLabel(new ImageIcon("resources/space.png")));
+		controls.add(new JLabel(new ImageIcon("resources/spells/water2.png")));
+		controls.add(new JLabel(new ImageIcon("resources/spells/fire2.png")));
+		controls.add(new JLabel(new ImageIcon("resources/spells/air2.png")));
+		mazeHelp.add(controls, gbc);
+		
+		gbc.gridy = 7;
+		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
 		
 		//ENEMIES
 		gbc.ipady = 0;
-		gbc.gridy = 10;
+		gbc.gridy = 8;
 		JLabel e1 = new JLabel("ENEMIES");
+		e1.setForeground(Color.WHITE);
 		mazeHelp.add(e1, gbc);
 		
-		gbc.gridy = 11;
-		JLabel e2 = new JLabel("Spells are used to kill monsters and dragons, and destroy portals.");
+		gbc.gridy = 9;
+		JLabel e2 = new JLabel("Use spells to kill enemies and destroy portals to stop them from respawning");
+		e2.setForeground(Color.WHITE);
 		mazeHelp.add(e2, gbc);
 		
-		gbc.gridy = 12;
-		JLabel e3 = new JLabel("Monsters are restriced to navigating the maze, whereas dragons can"
-				+ "fly over the lava to find you.");
+		gbc.gridy = 10;
+		JLabel e3 = new JLabel("Beware! Dragons can fly over lava.");
+		e3.setForeground(Color.WHITE);
 		mazeHelp.add(e3, gbc);
 		
-		gbc.ipady = 10;
+		gbc.gridy = 11;
+		JPanel monsters = new JPanel();
+		monsters.setOpaque(false);
+		monsters.add(new JLabel(new ImageIcon("resources/monster_down.png")));
+		monsters.add(new JLabel(new ImageIcon("resources/dragon/dragonE4.png")));
+		monsters.add(new JLabel(new ImageIcon("resources/blue_portal_32.gif")));
+		mazeHelp.add(monsters, gbc);
+		
+		gbc.gridy = 12;
+		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
+		
 		gbc.gridy = 13;
-		JLabel ei1 = new JLabel(new ImageIcon("resources/enemies.png"));
-		mazeHelp.add(ei1, gbc);
+		JLabel d1 = new JLabel("SCORE");
+		d1.setForeground(Color.WHITE);
+		mazeHelp.add(d1,  gbc);
 		
-		//mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
+		gbc.gridy = 14; 
+		JLabel d2 = new JLabel("Improve your score by collecting gems scattered throughout the maze");
+		d2.setForeground(Color.WHITE);
+		mazeHelp.add(d2, gbc);
 		
-		//GEMS
-		gbc.ipady = 0;
-		gbc.ipady = 0;
-		gbc.gridy = 16;
-		JLabel g1 = new JLabel("Collect gems to increase your score.");
-		mazeHelp.add(g1, gbc);
+		gbc.gridy = 15;
+		JLabel d3 = new JLabel(new ImageIcon("resources/gemssmall.png"));
+		d3.setForeground(Color.WHITE);
+		mazeHelp.add(d3, gbc);
+		
+		gbc.gridy  = 16;
+		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
 		
 		gbc.gridy = 17;
-		JLabel gi1 = new JLabel(new ImageIcon("resources/gemssmall.png"));
-		mazeHelp.add(gi1, gbc);
-		
-		//mazeHelp.add(Box.createRigidArea(new Dimension(0, 50)), gbc);
-
-		gbc.gridy = 20;
 		JLabel ret = new JLabel("Press H to resume playing.");
+		ret.setForeground(Color.ORANGE);
 		mazeHelp.add(ret, gbc);
 		
 	}
