@@ -8,15 +8,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class FlyingMonster extends Monster implements ActionListener {
-	private BufferedImage[] image_N;
-	private BufferedImage[] image_W;
-	private BufferedImage[] image_S;
-	private BufferedImage[] image_E;
-	private int scaledHeight;
-
-	private Timer animationTimer;
-	private Timer changeDirectionTimer;
-	private int spriteCounter;
 
 	public FlyingMonster() {
 		randomiseDirection();
@@ -99,8 +90,6 @@ public class FlyingMonster extends Monster implements ActionListener {
 			randomiseDirection();
 		}
 	}
-	
-	
 
 	private BufferedImage getScaledBufferedImage(BufferedImage src, int w, int h){
 		int finalw = w;
@@ -121,5 +110,15 @@ public class FlyingMonster extends Monster implements ActionListener {
 		g2.dispose();
 		return resizedImg;
 	}
+	
+	private BufferedImage[] image_N;
+	private BufferedImage[] image_W;
+	private BufferedImage[] image_S;
+	private BufferedImage[] image_E;
+	private int scaledHeight;
+
+	private Timer animationTimer;
+	private Timer changeDirectionTimer;
+	private int spriteCounter;
 
 }

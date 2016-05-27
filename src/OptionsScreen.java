@@ -7,18 +7,6 @@ import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class OptionsScreen extends JPanel {
-	private MainWindow mainWindow;
-
-	private Dimension resolution;
-	
-	private ArrayList<Integer> validKeyList; // contains selected valid keys and currently bound keys
-	private int moveRightKey;
-	private int moveLeftKey;
-	private int moveUpKey;
-	private int moveDownKey;
-	private int shootKey;
-	
-	private int difficulty; // 1, 2, or 3
 
 	/**
 	 * Constructor.
@@ -428,4 +416,16 @@ public class OptionsScreen extends JPanel {
 		add(backToMenu);
 	}
 
+	private MainWindow mainWindow;
+
+	private Dimension resolution;
+	
+	private ArrayList<Integer> validKeyList; // contains selected valid keys and currently bound keys
+	private int moveRightKey;
+	private int moveLeftKey;
+	private int moveUpKey;
+	private int moveDownKey;
+	private int shootKey;
+	
+	private int difficulty; // 1, 2, or 3
 }

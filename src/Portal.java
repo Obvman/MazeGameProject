@@ -4,10 +4,6 @@ import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
 public class Portal {
-	private int x;
-	private int y;
-	private Image image;
-	private LinkedList<Monster> monsters;
 	
 	public Portal(int x, int y, LinkedList<Monster> monsters) {
 		this.x = x;
@@ -43,4 +39,9 @@ public class Portal {
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE);
 	}
+	
+	private int x;
+	private int y;
+	private Image image;
+	private LinkedList<Monster> monsters;
 }

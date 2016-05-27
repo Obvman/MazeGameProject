@@ -7,8 +7,6 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class TutorialScreen extends JPanel {
 
-	private MainWindow mainWindow;
-
 	public TutorialScreen(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		initTutorial();
@@ -131,9 +129,7 @@ public class TutorialScreen extends JPanel {
 			}
 		});
 		tutorialScreen.add(menuButton, gbc);
-
-
 	}
 
-
+	private MainWindow mainWindow;
 }

@@ -6,37 +6,6 @@ import javax.swing.border.EmptyBorder;
 @SuppressWarnings("serial")
 public class GameScreen extends JPanel implements ActionListener {
 
-	private MainWindow mainWindow;
-
-	// constants for this class
-	public static final int WATER = 1;
-	public static final int FIRE = 2;
-	public static final int AIR = 3;
-
-	// screens
-	private JPanel mazeScreens; // screen controller for maze panel
-	private MazePanel mazePlaying;
-	private boolean isPauseActive;
-	private boolean isHelpActive;
-
-	// maze elements
-	private Maze maze;
-	private int[] playerKeys;
-	private int spellType;
-	private int currLevel;
-	private int difficulty;
-	private int totalScore;
-	private double duration;
-
-	// status bar components to be updated dynamically
-	private JLabel objective;
-	private JLabel monstersSlain;
-	private JLabel gemsCollected;
-	private JLabel time;
-	private JLabel level;
-
-	private Timer updateTimer;
-	
 	/**
 	 * Creates a GameScreen starting at level 1 and the given difficulty
 	 * @param mainWindow The JFrame containing the GameScreen
@@ -451,7 +420,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		
 		JPanel mazePaused = new JPanel(new GridBagLayout());
 		mazePaused.setOpaque(false);
-		JLabel pausedLabel = new JLabel("Game Paused.", SwingUtilities.CENTER);
+		JLabel pausedLabel = new JLabel("Game paused. Press 'U' to unpause.", SwingUtilities.CENTER);
 		pausedLabel.setForeground(Color.WHITE);
 		mazePaused.add(pausedLabel);
 		mazeScreens.add(mazePaused, "Paused");
@@ -471,8 +440,6 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbc.gridy = 2;
 		JLabel help = new JLabel("IN-GAME HELP SCREEN");
 		mazeHelp.add(help, gbc);
-		
-		
 	
 		//OBJECTIVE
 		gbc.ipady = 0;
@@ -772,4 +739,35 @@ public class GameScreen extends JPanel implements ActionListener {
 	private ImageIcon getScaledImageIcon(ImageIcon img, int width, int height) {
 		return new ImageIcon(img.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
+	
+	private MainWindow mainWindow;
+
+	// constants for this class
+	public static final int WATER = 1;
+	public static final int FIRE = 2;
+	public static final int AIR = 3;
+
+	// screens
+	private JPanel mazeScreens; // screen controller for maze panel
+	private MazePanel mazePlaying;
+	private boolean isPauseActive;
+	private boolean isHelpActive;
+
+	// maze elements
+	private Maze maze;
+	private int[] playerKeys;
+	private int spellType;
+	private int currLevel;
+	private int difficulty;
+	private int totalScore;
+	private double duration;
+
+	// status bar components to be updated dynamically
+	private JLabel objective;
+	private JLabel monstersSlain;
+	private JLabel gemsCollected;
+	private JLabel time;
+	private JLabel level;
+
+	private Timer updateTimer;
 }

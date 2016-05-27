@@ -6,22 +6,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Monster implements MovableSprite {
-	private double x;
-	private double y;
-	private int dx;
-	private int dy;
-	
-	private BufferedImage image_N;
-	private BufferedImage image_W;
-	private BufferedImage image_S;
-	private BufferedImage image_E;
-	private int scaledHeight;
-	
+
 	public Monster() {
 		randomiseDirection();
-		
+
 		scaledHeight = Maze.MAZE_CELL_SIZE * 3/4;
-		
+
 		try {
 			image_E = getScaledImage(ImageIO.read(new File("resources/monster_right.png")), scaledHeight, scaledHeight);
 			image_N = getScaledImage(ImageIO.read(new File("resources/monster_up.png")), scaledHeight, scaledHeight);
@@ -37,63 +27,63 @@ public class Monster implements MovableSprite {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	@Override
 	public int getX() {
-        return (int)x;
-    }
+		return (int)x;
+	}
 
 	@Override
-    public int getY() {
-        return (int)y;
-    }
+	public int getY() {
+		return (int)y;
+	}
 
 	@Override
-    public int getDX() {
+	public int getDX() {
 		return dx;
 	}
-	
+
 	@Override
 	public int getDY() {
 		return dy;
 	}
-	
+
 	public void setDX(int dx) {
 		this.dx = dx;
 	}
-	
+
 	public void setDY(int dy) {
 		this.dy = dy;
 	}
-    
+
 	@Override
-    public Image getImage() {
-    	if (dx == 0 && dy < 0) {
-    		return image_N;
-    	} else if (dx < 0 && dy == 0) {
-    		return image_W;
-    	} else if (dx == 0 && dy > 0) {
-    		return image_S;
-    	} else if (dx > 0 && dy == 0) {
-    		return image_E;
-    	}
-    	
-    	return null;
+	public Image getImage() {
+		if (dx == 0 && dy < 0) {
+			return image_N;
+		} else if (dx < 0 && dy == 0) {
+			return image_W;
+		} else if (dx == 0 && dy > 0) {
+			return image_S;
+		} else if (dx > 0 && dy == 0) {
+			return image_E;
+		}
+
+		return null;
 	}
-	
+
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), scaledHeight, scaledHeight);
 	}
 
 	@Override
-    public void manualMove(int dx, int dy) {
+	public void manualMove(int dx, int dy) {
 		this.dx = dx;
 		this.dy = dy;
-    	x += dx;
-    	y += dy;
-    }
-	
+		x += dx;
+		y += dy;
+	}
+
 	// picks a random STRAIGHT line motion
 	public void randomiseDirection() {
 		Double rand = Math.random();
@@ -108,33 +98,43 @@ public class Monster implements MovableSprite {
 		} else {
 			dy = -1;
 		}
-		
+
 		dx *= (double)Maze.MAZE_CELL_SIZE/32;
 		dy *= (double)Maze.MAZE_CELL_SIZE/32;
 	}
-	
+
 	public boolean canFly() {
 		return false;
 	}
-	
-	 private BufferedImage getScaledImage(BufferedImage src, int w, int h){
+
+	private BufferedImage getScaledImage(BufferedImage src, int w, int h){
 		int finalw = w;
 		int finalh = h;
 		double factor = 1.0d;
 		if(src.getWidth() > src.getHeight()){
 			factor = ((double)src.getHeight()/(double)src.getWidth());
-	        finalh = (int)(finalw * factor);                
-	    }else{
-	        factor = ((double)src.getWidth()/(double)src.getHeight());
-	        finalw = (int)(finalh * factor);
-	    }   
+			finalh = (int)(finalw * factor);                
+		}else{
+			factor = ((double)src.getWidth()/(double)src.getHeight());
+			finalw = (int)(finalh * factor);
+		}   
 
 		BufferedImage resizedImg = new BufferedImage(finalw, finalh, BufferedImage.TRANSLUCENT);
-	    Graphics2D g2 = resizedImg.createGraphics();
-	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	    g2.drawImage(src, 0, 0, finalw, finalh, null);
-	    g2.dispose();
-	    return resizedImg;
-	 }
-	
+		Graphics2D g2 = resizedImg.createGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2.drawImage(src, 0, 0, finalw, finalh, null);
+		g2.dispose();
+		return resizedImg;
+	}
+
+	private double x;
+	private double y;
+	private int dx;
+	private int dy;
+
+	private BufferedImage image_N;
+	private BufferedImage image_W;
+	private BufferedImage image_S;
+	private BufferedImage image_E;
+	private int scaledHeight;
 }

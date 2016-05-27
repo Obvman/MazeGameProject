@@ -137,7 +137,6 @@ public class MazeGeneratorDFS implements MazeGenerator {
 		return returnValue;
 	}
 
-
 	/**
 	 * insert walls before the algo
 	 */
@@ -164,8 +163,6 @@ public class MazeGeneratorDFS implements MazeGenerator {
 		maze[(n1.getx()+n2.getx())/2][(n1.gety()+n2.gety())/2] = Maze.PATH_TILE;
 		return maze;
 	}
-
-	
 
 	/**
 	 * ADT to store data for BFS

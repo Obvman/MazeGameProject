@@ -6,8 +6,6 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class MenuScreen extends JPanel {
 	
-	private MainWindow mainWindow;
-	
 	public MenuScreen(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		initMenu();
@@ -107,5 +105,5 @@ public class MenuScreen extends JPanel {
 		add(buttonPanel);
 	}
 	
-	
+	private MainWindow mainWindow;
 }

@@ -4,15 +4,6 @@ import javax.swing.ImageIcon;
 
 public class Spell implements MovableSprite {
 
-	private int initialX;
-	private int initialY;
-	private double x;
-	private double y;
-	private int dx;
-	private int dy;
-	private Image image[];
-	private int scaledSize;
-
 	public Spell(int startX, int startY, int dx, int dy, int spellType) {
 		initialX = startX;
 		initialY = startY;
@@ -87,7 +78,17 @@ public class Spell implements MovableSprite {
 		x += dx * (double)Maze.MAZE_CELL_SIZE/16;
 		y += dy * (double)Maze.MAZE_CELL_SIZE/16;
 	}
+	
 	public int getStage() {
 		return (int)Math.sqrt(Math.pow(x - initialX, 2) + Math.pow(y - initialY, 2))/scaledSize;
 	}
+	
+	private int initialX;
+	private int initialY;
+	private double x;
+	private double y;
+	private int dx;
+	private int dy;
+	private Image image[];
+	private int scaledSize;
 }

@@ -10,34 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Player implements MovableSprite, ActionListener {
-	private double x;
-	private double y;
-	private int dx;
-	private int dy;
-	private LinkedList<Spell> spells;
-	private int spellType;
-	private boolean alive;
-	private int moveRightKey;
-	private int moveLeftKey;
-	private int moveUpKey;
-	private int moveDownKey;
-	private int shootKey;
 
-	// character sprites
-	private BufferedImage[] image_N;
-	private BufferedImage[] image_NE;
-	private BufferedImage[] image_E;
-	private BufferedImage[] image_SE;
-	private BufferedImage[] image_S;
-	private BufferedImage[] image_SW;
-	private BufferedImage[] image_W;
-	private BufferedImage[] image_NW;
-	private BufferedImage[] lastImage;
-	private int scaledHeight;
-
-	private Timer timer;
-	private int spriteCounter;
-	
 	public Player(int spellType, int[] keys)  {
 		spells = new LinkedList<Spell>();
 		this.spellType = spellType;
@@ -273,4 +246,32 @@ public class Player implements MovableSprite, ActionListener {
 		g2.dispose();
 		return resizedImg;
 	}
+	
+	private double x;
+	private double y;
+	private int dx;
+	private int dy;
+	private LinkedList<Spell> spells;
+	private int spellType;
+	private boolean alive;
+	private int moveRightKey;
+	private int moveLeftKey;
+	private int moveUpKey;
+	private int moveDownKey;
+	private int shootKey;
+
+	// character sprites
+	private BufferedImage[] image_N;
+	private BufferedImage[] image_NE;
+	private BufferedImage[] image_E;
+	private BufferedImage[] image_SE;
+	private BufferedImage[] image_S;
+	private BufferedImage[] image_SW;
+	private BufferedImage[] image_W;
+	private BufferedImage[] image_NW;
+	private BufferedImage[] lastImage;
+	private int scaledHeight;
+
+	private Timer timer;
+	private int spriteCounter;
 }
