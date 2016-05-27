@@ -704,7 +704,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		faction.setForeground(Color.WHITE);
 		resultsPanel.add(faction, gbc);
 
-		ImageIcon monstersImage = getScaledImageIcon(new ImageIcon("resources/monster_down.png"), 20, 20);
+		ImageIcon monstersImage = getScaledImageIcon(new ImageIcon("resources/monstersKilled.png"), -1, 20);
 		JLabel monstersSlain = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), 
 				monstersImage, SwingConstants.CENTER);
 		monstersSlain.setHorizontalTextPosition(JLabel.LEFT);
@@ -712,7 +712,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		monstersSlain.setForeground(Color.WHITE);
 		resultsPanel.add(monstersSlain, gbc);
 		
-		ImageIcon gemsImage = getScaledImageIcon(new ImageIcon("resources/gems/gems-6"), 20, 20);
+		ImageIcon gemsImage = getScaledImageIcon(new ImageIcon("resources/gems/gems-6.png"), 20, 20);
 		JLabel gemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), 
 				gemsImage, SwingConstants.LEFT);
 		gemsCollected.setHorizontalTextPosition(JLabel.LEFT);
