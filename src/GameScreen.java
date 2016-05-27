@@ -570,8 +570,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	    BufferedImage loseTitlePicture;
 		try {
 			loseTitlePicture = ImageIO.read(this.getClass().getResource("resources/winscreen.png"));
-			JLabel loseTitleLabel = new JLabel(new ImageIcon(new ImageIcon(loseTitlePicture)
-			.getImage().getScaledInstance(1000, 100, Image.SCALE_SMOOTH)), SwingConstants.CENTER);
+			JLabel loseTitleLabel = new JLabel(getScaledImageIcon(new ImageIcon(loseTitlePicture), 1000, 100));
 			loseTitleLabel.setOpaque(false);
 			titlePanel.add(loseTitleLabel);
 		} catch (IOException e1) {
@@ -616,8 +615,8 @@ public class GameScreen extends JPanel implements ActionListener {
 		JPanel resultsPanel = new JPanel(new FlowLayout(SwingConstants.CENTER, 20, 20));
 		resultsPanel.setOpaque(false);
 		
-		ImageIcon monstersImage = new ImageIcon(new ImageIcon("resources/monster_down.png").getImage()
-		.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		ImageIcon monstersImage = getScaledImageIcon(new ImageIcon("resources/monster_down.png"), 20, 20);
+		
 		JLabel monstersSlain = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), 
 				monstersImage, SwingConstants.CENTER);
 		monstersSlain.setHorizontalTextPosition(JLabel.LEFT);
@@ -626,8 +625,8 @@ public class GameScreen extends JPanel implements ActionListener {
 		resultsPanel.add(monstersSlain, gbc);
 		
 		
-		ImageIcon gemsImage = new ImageIcon(new ImageIcon("resources/gems/gems-6.png").getImage()
-				.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		ImageIcon gemsImage = getScaledImageIcon(
+				new ImageIcon("resources/gems/gems-6.png"), 20, 20);
 		JLabel gemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), 
 				gemsImage, SwingConstants.LEFT);
 		gemsCollected.setHorizontalTextPosition(JLabel.LEFT);
@@ -693,8 +692,9 @@ public class GameScreen extends JPanel implements ActionListener {
 	    BufferedImage loseTitlePicture;
 		try {
 			loseTitlePicture = ImageIO.read(this.getClass().getResource("resources/losescreen.png"));
-			JLabel loseTitleLabel = new JLabel(new ImageIcon(new ImageIcon(loseTitlePicture)
-			.getImage().getScaledInstance(1000, 100, Image.SCALE_SMOOTH)), SwingConstants.CENTER);
+			JLabel loseTitleLabel = new JLabel(getScaledImageIcon(
+					new ImageIcon(loseTitlePicture), 1000, 100), SwingConstants.CENTER);
+
 			loseTitleLabel.setOpaque(false);
 			titlePanel.add(loseTitleLabel);
 		} catch (IOException e1) {
@@ -725,17 +725,14 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbc.gridy = 4;
 		JPanel resultsPanel = new JPanel(new FlowLayout(SwingConstants.CENTER, 20, 20));
 		resultsPanel.setOpaque(false);
-		ImageIcon factionImage = new ImageIcon(new ImageIcon("resources/element-icon-water.png")
-			.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		ImageIcon factionImage = getScaledImageIcon(new ImageIcon("resources/element-icon-water.png"), 20, 20);
 		String factionText = "Chosen spell: Water";
 		if (spellType == 2) {
 			factionText = "Chosen spell: Fire"; 
-			factionImage = new ImageIcon(new ImageIcon("resources/element-icon-fire.png")
-			.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+			factionImage = getScaledImageIcon(new ImageIcon("resources/element-icon-fire.png"), 20, 20);
 		} else if (spellType == 3) {
 			factionText = "Chosen spell: Air";
-			factionImage = new ImageIcon(new ImageIcon("resources/element-icon-air.png")
-			.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+			factionImage = getScaledImageIcon(new ImageIcon("resources/element-icon-air.png"), 20, 20);
 		}
 		JLabel faction = new JLabel(factionText, factionImage, SwingConstants.RIGHT);
 		faction.setHorizontalTextPosition(JLabel.LEFT);
@@ -743,8 +740,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		faction.setForeground(Color.WHITE);
 		resultsPanel.add(faction, gbc);
 
-		ImageIcon monstersImage = new ImageIcon(new ImageIcon("resources/monster_down.png").getImage()
-		.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		ImageIcon monstersImage = getScaledImageIcon(new ImageIcon("resources/monster_down.png"), 20, 20);
 		JLabel monstersSlain = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), 
 				monstersImage, SwingConstants.CENTER);
 		monstersSlain.setHorizontalTextPosition(JLabel.LEFT);
@@ -752,8 +748,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		monstersSlain.setForeground(Color.WHITE);
 		resultsPanel.add(monstersSlain, gbc);
 		
-		ImageIcon gemsImage = new ImageIcon(new ImageIcon("resources/gems/gems-6.png").getImage()
-				.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		ImageIcon gemsImage = getScaledImageIcon(new ImageIcon("resources/gems/gems-6"), 20, 20);
 		JLabel gemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), 
 				gemsImage, SwingConstants.LEFT);
 		gemsCollected.setHorizontalTextPosition(JLabel.LEFT);
