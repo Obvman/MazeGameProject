@@ -39,42 +39,66 @@ public class Spell implements MovableSprite {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setPosition (int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getX() {
 		return (int)x;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getY() {
 		return (int)y;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getDX() {
 		return dx;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getDY() {
 		return dy;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Image getImage() {
 		return image[getStage() > 2 ? 2 : getStage()];
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), scaledSize, scaledSize);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void manualMove(int dx, int dy) {
 		x += dx;

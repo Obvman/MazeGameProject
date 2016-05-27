@@ -112,7 +112,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		CardLayout cl = (CardLayout) mazeScreens.getLayout();
 		cl.show(mazeScreens, "Paused");
 	}
-	
+
 	/**
 	 * Displays the help screen in the maze panel
 	 */
@@ -173,7 +173,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 1;
 		gbc.weighty = 1;
-		
+
 		// choose your spell label
 		gbc.gridx = 1;
 		gbc.gridy = 0;
@@ -184,22 +184,22 @@ public class GameScreen extends JPanel implements ActionListener {
 
 		gbc.weighty = 0;
 		gbc.gridy = 1;
-		
+
 		gbc.gridx = 0;
 		JLabel waterTitle = new JLabel("Water", SwingConstants.CENTER);
 		waterTitle.setForeground(Color.BLUE);
 		spellSelect.add(waterTitle, gbc);
-		
+
 		gbc.gridx = 1;
 		JLabel fireTitle = new JLabel("Fire", SwingConstants.CENTER);
 		fireTitle.setForeground(Color.RED);
 		spellSelect.add(fireTitle, gbc);
-		
+
 		gbc.gridx = 2;
 		JLabel airLabel = new JLabel("Air", SwingConstants.CENTER);
 		airLabel.setForeground(Color.WHITE);
 		spellSelect.add(airLabel, gbc);
-		
+
 		gbc.weighty = 1;
 		gbc.gridy = 2;
 		int scaledSize = mainWindow.getWidth() / 4;
@@ -208,7 +208,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbc.gridx = 0;
 		JPanel water = new JPanel();
 		water.setOpaque(false);
-		
+
 		JButton waterButton = new JButton(getScaledImageIcon(new ImageIcon("resources/element-icon-water.png"), scaledSize, scaledSize));
 		water.add(waterButton);
 		waterButton.setContentAreaFilled(false);
@@ -279,22 +279,22 @@ public class GameScreen extends JPanel implements ActionListener {
 		gbcStatus.weighty = 0.1;
 		gbcStatus.weightx = 1;
 		gbcStatus.gridheight = 1;
-		
+
 		JPanel statusBar = new JPanel(new BorderLayout());
 		statusBar.setBorder(new EmptyBorder(0, 40, 0, 40)); // set left and right padding
 		statusBar.setOpaque(false);
-		
-	
+
+
 		// status bar components
 		JPanel statusButtons = new JPanel(new GridBagLayout()); // vertically aligns when no gbc are defined
 		statusButtons.setOpaque(false);
 		statusBar.add(statusButtons, BorderLayout.WEST);
-		
+
 		JButton mainMenu = new JButton(new ImageIcon("resources/buttons/main_menu.png"));
 		mainMenu.setContentAreaFilled(false);
 		mainMenu.setMargin(new Insets(0, 0, 0 ,0));
 		mainMenu.setFocusable(false);
-		
+
 		AbstractAction menuPressed = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -305,7 +305,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		mainMenu.addActionListener(menuPressed);
 		// allow button to be activated by 'Esc' key as well as by clicking
 		mainMenu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-			.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "pressEsc");
+		.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "pressEsc");
 		mainMenu.getActionMap().put("pressEsc", menuPressed);
 		mainMenu.setFocusable(false);
 		statusButtons.add(mainMenu);
@@ -316,7 +316,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		pause.setContentAreaFilled(false);
 		pause.setMargin(new Insets(0, 0, 0 ,0));
 		pause.setFocusable(false);
-		
+
 		AbstractAction pausePressed = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -327,9 +327,9 @@ public class GameScreen extends JPanel implements ActionListener {
 						pause.getActionMap().clear();
 						pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).clear();
 						pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-							.put(KeyStroke.getKeyStroke(KeyEvent.VK_U,0), "pressPause");
+						.put(KeyStroke.getKeyStroke(KeyEvent.VK_U,0), "pressPause");
 						pause.getActionMap().put("pressPause", this);
-						
+
 						isPauseActive = true;
 						gamePause();
 						switchToMazePaused();
@@ -337,14 +337,14 @@ public class GameScreen extends JPanel implements ActionListener {
 				} else {
 					if (isPauseActive) {
 						pause.setIcon(new ImageIcon("resources/buttons/pause.png"));
-						
+
 						// allow user to press U to unpause
 						pause.getActionMap().clear();
 						pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).clear();
 						pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-							.put(KeyStroke.getKeyStroke(KeyEvent.VK_P,0), "pressPause");
+						.put(KeyStroke.getKeyStroke(KeyEvent.VK_P,0), "pressPause");
 						pause.getActionMap().put("pressPause", this);
-	
+
 						isPauseActive = false;
 						gameResume();
 						switchToMazePlaying();
@@ -354,10 +354,10 @@ public class GameScreen extends JPanel implements ActionListener {
 		};
 		pause.addActionListener(pausePressed);
 		pause.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_P,0), "pressPause");
-		
+		.put(KeyStroke.getKeyStroke(KeyEvent.VK_P,0), "pressPause");
+
 		pause.getActionMap().put("pressPause", pausePressed);
-		
+
 		statusButtons.add(pause);
 
 		// help button
@@ -365,7 +365,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		help.setContentAreaFilled(false);
 		help.setMargin(new Insets(0, 0, 0 ,0));
 		help.setFocusable(false);
-		
+
 		AbstractAction helpPressed = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -389,14 +389,14 @@ public class GameScreen extends JPanel implements ActionListener {
 		help.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_H,0), "pressH");
 		help.getActionMap().put("pressH", helpPressed);
 		statusButtons.add(help);
-		
+
 		// dynamically updated components
 		JPanel statusFields = new JPanel(new GridBagLayout());
 		statusFields.setOpaque(false);
-		
+
 		GridBagConstraints gbcFields = new GridBagConstraints();
 		gbcFields.ipadx = 40;
-		
+
 		objective = new JLabel();
 		objective.setForeground(Color.WHITE);
 		statusFields.add(objective, gbcFields);
@@ -416,15 +416,15 @@ public class GameScreen extends JPanel implements ActionListener {
 		level = new JLabel();
 		level.setForeground(Color.WHITE);
 		statusFields.add(level, gbcFields);
-		
+
 		statusBar.add(statusFields, BorderLayout.EAST);
-		
+
 		mazeUI.add(statusBar, gbcStatus);
 
 
 		// maze panel
 		GridBagConstraints gbcMaze = new GridBagConstraints();
-		
+
 		gbcMaze.fill = GridBagConstraints.NONE;
 		gbcMaze.weightx = 0;
 		gbcMaze.weighty = 0.9;
@@ -438,13 +438,13 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazePlaying = new MazePanel(currLevel, difficulty, spellType, playerKeys);
 		maze = mazePlaying.getMaze();
 		mazeScreens.add(mazePlaying, "Playing");
-		
+
 		// pack the panel
 		Dimension size = new Dimension(Maze.MAZE_CELL_SIZE * maze.getGrid()[0].length, Maze.MAZE_CELL_SIZE * maze.getGrid().length);
 		mazeScreens.setPreferredSize(size);
 
 		initHelp();
-		
+
 		JPanel mazePaused = new JPanel(new GridBagLayout());
 		mazePaused.setOpaque(false);
 		JLabel pausedLabel1 = new JLabel("Game paused. ", SwingUtilities.CENTER);
@@ -455,7 +455,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazePaused.add(pausedLabel2);
 		mazeScreens.add(mazePaused, "Paused");
 	}
-	
+
 	/**
 	 * Initializes the in-game help JPanel which contains information on
 	 * objective, controls, enemies, and score
@@ -465,43 +465,43 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeHelp.setBackground(Color.LIGHT_GRAY);
 		mazeHelp.setOpaque(false);
 		mazeScreens.add(mazeHelp, "Help");
-		
+
 		GridBagConstraints gbc = new GridBagConstraints();
-		
-	
+
+
 		//OBJECTIVE
 		gbc.gridy = 0;
 		JLabel o1 = new JLabel("OBJECTIVE");
 		o1.setForeground(Color.WHITE);
 		mazeHelp.add(o1, gbc);
-		
+
 		gbc.gridy = 1;
 		JLabel o3 = new JLabel("Retrieve the key and unlock the steel door the next level");
 		o3.setForeground(Color.WHITE);
 		mazeHelp.add(o3, gbc);
-		
+
 		gbc.gridy = 2;
 		JPanel key = new JPanel();
 		key.setOpaque(false);
 		key.add(new JLabel(new ImageIcon("resources/tiles/key_tile.gif")));
 		key.add(new JLabel(new ImageIcon("resources/tiles/leon_closed_door.png")));
 		mazeHelp.add(key, gbc);
-		
+
 		gbc.gridy = 3;
 		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
-		
+
 		//CONTROLS
 		gbc.ipady = 0;
 		gbc.gridy = 4;
 		JLabel c1 = new JLabel("CONTROLS (DEFAULT)");
 		c1.setForeground(Color.WHITE);
 		mazeHelp.add(c1, gbc);
-		
+
 		gbc.gridy = 5;
 		JLabel c2 = new JLabel("Use the arrow keys to move and the space bar to shoot a spell.");
 		c2.setForeground(Color.WHITE);
 		mazeHelp.add(c2, gbc);
-		
+
 		gbc.gridy = 6;
 		JPanel controls = new JPanel();
 		controls.setOpaque(false);
@@ -511,27 +511,27 @@ public class GameScreen extends JPanel implements ActionListener {
 		controls.add(new JLabel(new ImageIcon("resources/spells/fire2.png")));
 		controls.add(new JLabel(new ImageIcon("resources/spells/air2.png")));
 		mazeHelp.add(controls, gbc);
-		
+
 		gbc.gridy = 7;
 		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
-		
+
 		//ENEMIES
 		gbc.ipady = 0;
 		gbc.gridy = 8;
 		JLabel e1 = new JLabel("ENEMIES");
 		e1.setForeground(Color.WHITE);
 		mazeHelp.add(e1, gbc);
-		
+
 		gbc.gridy = 9;
 		JLabel e2 = new JLabel("Use spells to kill enemies and destroy portals to stop them from respawning");
 		e2.setForeground(Color.WHITE);
 		mazeHelp.add(e2, gbc);
-		
+
 		gbc.gridy = 10;
 		JLabel e3 = new JLabel("Beware! Dragons can fly over lava.");
 		e3.setForeground(Color.WHITE);
 		mazeHelp.add(e3, gbc);
-		
+
 		gbc.gridy = 11;
 		JPanel monsters = new JPanel();
 		monsters.setOpaque(false);
@@ -539,35 +539,35 @@ public class GameScreen extends JPanel implements ActionListener {
 		monsters.add(new JLabel(new ImageIcon("resources/dragon/dragonE4.png")));
 		monsters.add(new JLabel(new ImageIcon("resources/blue_portal_32.gif")));
 		mazeHelp.add(monsters, gbc);
-		
+
 		gbc.gridy = 12;
 		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
-		
+
 		gbc.gridy = 13;
 		JLabel d1 = new JLabel("SCORE");
 		d1.setForeground(Color.WHITE);
 		mazeHelp.add(d1,  gbc);
-		
+
 		gbc.gridy = 14; 
 		JLabel d2 = new JLabel("Improve your score by collecting gems scattered throughout the maze");
 		d2.setForeground(Color.WHITE);
 		mazeHelp.add(d2, gbc);
-		
+
 		gbc.gridy = 15;
 		JLabel d3 = new JLabel(new ImageIcon("resources/gemssmall.png"));
 		d3.setForeground(Color.WHITE);
 		mazeHelp.add(d3, gbc);
-		
+
 		gbc.gridy  = 16;
 		mazeHelp.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
-		
+
 		gbc.gridy = 17;
 		JLabel ret = new JLabel("Press 'H' to resume playing.");
 		ret.setForeground(Color.ORANGE);
 		mazeHelp.add(ret, gbc);
-		
+
 	}
-	
+
 	/**
 	 * Initializes the win screen JPanel which contains
 	 * results on the round performance
@@ -578,7 +578,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		add(mazeWon, "Won");
 
 		GridBagConstraints gbc = new GridBagConstraints();
-		
+
 		gbc.gridy = 0;
 		JPanel titlePanel = new JPanel();
 		titlePanel.setOpaque(false);
@@ -588,38 +588,38 @@ public class GameScreen extends JPanel implements ActionListener {
 		titleTextLabel.setForeground(new Color(153, 0, 0));
 		titlePanel.add(titleTextLabel);
 		mazeWon.add(titlePanel);
-		
+
 		int roundScore = (int) ((maze.getScore() + 200*(currLevel+difficulty)) * duration/60);
 		totalScore += roundScore;
-		
+
 		gbc.gridy = 1;
 		JLabel totalScoreLabel = new JLabel("Total score: ", SwingConstants.CENTER);
 		totalScoreLabel.setFont(new Font("Devanagari MT", Font.BOLD, 15));
 		totalScoreLabel.setForeground(Color.WHITE);
 		mazeWon.add(totalScoreLabel, gbc);
-		
+
 		gbc.gridy = 2;
 		JLabel totalScore = new JLabel(Integer.toString(this.totalScore), SwingConstants.CENTER);
 		totalScore.setFont(new Font("Devanagari MT", Font.BOLD, 30));
 		totalScore.setForeground(Color.YELLOW);
 		mazeWon.add(totalScore, gbc);
-		
+
 		gbc.gridy = 3;
 		JLabel roundScoreLabel = new JLabel("Round score: ", SwingConstants.CENTER);
 		roundScoreLabel.setFont(new Font("Devanagari MT", Font.BOLD, 15));
 		roundScoreLabel.setForeground(Color.WHITE);
 		mazeWon.add(roundScoreLabel, gbc);
-		
+
 		gbc.gridy = 4;
 		JLabel score = new JLabel(Integer.toString(roundScore), SwingConstants.CENTER);
 		score.setFont(new Font("Devanagari MT", Font.BOLD, 20));
 		score.setForeground(Color.YELLOW);
 		mazeWon.add(score, gbc);
-		
+
 		gbc.gridy = 5;
 		JPanel resultsPanel = new JPanel(new FlowLayout(SwingConstants.CENTER, 20, 20));
 		resultsPanel.setOpaque(false);
-		
+
 		ImageIcon clockImage = getScaledImageIcon(new ImageIcon("resources/clock.png"), -1, Maze.MAZE_CELL_SIZE);
 		String timeTakenString = "Time taken: " + (int)duration + "s";
 		if (duration >= 60) {
@@ -630,7 +630,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		timeTaken.setFont(new Font("Devanagari MT", Font.BOLD, 15));
 		timeTaken.setForeground(Color.WHITE);
 		resultsPanel.add(timeTaken);
-		
+
 		ImageIcon monstersImage = getScaledImageIcon(new ImageIcon("resources/monstersKilled.png"), -1, Maze.MAZE_CELL_SIZE);
 		JLabel monstersSlain = new JLabel("Monsters slain: " + maze.getNumMonstersKilled(), 
 				monstersImage, SwingConstants.CENTER);
@@ -638,8 +638,8 @@ public class GameScreen extends JPanel implements ActionListener {
 		monstersSlain.setFont(new Font("Devanagari MT", Font.BOLD, 15));
 		monstersSlain.setForeground(Color.WHITE);
 		resultsPanel.add(monstersSlain, gbc);
-		
-		
+
+
 		ImageIcon gemsImage = getScaledImageIcon(
 				new ImageIcon("resources/gems/gems-6.png"), -1, Maze.MAZE_CELL_SIZE);
 		JLabel gemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), 
@@ -648,13 +648,13 @@ public class GameScreen extends JPanel implements ActionListener {
 		gemsCollected.setFont(new Font("Devanagari MT", Font.BOLD, 15));
 		gemsCollected.setForeground(Color.WHITE);
 		resultsPanel.add(gemsCollected, gbc);
-	
+
 		mazeWon.add(resultsPanel, gbc);
-		
+
 		gbc.gridy = 6;
 		JPanel mazeWonButtons = new JPanel();
 		mazeWonButtons.setOpaque(false);
-		
+
 		JButton nextLevelButton = new JButton(new ImageIcon("resources/buttons/next_level.png"));
 		nextLevelButton.setContentAreaFilled(false);
 		nextLevelButton.setMargin(new Insets(0, 0, 0, 0));
@@ -689,41 +689,41 @@ public class GameScreen extends JPanel implements ActionListener {
 	 */
 	private void initMazeLost() {
 		JPanel mazeLost = new JPanel(new GridBagLayout());
-		
+
 		mazeLost.setOpaque(false);
 		add(mazeLost, "Lost");
-		
+
 		GridBagConstraints gbc = new GridBagConstraints();
 
-	    gbc.weighty = 0;
-	    gbc.weightx = 1;
-	    
+		gbc.weighty = 0;
+		gbc.weightx = 1;
+
 		gbc.gridy = 0;
-	    gbc.gridx = 0;
-	    
-	    JPanel titlePanel = new JPanel();
-	    titlePanel.setOpaque(false);
-	    titlePanel.add(new JLabel(new ImageIcon("resources/losescreen.png")));
+		gbc.gridx = 0;
+
+		JPanel titlePanel = new JPanel();
+		titlePanel.setOpaque(false);
+		titlePanel.add(new JLabel(new ImageIcon("resources/losescreen.png")));
 		JLabel titleTextLabel = new JLabel("" + currLevel, SwingConstants.CENTER);
 		titleTextLabel.setFont(new Font("Devanagari MT", Font.PLAIN, 90));
 		titleTextLabel.setForeground(new Color(153, 0, 0));
 		titlePanel.add(titleTextLabel);
 		mazeLost.add(titlePanel);
-		
+
 		gbc.gridy = 2;
 		gbc.ipady = 5; // gaps between lines
 		JLabel numGemsCollected = new JLabel("Final score: ", SwingConstants.CENTER);
 		numGemsCollected.setFont(new Font("Devanagari MT", Font.BOLD, 15));
 		numGemsCollected.setForeground(Color.WHITE);
 		mazeLost.add(numGemsCollected, gbc);
-		
+
 		gbc.gridy = 3;
 		totalScore += maze.getScore();
 		JLabel score = new JLabel("" + totalScore, SwingConstants.CENTER);
 		score.setFont(new Font("Devanagari MT", Font.BOLD, 40));
 		score.setForeground(Color.YELLOW);
 		mazeLost.add(score, gbc);
-		
+
 		gbc.gridy = 4;
 		JPanel resultsPanel = new JPanel(new FlowLayout(SwingConstants.CENTER, 20, 20));
 		resultsPanel.setOpaque(false);
@@ -749,7 +749,7 @@ public class GameScreen extends JPanel implements ActionListener {
 		monstersSlain.setFont(new Font("Devanagari MT", Font.BOLD, 15));
 		monstersSlain.setForeground(Color.WHITE);
 		resultsPanel.add(monstersSlain, gbc);
-		
+
 		ImageIcon gemsImage = getScaledImageIcon(new ImageIcon("resources/gems/gems-6.png"), -1, Maze.MAZE_CELL_SIZE);
 		JLabel gemsCollected = new JLabel("Gems collected: " + maze.getNumGemsCollected(), 
 				gemsImage, SwingConstants.LEFT);
@@ -757,14 +757,14 @@ public class GameScreen extends JPanel implements ActionListener {
 		gemsCollected.setFont(new Font("Devanagari MT", Font.BOLD, 15));
 		gemsCollected.setForeground(Color.WHITE);
 		resultsPanel.add(gemsCollected, gbc);
-	
+
 		mazeLost.add(resultsPanel, gbc);
-		
+
 		gbc.gridy = 6;
 		gbc.ipady = 0;
 		JPanel mazeLostButtons = new JPanel();
 		mazeLostButtons.setOpaque(false);
-		
+
 		JButton startButton = new JButton(new ImageIcon("resources/buttons/start_again.png"));
 		startButton.setContentAreaFilled(false);
 		startButton.setMargin(new Insets(0, 0, 0, 0));
@@ -775,7 +775,7 @@ public class GameScreen extends JPanel implements ActionListener {
 			}
 		});
 		mazeLostButtons.add(startButton);
-		
+
 		JButton menuButton = new JButton(new ImageIcon("resources/buttons/main_menu.png"));
 		menuButton.setContentAreaFilled(false);
 		menuButton.setMargin(new Insets(0, 0, 0, 0));
@@ -786,7 +786,7 @@ public class GameScreen extends JPanel implements ActionListener {
 			}
 		});
 		mazeLostButtons.add(menuButton);
-		
+
 		mazeLost.add(mazeLostButtons, gbc);
 	}
 
@@ -800,14 +800,14 @@ public class GameScreen extends JPanel implements ActionListener {
 	private ImageIcon getScaledImageIcon(ImageIcon img, int width, int height) {
 		return new ImageIcon(img.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
-	
-	// container JFrame
-	private MainWindow mainWindow;
 
-	// constants for the spells
+	// public constants for the spells
 	public static final int WATER = 1;
 	public static final int FIRE = 2;
 	public static final int AIR = 3;
+
+	// container JFrame
+	private MainWindow mainWindow;
 
 	// screens
 	private JPanel mazeScreens; // screen controller for maze panel

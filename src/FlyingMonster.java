@@ -43,6 +43,9 @@ public class FlyingMonster extends Monster implements ActionListener {
 		changeDirectionTimer.start();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Image getImage() {
 		Image[] image = image_W;
@@ -60,6 +63,9 @@ public class FlyingMonster extends Monster implements ActionListener {
 		return image[spriteCounter];
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void randomiseDirection() {
 		Double rand = Math.random();
@@ -80,6 +86,7 @@ public class FlyingMonster extends Monster implements ActionListener {
 	}
 	
 	/**
+	 * {@inheritDoc}
 	 * @return true
 	 */
 	@Override
@@ -87,6 +94,9 @@ public class FlyingMonster extends Monster implements ActionListener {
 		return true;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), scaledHeight, scaledHeight);

@@ -62,37 +62,50 @@ public class Player implements MovableSprite, ActionListener {
 		animationTimer.start();
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		spriteCounter = (spriteCounter + 1) % 6;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getX() {
 		return (int)x;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getY() {
 		return (int)y;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getDX() {
 		return (int) (dx * (double)Maze.MAZE_CELL_SIZE/16);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getDY() {
 		return (int) (dy * (double)Maze.MAZE_CELL_SIZE/16);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public BufferedImage getImage() {
 		BufferedImage[] image = null;
@@ -129,15 +142,30 @@ public class Player implements MovableSprite, ActionListener {
 		return image[spriteCounter];
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), scaledHeight, scaledHeight);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void manualMove(int dx, int dy) {
 		x += dx;
 		y += dy;
+	}
+	
+	/**
+	 * Periodically updates the Player image to create animation
+	 * @param e The ActionEvent triggered by the animation timer
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		spriteCounter = (spriteCounter + 1) % 6;
 	}
 	
 	/**

@@ -12,7 +12,7 @@ public class Portal {
 	 * Creates a Portal given the coordinates of the Portal and the LinkedList of exiting Maze Monsters to add to
 	 * @param x the x coordinate the Portal
 	 * @param y the y coordinate of the Portal
-	 * @param the LinkedList of existing Maze Monsters to add to
+	 * @param monsters the LinkedList of existing Maze Monsters to add to
 	 */
 	public Portal(int x, int y, LinkedList<Monster> monsters) {
 		this.x = x;

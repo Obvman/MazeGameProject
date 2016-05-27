@@ -3,6 +3,6 @@
 rm -rf ./classFiles
 mkdir classFiles
 
-javac -Xlint -d ./classFiles ./src/*.java
+javac -d ./classFiles ./src/*.java
 
-echo "done"
+echo "done compiling"

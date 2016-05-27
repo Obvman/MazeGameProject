@@ -16,21 +16,21 @@ public class Maze {
 	 */
 	public Maze(int level, int difficulty, int spellType, int[] keys) {
 		// set maze height and width according to level
-		MAZE_HEIGHT = 21 - 4 * (level < 3 ? 3 - level : 0);
-		MAZE_WIDTH = 37 - 8 * (level < 3 ? 3 - level : 0);
+		mazeHeight = 21 - 4 * (level < 3 ? 3 - level : 0);
+		mazeWidth = 37 - 8 * (level < 3 ? 3 - level : 0);
 
 		// generate maze
 		mazeGenerator = new MazeGeneratorDFS();
-		mazeGrid = mazeGenerator.generateMaze(MAZE_HEIGHT, MAZE_WIDTH);
+		mazeGrid = mazeGenerator.generateMaze(mazeHeight, mazeWidth);
 
 		// spawn player
 		player = new Player(spellType, keys);
 
 		// place key
 		while (true) {
-			int keyX = (int) (Math.random() * (MAZE_WIDTH - 1));
-			int keyY = (int) (Math.random() * (MAZE_HEIGHT - 1));
-			if (keyX > 0.33 * MAZE_WIDTH && keyY > 0.33 * MAZE_HEIGHT && mazeGrid[keyY][keyX] == PATH_TILE) {
+			int keyX = (int) (Math.random() * (mazeWidth - 1));
+			int keyY = (int) (Math.random() * (mazeHeight - 1));
+			if (keyX > 0.33 * mazeWidth && keyY > 0.33 * mazeHeight && mazeGrid[keyY][keyX] == PATH_TILE) {
 				mazeGrid[keyY][keyX] = KEY_TILE;
 				break;
 			}
@@ -38,9 +38,9 @@ public class Maze {
 
 		// place gems
 		int numGemsPlaced = 0;
-		while (numGemsPlaced < (MAZE_HEIGHT * MAZE_WIDTH) / 50) {
-			int gemX = (int) (Math.random() * (MAZE_WIDTH - 1));
-			int gemY = (int) (Math.random() * (MAZE_HEIGHT - 1));
+		while (numGemsPlaced < (mazeHeight * mazeWidth) / 50) {
+			int gemX = (int) (Math.random() * (mazeWidth - 1));
+			int gemY = (int) (Math.random() * (mazeHeight - 1));
 			if (mazeGrid[gemY][gemX] == PATH_TILE) {
 				mazeGrid[gemY][gemX] = GEM_TILE;
 				numGemsPlaced++;
@@ -50,14 +50,14 @@ public class Maze {
 		// place portals
 		monsters = new LinkedList<Monster>();
 		portals = new LinkedList<Portal>();
-		for (int i = 0; i < (MAZE_HEIGHT * MAZE_WIDTH) * difficulty / 100; i++) {
+		for (int i = 0; i < (mazeHeight * mazeWidth) * difficulty / 100; i++) {
 			boolean placed = false;
 			while (!placed) {
-				int portalX = (int) (Math.random() * (MAZE_WIDTH - 1));
-				int portalY = (int) (Math.random() * (MAZE_HEIGHT - 1));
+				int portalX = (int) (Math.random() * (mazeWidth - 1));
+				int portalY = (int) (Math.random() * (mazeHeight - 1));
 
 				double distance = Math.sqrt(portalX*portalX + portalY*portalY);
-				if (distance > 0.33 * MAZE_WIDTH && mazeGrid[portalY][portalX] == PATH_TILE) {
+				if (distance > 0.33 * mazeWidth && mazeGrid[portalY][portalX] == PATH_TILE) {
 					portals.add(new Portal(portalX * MAZE_CELL_SIZE, portalY * MAZE_CELL_SIZE, monsters));
 					placed = true;
 				}
@@ -65,7 +65,7 @@ public class Maze {
 		}
 
 		// set max monsters
-		maxMonsters = (MAZE_HEIGHT * MAZE_WIDTH) * difficulty / 50 ;
+		maxMonsters = (mazeHeight * mazeWidth) * difficulty / 50 ;
 
 		// spawn monsters at the start of game
 		activatePortals();
@@ -142,7 +142,7 @@ public class Maze {
 	 * @return true if the Player has collected the key and is at the exit tile
 	 */
 	public boolean isGameWon() {
-		return keyAcquired && player.getX()/MAZE_CELL_SIZE == MAZE_WIDTH - 1 && player.getY()/MAZE_CELL_SIZE == MAZE_HEIGHT - 1;
+		return keyAcquired && player.getX()/MAZE_CELL_SIZE == mazeWidth - 1 && player.getY()/MAZE_CELL_SIZE == mazeHeight - 1;
 	}
 
 	/**
@@ -245,7 +245,7 @@ public class Maze {
 			int monsterCellY = m.getY() / MAZE_CELL_SIZE;
 
 			int distanceToPlayer = (int) Math.sqrt(Math.pow(monsterCellX-playerCellX, 2) + Math.pow(monsterCellY-playerCellY, 2));
-			if ((distanceToPlayer > MAZE_WIDTH/3) || m.canFly()) {
+			if ((distanceToPlayer > mazeWidth/3) || m.canFly()) {
 				// random movement
 
 				if (isLegalMove(m, m.getDX(), m.getDY()) && !(m.getDX() == 0 && m.getDY() == 0)) {
@@ -313,7 +313,7 @@ public class Maze {
 	 * @return true if the coordinate is within the maze grid
 	 */
 	private boolean withinMaze(int x, int y) {
-		return x >= 0 && y >= 0 && x < MAZE_WIDTH && y < MAZE_HEIGHT;
+		return x >= 0 && y >= 0 && x < mazeWidth && y < mazeHeight;
 	}
 
 	/**
@@ -328,8 +328,8 @@ public class Maze {
 		Rectangle spriteRect = sprite.getBounds();
 		spriteRect.translate(dx, dy);
 
-		if (spriteRect.getX() < 0 || spriteRect.getX() >= MAZE_WIDTH * MAZE_CELL_SIZE - spriteRect.getWidth()
-				|| spriteRect.getY() < 0 || spriteRect.getY() >= MAZE_HEIGHT * MAZE_CELL_SIZE - spriteRect.getHeight() - 1) {
+		if (spriteRect.getX() < 0 || spriteRect.getX() >= mazeWidth * MAZE_CELL_SIZE - spriteRect.getWidth()
+				|| spriteRect.getY() < 0 || spriteRect.getY() >= mazeHeight * MAZE_CELL_SIZE - spriteRect.getHeight() - 1) {
 			return false;
 		}
 
@@ -337,8 +337,8 @@ public class Maze {
 			return true;
 		}
 
-		for (int i = 0; i < MAZE_HEIGHT; i++) {
-			for (int j = 0; j < MAZE_WIDTH; j++) {
+		for (int i = 0; i < mazeHeight; i++) {
+			for (int j = 0; j < mazeWidth; j++) {
 				if (mazeGrid[i][j] == WALL_TILE) {
 					// wall 
 					Rectangle wallRect = new Rectangle(j * MAZE_CELL_SIZE, i * MAZE_CELL_SIZE, MAZE_CELL_SIZE, MAZE_CELL_SIZE);
@@ -363,11 +363,11 @@ public class Maze {
 	 * cell is in the solution path from the start to the goal coordinate
 	 */
 	public boolean[][] solveMaze(int startX, int startY, int goalX, int goalY) {
-		boolean[][] visited = new boolean[MAZE_HEIGHT][MAZE_WIDTH];
-		boolean[][] solution = new boolean[MAZE_HEIGHT][MAZE_WIDTH];
+		boolean[][] visited = new boolean[mazeHeight][mazeWidth];
+		boolean[][] solution = new boolean[mazeHeight][mazeWidth];
 
-		for (int row = 0; row < MAZE_HEIGHT; row++) {
-			for (int col = 0; col < MAZE_WIDTH; col++) {
+		for (int row = 0; row < mazeHeight; row++) {
+			for (int col = 0; col < mazeWidth; col++) {
 				visited[row][col] = false;
 				solution[row][col] = false;
 			}
@@ -411,7 +411,7 @@ public class Maze {
 			}
 
 		// recursively check right cell
-		if (x != MAZE_WIDTH - 1) // Checks if not on right edge
+		if (x != mazeWidth - 1) // Checks if not on right edge
 			if (recursiveSolve(x+1, y, goalX, goalY, visited, solution)) {
 				solution[y][x] = true;
 				return true;
@@ -425,7 +425,7 @@ public class Maze {
 			}
 
 		// recursively check below cell
-		if (y != MAZE_HEIGHT - 1) 
+		if (y != mazeHeight - 1) 
 			if (recursiveSolve(x, y+1, goalX, goalY, visited, solution)) { 
 				solution[y][x] = true;
 				return true;
@@ -435,7 +435,7 @@ public class Maze {
 		return false;
 	}
 
-	// maze constants
+	// public constants for the maze
 	public static final int MAZE_CELL_SIZE = 32;
 	public static final int PATH_TILE = 0;
 	public static final int WALL_TILE = 1;
@@ -446,8 +446,8 @@ public class Maze {
 	public static final int PORTAL_TILE = 6;
 
 	// game configuration
-	private int MAZE_HEIGHT;
-	private int MAZE_WIDTH;
+	private int mazeHeight;
+	private int mazeWidth;
 	private int maxMonsters;
 
 	// game elements
