@@ -1,15 +1,39 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
 public class GameScreen extends JPanel implements ActionListener {
 
 	/**
-	 * Creates a GameScreen starting at level 1 and the given difficulty
+	 * Creates a GameScreen initialized to level 1 and a given difficulty
 	 * @param mainWindow The JFrame containing the GameScreen
 	 * @param difficulty The difficulty level of the game
+	 * @param keys The key bindings corresponding the Player's controls
 	 */
 	public GameScreen(MainWindow mainWindow, int difficulty, int[] keys) {
 		this.mainWindow = mainWindow;
@@ -82,7 +106,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Displays a pause screen over the maze panel
+	 * Displays a pause screen in the maze panel
 	 */
 	public void switchToMazePaused() {
 		CardLayout cl = (CardLayout) mazeScreens.getLayout();
@@ -90,7 +114,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 	
 	/**
-	 * Displays the help screen over the maze panel
+	 * Displays the help screen in the maze panel
 	 */
 	public void switchToMazeHelp() {
 		CardLayout cl = (CardLayout) mazeScreens.getLayout();
@@ -98,7 +122,10 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Refreshes the state of the game 
+	 * Updates the state of the game by checking whether the game
+	 * has been won or lost to switch to the appropriate panel, 
+	 * otherwise refreshes the status bar of the game
+	 * (objective, monsters slain, gems collected, time elapsed, level)
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -135,7 +162,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Initialises elements of the spell select screen
+	 * Initializes the spell select JPanel
 	 */
 	private void initSpellSelect() {
 		JPanel spellSelect = new JPanel(new GridBagLayout());
@@ -239,7 +266,7 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Initialises elements of the maze UI (status bar, maze panel)
+	 * Initializes the maze UI JPanel containing the status bar JPanel and maze JPanel
 	 */
 	private void initMazeUI() {
 		JPanel mazeUI = new JPanel(new GridBagLayout());
@@ -430,7 +457,8 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 	
 	/**
-	 * Initialises elements of the help panel 
+	 * Initializes the in-game help JPanel which contains information on
+	 * objective, controls, enemies, and score
 	 */
 	private void initHelp() {
 		JPanel mazeHelp = new JPanel(new GridBagLayout());
@@ -541,7 +569,8 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 	
 	/**
-	 * Initialises elements of the win screen
+	 * Initializes the win screen JPanel which contains
+	 * results on the round performance
 	 */
 	private void initMazeWon() {
 		JPanel mazeWon = new JPanel(new GridBagLayout());
@@ -655,7 +684,8 @@ public class GameScreen extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Initialises elements of the lose screen
+	 * Initializes lose screen JPanel which contains 
+	 * overall results for the game instance
 	 */
 	private void initMazeLost() {
 		JPanel mazeLost = new JPanel(new GridBagLayout());
@@ -765,15 +795,16 @@ public class GameScreen extends JPanel implements ActionListener {
 	 * @param img the ImageIcon to be scaled
 	 * @param width the width of the new ImageIcon
 	 * @param height the height of the new ImageIcon
-	 * @return
+	 * @return the scaled ImageIcon
 	 */
 	private ImageIcon getScaledImageIcon(ImageIcon img, int width, int height) {
 		return new ImageIcon(img.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
 	
+	// container JFrame
 	private MainWindow mainWindow;
 
-	// constants for this class
+	// constants for the spells
 	public static final int WATER = 1;
 	public static final int FIRE = 2;
 	public static final int AIR = 3;

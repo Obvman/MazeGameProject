@@ -1,8 +1,12 @@
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 
 public class TileGenerator {
 
+	/**
+	 * Creates a TileGenerator object and initializes the Image for all tiles and gems
+	 */
 	public TileGenerator() {
 		int cellSize = Maze.MAZE_CELL_SIZE;
 		
@@ -23,52 +27,80 @@ public class TileGenerator {
 		}
 	}
 
+	/**
+	 * @return the Image for a path tile
+	 */
 	public Image getPathTile() {
 		return pathTile;
 	}
 
+	/**
+	 * @return the Image for a wall tile
+	 */
 	public Image getWallTile() {
 		return wallTile;
 	}
 
+	/**
+	 * @return the Image for the start tile
+	 */
 	public Image getStartTile() {
 		return startTile;
 	}
 
+	/**
+	 * @return the Image for the end tile
+	 */
 	public Image getEndTile() {
 		return endTile;
 	}
 
+	/**
+	 * @return the Image for the key tile
+	 */
 	public Image getKeyTile() {
 		return keyTile;
 	}
 	
+	/**
+	 * @return the Image for the north part of a wall tile
+	 */
 	public Image getWallTileN() {
 		return wallTileN;
 	}
 	
+	/**
+	 * @return the Image for the west part of a wall tile
+	 */
 	public Image getWallTileW() {
 		return wallTileW;
 	}
 	
+	/**
+	 * @return the Image for the south part of a wall tile
+	 */
 	public Image getWallTileS() {
 		return wallTileS;
 	}
 	
+	/**
+	 * @return the Image for the east part of a wall tile
+	 */
 	public Image getWallTileE() {
 		return wallTileE;
 	}
 	
 	/**
-	 * Returns a random gem tile image based on the coordinates of the tile
-	 * @param x
-	 * @param y
-	 * @return
+	 * Generates an Image for a gem based on its coordinates
+	 * @param x the x coordinate of the gem
+	 * @param y the y coordinate of the gem
+	 * @return the Image for the gem based on its coordinates
 	 */
 	public Image getGemImage(int x, int y) {
 		return gemImages[(x*31+y*67) % gemImages.length];
 	}
 	
+	// tiles
 	private Image pathTile;
 	private Image wallTile;
 	private Image startTile;
@@ -81,6 +113,5 @@ public class TileGenerator {
 	private Image wallTileS;
 	private Image wallTileE;
 	
-	// for gems
 	private Image[] gemImages;
 }

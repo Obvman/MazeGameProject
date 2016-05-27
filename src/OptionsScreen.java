@@ -1,20 +1,37 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class OptionsScreen extends JPanel {
 
 	/**
-	 * Constructor.
-	 * Creates layout for sub-components. Sets default values for movement and shoot
-	 * keys. Initializes collection of valid keys that can be rebound by user.
-	 * Creates resolution picker, controls sub-menu, difficulty picker and return to
-	 * menu button.
-	 * @param mainWindow The MainWindow this screen belongs to
+	 * Creates a OptionsScreen containing a resolution picker, controls remapper, difficulty picker and return button.
+	 * @param mainWindow The JFrame containing the OptionsScreen
 	 */
 	public OptionsScreen (MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
@@ -33,7 +50,7 @@ public class OptionsScreen extends JPanel {
 		initDifficultyPicker();
 		initBackButton();
 		
-		// initialise array of valid keys for remapping
+		// initialize array of valid keys for remapping
 		Integer[] validKeysTmp = {KeyEvent.VK_Q, KeyEvent.VK_W, KeyEvent.VK_E,
 				KeyEvent.VK_R, KeyEvent.VK_T, KeyEvent.VK_Y,
 				KeyEvent.VK_I, KeyEvent.VK_O, KeyEvent.VK_A,
@@ -48,7 +65,7 @@ public class OptionsScreen extends JPanel {
 				KeyEvent.VK_PERIOD, KeyEvent.VK_SLASH,
 				KeyEvent.VK_MINUS, KeyEvent.VK_PLUS};
 		
-		// stick mappings into ArrayList for better adding/removing
+		// store valid keys as a field
 		this.validKeyList = new ArrayList<Integer>(validKeysTmp.length);
 		for (int i = 0; i < validKeysTmp.length; ++i) {
 			validKeyList.add(validKeysTmp[i]);
@@ -56,8 +73,7 @@ public class OptionsScreen extends JPanel {
 	}
 
 	/**
-	 * 
-	 * @return current resolution the window is displayed at.
+	 * @return the current Dimension representing the resolution of the window
 	 */
 	public Dimension getResolution() {
 		return resolution;
@@ -65,7 +81,7 @@ public class OptionsScreen extends JPanel {
 
 	/**
 	 * 
-	 * @return currently selected difficulty setting
+	 * @return the current difficulty level of the game
 	 */
 	public int getDifficulty() {
 		return difficulty;
@@ -73,7 +89,7 @@ public class OptionsScreen extends JPanel {
 	
 	/**
 	 * 
-	 * @return array of keycodes for currently selected control scheme
+	 * @return int array of keycodes for currently selected control scheme
 	 */
 	public int[] getKeyArray() {
 		int[] keys = {moveRightKey, moveLeftKey, moveUpKey, moveDownKey, shootKey};
@@ -81,7 +97,7 @@ public class OptionsScreen extends JPanel {
 	}
 
 	/**
-	 * paints background image from file to cover window size.
+	 * Paints a background image for the OptionsScreen
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -91,11 +107,8 @@ public class OptionsScreen extends JPanel {
 	}
 
 	/**
-	 * creates resolution drop-down menu. Doesn't display resolutions larger than
-	 * the user's display resolution. If the user's resolution is lower than 
-	 * all the default options, a new resolution is created that is small enough. 
-	 * This resolution is a backup and is not guaranteed to display all components
-	 * properly.
+	 * Initializes a resolution drop-down menu. The menu contains standard resolutions
+	 * supported by the user's native screen resolution.
 	 */
 	private void initResolutionPicker() {
 		JPanel resolutionPicker = new JPanel(new GridBagLayout());
@@ -117,12 +130,12 @@ public class OptionsScreen extends JPanel {
 		gbc.gridy = 1;
 		Vector<String> resolutions = new Vector<String>();
 
-		// add standard resolutions (note: game requires MINIMUM ~700 height and ~1400 width)
+		// add standard resolutions
 		resolutions.add("1920x1080 	(16:9)");
 		resolutions.add("1680x1050 	(16:10)");
 		resolutions.add("1600x900  	(16:9)");
 		resolutions.add("1440x900  	(16:10)");
-		resolutions.add("1360x768 	(16:9)");
+		resolutions.add("1366x768 	(16:9)");
 
 		Dimension nativeScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		int nativeWidth = (int)(nativeScreen.getWidth() * 0.95);
@@ -166,10 +179,8 @@ public class OptionsScreen extends JPanel {
 	}
 
 	/**
-	 * list of buttons that bring up a dialog when clicked.
-	 * dialog prompts user to press the key they want to re-bind to then disappears
-	 * If a key is selected that does not belong to the validKeyList, the dialog
-	 * message informs the user of invalid input and prompts a different key.
+	 * Initialises a controls remapper where users can remap standard keys used in the game
+	 * (move up, move left, move down, move right, shoot spell). 
 	 */
 	private void initControlSelector() {
 		JPanel controlPicker = new JPanel(new GridBagLayout());
@@ -279,12 +290,10 @@ public class OptionsScreen extends JPanel {
 				keyRemapDialog.setVisible(true);
 			}
 		};
-		
 
 		gbc.ipady = 5;
 		gbc.gridy = 0;
 		controlPicker.add(controlLabel, gbc);
-		
 		
 		gbc.gridy = 1;
 		JButton upRemap = new JButton("Move Up ("+ KeyEvent.getKeyText(moveUpKey)+")", new ImageIcon("resources/buttons/plain_small.png"));
@@ -333,8 +342,8 @@ public class OptionsScreen extends JPanel {
 	}
 
 	/**
-	 * Creates 3 radio buttons that can determine the maze difficulty when selected
-	 * Difficulties are easy, medium and hard
+	 * Initializes a button group containing 3 radio buttons to choose the difficulty of the maze game
+	 * (easy, medium, hard)
 	 */
 	private void initDifficultyPicker() {
 		JPanel difficultyPicker = new JPanel(new GridBagLayout());
@@ -413,7 +422,7 @@ public class OptionsScreen extends JPanel {
 	}
 
 	/**
-	 * Creates button to return to main menu
+	 * Initializes a button to save the current options and return to the main menu
 	 */
 	private void initBackButton() {
 		JPanel backToMenu = new JPanel();
@@ -434,14 +443,13 @@ public class OptionsScreen extends JPanel {
 			}
 		});
 		backToMenu.add(backButton);
-
-		
 	}
 
 	private MainWindow mainWindow;
 
 	private Dimension resolution;
 	
+	// key bindings
 	private ArrayList<Integer> validKeyList; // contains selected valid keys and currently bound keys
 	private int moveRightKey;
 	private int moveLeftKey;
@@ -449,5 +457,5 @@ public class OptionsScreen extends JPanel {
 	private int moveDownKey;
 	private int shootKey;
 	
-	private int difficulty; // 1, 2, or 3
+	private int difficulty;
 }

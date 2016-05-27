@@ -1,15 +1,25 @@
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class TutorialScreen extends JPanel {
 
 	/**
-	 * Constructor.
-	 * Calls the intialization function for the window.
+	 * Creates a TutorialScreen and initializes the information and graphics on how to play the game
 	 * @param mainWindow The MainWindow this screen belongs to
 	 */
 	public TutorialScreen(MainWindow mainWindow) {
@@ -21,7 +31,7 @@ public class TutorialScreen extends JPanel {
 	}
 
 	/**
-	 * Paints the background image to the size of the screen
+	 * Paints a background image for the TutorialScreen
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -31,12 +41,8 @@ public class TutorialScreen extends JPanel {
 	}
 
 	/**
-	 * Initialises the tutorial screen.
-	 * Creates JPanel which contains all screen components.
-	 * Initializes the grid bag layout which positions the
-	 * screen elements. Adds labels which detail how to play
-	 * the game.
-	 * Displays the screen.
+	 * Initializes the TutorialScreen with text and graphics on
+	 * how to play the game as well as a back to main menu button.
 	 */
 	private void initTutorial() {
 		GridBagConstraints gbc = new GridBagConstraints();

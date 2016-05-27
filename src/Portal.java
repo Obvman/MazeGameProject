@@ -4,17 +4,15 @@ import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
 /**
- * Class for Game portals, which are scattered across the maze screen and
- * 	   spawn monsters and flying monsters at certain intervals. Portals can
- *     be killed to stop them from releasing monsters.
+ * The Portal class is responsible for spawning monsters and flying monsters in the maze game 
  */
 public class Portal {
 	
 	/**
-	 * Constructor for Portal - makes a new Portal with coordinates x and y and list monsters.
-	 * @param x X coordinate for portal
-	 * @param y Y coordinate for portal
-	 * @param monsters
+	 * Creates a Portal given the coordinates of the Portal and the LinkedList of exiting Maze Monsters to add to
+	 * @param x the x coordinate the Portal
+	 * @param y the y coordinate of the Portal
+	 * @param the LinkedList of existing Maze Monsters to add to
 	 */
 	public Portal(int x, int y, LinkedList<Monster> monsters) {
 		this.x = x;
@@ -25,32 +23,28 @@ public class Portal {
 	}
 	
 	/**
-	 * Get X coordinate for Portal.
-	 * @return X coordinate
+	 * @return the x coordinate of the Portal
 	 */
 	public int getX() {
 		return this.x;
 	}
 	
 	/**
-	 * Get Y coordinate for Portal.
-	 * @return Y coordinate
+	 * @return the y coordinate of the Portal
 	 */
 	public int getY() {
 		return this.y;
 	}
 	
 	/**
-	 * Gets image sprite for the Portal.
-	 * @return image
+	 * @return the Image representing a Portal
 	 */
 	public Image getImage() {
 		return this.image;
 	}
 	
 	/**
-	 * Spawns a new monster from the portal. Randomised 50/50 chance of the spawned
-	 *     monster to be a normal monster, or a flying monster.
+	 * Spawns a Monster or FlyingMonster (chosen randomly) at the same position as the portal
 	 */
 	public void spawnMonster() {
 		Monster m = Math.random() > 0.5 ? new Monster() : new FlyingMonster();
@@ -59,9 +53,9 @@ public class Portal {
 	}
 	
 	/**
-	 * Sets the position of the portal given x and y coordinates.
-	 * @param x X coordinate
-	 * @param y Y coordinate
+	 * Sets the position of the Portal
+	 * @param x the new x coordinate of the Portal
+	 * @param y the new y coordinate of the Portal
 	 */
 	public void setPosition(int x, int y) {
 		this.x = x;
@@ -69,8 +63,7 @@ public class Portal {
 	}
 
 	/**
-	 * Gets rectangle for bounds of the Portal location.
-	 * @return rectangle
+	 * @return the Rectangle representing the bounds of the Portal
 	 */
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE);

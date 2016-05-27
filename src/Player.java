@@ -1,5 +1,9 @@
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -7,18 +11,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.Timer;
 
-/**
- * Class for a player in the game - A movable sprite which is controlled 
- * 	by the user, and navigates the maze.
- */
 public class Player implements MovableSprite, ActionListener {
 	/**
-	 * Constructor for Player - makes a new player given the chosen spell type,
-	 *    and the current Key configuration.
-	 * @param spellType Chosen spell
-	 * @param keys Key configuration
+	 * Creates a Player with a given spell type and a controls scheme to control the Player
+	 * @param spellType the spell type of the player 
+	 * @param keys The key bindings corresponding the Player's controls
 	 */
 	public Player(int spellType, int[] keys)  {
 		spells = new LinkedList<Spell>();
@@ -32,10 +31,8 @@ public class Player implements MovableSprite, ActionListener {
 		moveDownKey = keys[3];
 		shootKey = keys[4];
 
-		// sprites
+		// load images
 		scaledHeight = (3 * Maze.MAZE_CELL_SIZE) / 4;
-		
-		// Set images for each facing direction of the player
 		image_N = new BufferedImage[6];
 		image_NE = new BufferedImage[6];
 		image_E = new BufferedImage[6];
@@ -44,8 +41,6 @@ public class Player implements MovableSprite, ActionListener {
 		image_SW = new BufferedImage[6];
 		image_W = new BufferedImage[6];
 		image_NW = new BufferedImage[6];
-
-
 		try {
 			for (int i = 0; i < 6; i++) {
 				image_N[i] = getScaledBufferedImage(ImageIO.read(new File("resources/player/playerN" + (i+1) + ".png")), scaledHeight, scaledHeight);
@@ -62,9 +57,9 @@ public class Player implements MovableSprite, ActionListener {
 			// do nothing
 		}
 		
-		// start timer
-		timer = new Timer(200, this); 
-		timer.start();
+		// start animationTimer
+		animationTimer = new Timer(200, this); 
+		animationTimer.start();
 	}
 	
 	@Override
@@ -72,65 +67,44 @@ public class Player implements MovableSprite, ActionListener {
 		spriteCounter = (spriteCounter + 1) % 6;
 	}
 
-	
-	/**
-	 * Given X and Y coordinates, set the location of the player
-	 * @param x X coordinate
-	 * @param y Y coordinate
-	 */
 	@Override
-	public void setPosition (int x, int y) {
+	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	/**
-	 * @return X coordinate of player
-	 */
 	@Override
 	public int getX() {
 		return (int)x;
 	}
 	
-	/**
-	 * @return Y coordinate of player
-	 */
 	@Override
 	public int getY() {
 		return (int)y;
 	}
 
-	/**
-	 * @return DX coordinate of player
-	 */
 	@Override
 	public int getDX() {
 		return (int) (dx * (double)Maze.MAZE_CELL_SIZE/16);
 	}
 
-	/**
-	 * @return DY coordinate of player
-	 */
 	@Override
 	public int getDY() {
 		return (int) (dy * (double)Maze.MAZE_CELL_SIZE/16);
 	}
 	
-	/**
-	 * @return image of sprite as BufferedImage
-	 */
 	@Override
 	public BufferedImage getImage() {
 		BufferedImage[] image = null;
 
 		if (dx == 0 && dy == 0) {
-			timer.stop();
+			animationTimer.stop();
 			return lastImage[spriteCounter];
 		}
 
-		if (!timer.isRunning()) {
+		if (!animationTimer.isRunning()) {
 			spriteCounter = (spriteCounter + 1) % 6;
-			timer.start();
+			animationTimer.start();
 		}
 
 		if (dx == 0 && dy < 0) {
@@ -155,18 +129,19 @@ public class Player implements MovableSprite, ActionListener {
 		return image[spriteCounter];
 	}
 
-	/**
-	 * Gets rectangle for bounds of the Player location.
-	 * @return rectangle
-	 */
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), scaledHeight, scaledHeight);
 	}
 
+	@Override
+	public void manualMove(int dx, int dy) {
+		x += dx;
+		y += dy;
+	}
+	
 	/**
-	 * Get the list of spells spawned by player
-	 * @return List of spells
+	 * @return LinkedList of Spells casted by the player and are currently in the Maze
 	 */
 	public LinkedList<Spell> getSpells() {
 		for (Iterator<Spell> iterator = spells.iterator(); iterator.hasNext(); ) {
@@ -178,34 +153,26 @@ public class Player implements MovableSprite, ActionListener {
 	}		
 
 	/**
-	 * Returns if the player is currently alive or not.
-	 * @return alive
+	 * Indicates whether the Player has been killed or not
+	 * @return true if the Player is alive else false
 	 */
 	public boolean isAlive() {
 		return alive;
 	}
 
 	/**
-	 * Change "alive" status of player.
-	 * @param alive True or false to set player to alive or not alive
+	 * Sets whether the Player is alive or not
+	 * @param alive the boolean indicating whether the Player is alive or not (true = alive, false = not alive)
 	 */
 	public void setAlive(boolean alive) {
 		this.alive = alive;
 	}
 
-	/**
-	 * Moves the location given X and Y values for the degree movement of the player.
-	 * @param dx DX coordinate
-	 */
-	@Override
-	public void manualMove(int dx, int dy) {
-		x += dx;
-		y += dy;
-	}
+	
 
 	/**
-	 * Controls movement of player based on keypress movement keys
-	 * @param e
+	 * Sets the movement direction of the Player when a movement key has been pressed (start movement)
+	 * @param e the KeyEvent corresponding to the movement key which was pressed
 	 */
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
@@ -227,8 +194,9 @@ public class Player implements MovableSprite, ActionListener {
 	}
 
 	/**
-	 * On key release stop player's movement in that direction.
-	 * @param e
+	 * Sets the movement direction of the Player when a movement key has been released (halt movement)
+	 * Casts spells if the shoot key was released.
+	 * @param e the KeyEvent corresponding to a movement key or shoot key that was released
 	 */
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
@@ -282,7 +250,7 @@ public class Player implements MovableSprite, ActionListener {
 	}
 	
 	/**
-	 * Stop player's movement when keys released.
+	 * Stops the Player's movement
 	 */
 	public void releaseKeys() {
 		dx = 0;
@@ -290,11 +258,11 @@ public class Player implements MovableSprite, ActionListener {
 	}
 
 	/**
-	 * Gets a scaled buffered image.
-	 * @param src BufferedImage of image to scale
-	 * @param w Scaled width of image
-	 * @param h Scaled height of image
-	 * @return Scaled image
+	 * Returns a scaled instance of a BufferedImage
+	 * @param img the BufferedImage to be scaled
+	 * @param width the width of the scaled BufferedImage
+	 * @param height the height of the scaled BufferedImage
+	 * @return the scaled BufferedImage
 	 */
 	private BufferedImage getScaledBufferedImage(BufferedImage src, int w, int h){
 		int finalw = w;
@@ -316,6 +284,7 @@ public class Player implements MovableSprite, ActionListener {
 		return resizedImg;
 	}
 	
+	// movement
 	private double x;
 	private double y;
 	private int dx;
@@ -341,6 +310,6 @@ public class Player implements MovableSprite, ActionListener {
 	private BufferedImage[] lastImage;
 	private int scaledHeight;
 
-	private Timer timer;
+	private Timer animationTimer;
 	private int spriteCounter;
 }

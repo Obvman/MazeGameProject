@@ -1,4 +1,7 @@
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -8,94 +11,49 @@ import javax.imageio.ImageIO;
 public class Monster implements MovableSprite {
 
 	/**
-	 * Constructor
-	 * Randomises the initial direction, sets the height of the sprite
-	 * image, sets the sprite images.
+	 * Creates a Monster with a randomized initial direction
 	 */
 	public Monster() {
-		//randomises the initial dir of the monster
-		randomiseDirection();
+		randomiseDirection(); // random initial direction
 
-		//changes height to 75% of the cell size
+		// load images
 		scaledHeight = Maze.MAZE_CELL_SIZE * 3/4;
-
-		//Set the sprite images
 		try {
-			image_E = getScaledImage(ImageIO.read(new File("resources/monster_right.png")), scaledHeight, scaledHeight);
-			image_N = getScaledImage(ImageIO.read(new File("resources/monster_up.png")), scaledHeight, scaledHeight);
-			image_W = getScaledImage(ImageIO.read(new File("resources/monster_left.png")), scaledHeight, scaledHeight);
-			image_S = getScaledImage(ImageIO.read(new File("resources/monster_down.png")), scaledHeight, scaledHeight);
+			image_E = getScaledBufferedImage(ImageIO.read(new File("resources/monster_right.png")), scaledHeight, scaledHeight);
+			image_N = getScaledBufferedImage(ImageIO.read(new File("resources/monster_up.png")), scaledHeight, scaledHeight);
+			image_W = getScaledBufferedImage(ImageIO.read(new File("resources/monster_left.png")), scaledHeight, scaledHeight);
+			image_S = getScaledBufferedImage(ImageIO.read(new File("resources/monster_down.png")), scaledHeight, scaledHeight);
 		} catch (IOException e) {
 			//do nothing
 		}
 	}
 
-	/**
-	 * Sets the position (x and y coords) of the monster
-	 */
 	@Override
 	public void setPosition (int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	/**
-	 * Returns the x coordinate of the monster
-	 * @return The x coordinate
-	 */
 	@Override
 	public int getX() {
 		return (int)x;
 	}
 
-	/**
-	 * Returns the y coordinate of the monster
-	 * @return The y coordinate
-	 */
 	@Override
 	public int getY() {
 		return (int)y;
 	}
 
-	/**
-	 * Returns the dx value (x dir) of the monster
-	 * @return The dx value
-	 */
 	@Override
 	public int getDX() {
 		return dx;
 	}
 
-	/**
-	 * Returns the dy value (y dir) of the monster
-	 * @return The dy value
-	 */
 	@Override
 	public int getDY() {
 		return dy;
 	}
 
-	/**
-	 * Sets the dx value of the monster
-	 * @param dx The dx (x direction) value
-	 */
-	public void setDX(int dx) {
-		this.dx = dx;
-	}
-
-	/**
-	 * Sets the dy value of the monster
-	 * @param dy The dy (y direction) value
-	 */
-	public void setDY(int dy) {
-		this.dy = dy;
-	}
-
-	/**
-	 * Returns the sprite image of the monster corresponding
-	 * to its current x and y direction
-	 * @return The sprite image
-	 */
 	@Override
 	public Image getImage() {
 		if (dx == 0 && dy < 0) {
@@ -111,21 +69,11 @@ public class Monster implements MovableSprite {
 		return null;
 	}
 
-	/**
-	 * Gets the hitbox of a sprite, used to tell when two sprites intersect
-	 * @return Rectangle representing the thibox
-	 */
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), scaledHeight, scaledHeight);
 	}
 
-	/**
-	 * Manually moves the monster in the given direction
-	 * Updates its location
-	 * @param dx The x value to be moved
-	 * @param dy The y value to be moved)
-	 */
 	@Override
 	public void manualMove(int dx, int dy) {
 		this.dx = dx;
@@ -133,10 +81,25 @@ public class Monster implements MovableSprite {
 		x += dx;
 		y += dy;
 	}
+	
+	/**
+	 * Sets the x-axis movement value
+	 * @param dx The x-axis movement value
+	 */
+	public void setDX(int dx) {
+		this.dx = dx;
+	}
 
 	/**
-	 * Picks a random straight line direction for the monster
-	 * to move in. Updates the dx and dy accordingly.
+	 * Sets the y-axis movement value
+	 * @param dy the y-axis movement
+	 */
+	public void setDY(int dy) {
+		this.dy = dy;
+	}
+
+	/**
+	 * Sets the movement direction to be north, south, east, or west (randomly chosen)
 	 */
 	public void randomiseDirection() {
 		Double rand = Math.random();
@@ -157,22 +120,21 @@ public class Monster implements MovableSprite {
 	}
 
 	/**
-	 * Returns a value indicating whether this movableSprite can
-	 * fly.
-	 * @return False This is not a flying monster.
+	 * Indicates whether the Monster is capable of ignoring maze walls
+	 * @return false
 	 */
 	public boolean canFly() {
 		return false;
 	}
 
 	/**
-	 * Returns a scaled instance of an ImageIcon
-	 * @param img the ImageIcon to be scaled
-	 * @param width the width of the new ImageIcon
-	 * @param height the height of the new ImageIcon
-	 * @return The resized instance
+	 * Returns a scaled instance of a BufferedImage
+	 * @param img the BufferedImage to be scaled
+	 * @param width the width of the scaled BufferedImage
+	 * @param height the height of the scaled BufferedImage
+	 * @return the scaled BufferedImage
 	 */
-	private BufferedImage getScaledImage(BufferedImage src, int w, int h){
+	private BufferedImage getScaledBufferedImage(BufferedImage src, int w, int h){
 		int finalw = w;
 		int finalh = h;
 		double factor = 1.0d;
@@ -192,11 +154,13 @@ public class Monster implements MovableSprite {
 		return resizedImg;
 	}
 
+	// movement
 	private double x;
 	private double y;
 	private int dx;
 	private int dy;
 
+	// images
 	private BufferedImage image_N;
 	private BufferedImage image_W;
 	private BufferedImage image_S;

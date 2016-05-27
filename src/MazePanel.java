@@ -1,15 +1,27 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+/**
+ * The MazePanel is responsible for rendering graphics using the Maze as a model
+ */
 @SuppressWarnings("serial")
 public class MazePanel extends JPanel implements ActionListener {
 
 	/**
-	 * Creates a new MazePanel object with parameters to configure the Maze
+	 * Creates a new MazePanel with a given level, difficulty, spell type, and key binding
 	 * @param level the level of the Maze
 	 * @param difficulty the difficulty of the Maze
 	 * @param spellType the spellType of the Player
+	 * @param keys The key bindings corresponding the Player's controls
 	 */
 	public MazePanel(int level, int difficulty, int spellType, int[] keys) {
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -31,7 +43,7 @@ public class MazePanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Sets whether the game is running or not
+	 * Sets whether the game is running (updating) or not
 	 * @param isRunning true if the game is running else false
 	 */
 	public void setRunning(boolean isRunning) {
@@ -51,7 +63,7 @@ public class MazePanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		requestFocusInWindow();
-		maze.updateSprites(e);
+		maze.updateGame();
 		if (e.getSource() == portalTimer) {
 			maze.activatePortals();
 		}
@@ -91,7 +103,7 @@ public class MazePanel extends JPanel implements ActionListener {
 									      y + (Maze.MAZE_CELL_SIZE/2), this);
 				}
 
-				// create the illusion of connected wall tiles
+				// connect wall tile graphics for enhanced UX
 				if (mazeGrid[i][j] == Maze.WALL_TILE) {
 					if (withinMaze(j, i-1) && mazeGrid[i-1][j] == Maze.WALL_TILE) {
 						g.drawImage(tileGenerator.getWallTileN(), x, y, this);
@@ -133,17 +145,17 @@ public class MazePanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Helper function to check whether a coordinate is within the Maze
-	 * @param x the x ordinate to check
-	 * @param y the y ordinate to check
-	 * @return true if the coordinate is within the Maze else false
+	 * Helper function to check whether a coordinate is within the Maze grid
+	 * @param x the x coordinate to check
+	 * @param y the y coordinate to check
+	 * @return true if the coordinate is within the Maze grid else false
 	 */
 	private boolean withinMaze(int x, int y) {
 		return x >= 0 && y >= 0 && x < maze.getGrid()[0].length && y < maze.getGrid().length;
 	}
 
 	/**
-	 *	Private class to allow KeyEvents to update the Maze object
+	 *	Private class to allow KeyEvents to update the player in the Maze
 	 */
 	private class TAdapter extends KeyAdapter {
 		@Override

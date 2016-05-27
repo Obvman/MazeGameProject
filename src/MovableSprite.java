@@ -2,52 +2,50 @@ import java.awt.Image;
 import java.awt.Rectangle;
 
 /**
- * Interface for all Movable sprites in the game.
- * 		(used by players, monsters etc.)
+ * Interface for all movable sprites in the maze game.
  */
 public interface MovableSprite {
+	/**
+	 * Sets the position of the MovableSprite
+	 * @param x the new x coordinate of the MovableSprite 
+	 * @param y the new y coordinate of the MovableSprite
+	 */
 	void setPosition(int x, int y);
 	
 	/**
-	 * Gets X coordinate of position of the sprite.
-	 * @return X coordinate value
+	 * @return the x coordinate of the MovableSprite
 	 */
 	int getX();
 	
 	/**
-	 * Gets Y coordinate of position of the sprite.
-	 * @return Y coordinate value
+	 * @return the y coordinate of the MovableSprite
 	 */
 	int getY();
 	
 	/**
-	 * Gets X coordinate of derivative of position of the sprite.
-	 * @return DX value
+	 * @return the x-axis movement value
 	 */
 	int getDX();
 	
 	/**
-	 * Gets X coordinate of derivative of position of the sprite.
-	 * @return DX value
+	 * @return the y-axis movement value
 	 */
 	int getDY();
 	
 	/**
-	 * Gets the image associated with the sprite.
-	 * @return Image
+	 * @return the Image representing the MovableSprite
 	 */
 	Image getImage();
 	
 	/**
-	 * Gets rectangle for bounds of the image location.
-	 * @return rectangle
+	 * @return the Rectangle representing the bounds of the MovableSprite
 	 */
 	Rectangle getBounds();
 	
 	/**
-	 * Moves the location given X and Y values for the degree movement of the sprite.
-	 * @param dx Change in X
-	 * @param dy Change in Y
+	 * Updates the position of the MovableSprite based on a given x-axis and y-axis movement value
+	 * @param dx the x-axis movement value
+	 * @param dy the y-axis movement value
 	 */
 	void manualMove(int dx, int dy);
 }

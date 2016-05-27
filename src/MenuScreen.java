@@ -1,14 +1,30 @@
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
+/**
+ * The MenuScreen is the starting screen of the maze game and provides
+ * access to a new GameScreen, TutorialScreen and OptionsScreen
+ */
 @SuppressWarnings("serial")
 public class MenuScreen extends JPanel {
 	
 	/**
-	 * Constructor.
-	 * Calls the intialization function for the window.
+	 * Creates a MenuScreen object and initializes the elements of the JPanel
+	 * including start game button, tutorial button, options button and exit button
 	 * @param mainWindow The MainWindow this screen belongs to
 	 */
 	public MenuScreen(MainWindow mainWindow) {
@@ -27,21 +43,16 @@ public class MenuScreen extends JPanel {
 	}
 	
 	/**
-	 * Initialises the menu screen.
-	 * Creates JPanel which contains the screen components.
-	 * Initialises the button panel which positions the buttons.
-	 * Adds buttons for game start, tutorial, options and quit.
-	 * Allows the buttons to be pressed by hotkeys.
-	 * Displays the screen.
+	 * Initializes the MenuScreen with a start game button,
+	 * tutorial button, options button, and exit button
 	 */
 	private void initMenu() {
-		//set up 
+		//set MenuScreen layout
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setOpaque(false);
         BoxLayout layout = new BoxLayout(buttonPanel, BoxLayout.Y_AXIS);
         buttonPanel.setLayout(layout);
         
-		// add the buttons
 		// start button
 		JButton startButton = new JButton(new ImageIcon("resources/buttons/start_game.png"));
 		startButton.setContentAreaFilled(false);

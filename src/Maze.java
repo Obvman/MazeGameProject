@@ -1,20 +1,18 @@
-import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Maze {
 
 	/**
-	 * Constructor
-	 * Generates a new maze and populates it with portals, enemies, items
-	 * and the player. The size of the maze depends on the level the player
-	 * has reached
-	 * @param level The stage the player has reached. Influences maze size
-	 * @param difficulty The selected difficulty. Influences number of enemies, portals
+	 * Generates a new maze where the size is dependent on the level and
+	 * the number of enemies and portals is dependent on both the size and difficulty.
+	 * @param level The current level of the game (affects maze size)
+	 * @param difficulty The selected difficulty of the game (affects 
+	 * number of enemies, portals, and score)
 	 * and the score
-	 * @param spellType The spell appearance the player has chosen
-	 * @param keys Array of keycodes chosen in the options menu
+	 * @param spellType The selected spell appearance for the game (water, fire, air)
+	 * @param keys The key bindings corresponding the Player's controls
 	 */
 	public Maze(int level, int difficulty, int spellType, int[] keys) {
 		// set maze height and width according to level
@@ -75,85 +73,80 @@ public class Maze {
 	}
 
 	/**
-	 * Add a Monster object m to the monsters list
-	 * @param m The monster to add to monsters list
-	 */
-	public void addMonster(Monster m) {
-		this.monsters.add(m);
-	}
-
-	/**
-	 * @return linked list of portal objects
+	 * @return LinkedList of all the Portals in the game
 	 */
 	public LinkedList<Portal> getPortals() {
 		return this.portals;
 	}
 
 	/**
-	 * @return true if key has been picked up, false otherwise
+	 * @return true if the Player has picked up the key otherwise false
 	 */
 	public boolean getKey(){
 		return keyAcquired;
 	}
 
 	/**
-	 * @return 2D matrix representation of the maze
+	 * @return 2D int array representing the maze where the value of a cell indicates
+	 * the type of tile it is (refer to this class' tile constants)
 	 */
 	public int[][] getGrid() {
 		return mazeGrid;
 	}
 
 	/**
-	 * @return Player object
+	 * @return the Player object in the game
 	 */
 	public Player getPlayer() {
 		return player;
 	}
 
 	/**
-	 * @return linked list of Monster objects belonging to the maze
+	 * @return LinkedList of Monsters in the game
 	 */
 	public LinkedList<Monster> getMonsters() {
 		return monsters;
 	}
 
 	/**
-	 * @return number of monsters the player has killed
+	 * @return the number of Monsters the Player has killed
 	 */
 	public int getNumMonstersKilled() {
 		return numMonstersKilled;
 	}
 
 	/**
-	 * @return number of gems the player has collected
+	 * @return the number of gems the Player has collected
 	 */
 	public int getNumGemsCollected() {
 		return numGemsCollected;
 	}
 
 	/**
-	 * @return the player's score, 100*(monsters killed) + 50*(gems collected)
+	 * @return The current round score calculated by 100*(Monsters killed) + 50*(gems collected)
 	 */
 	public int getScore() {
 		return 100 * getNumMonstersKilled() + 50 * getNumGemsCollected();
 	}
 
 	/**
-	 * @return true if player is dead, false if player is alive
+	 * Indicates whether the round has been lost
+	 * @return true if Player is dead, false if player is alive
 	 */
 	public boolean isGameLost() {
 		return !player.isAlive();
 	}
 
 	/**
-	 * @return true if player has collected the key and is standing on the exit point
+	 * Indicates whether the round has been successfully completed
+	 * @return true if the Player has collected the key and is at the exit tile
 	 */
 	public boolean isGameWon() {
 		return keyAcquired && player.getX()/MAZE_CELL_SIZE == MAZE_WIDTH - 1 && player.getY()/MAZE_CELL_SIZE == MAZE_HEIGHT - 1;
 	}
 
 	/**
-	 * Makes every active portal spawn a new monster
+	 * Activates every Portal to spawn a new Monster in the game
 	 */
 	public void activatePortals() {
 		for (Portal p : portals) {
@@ -166,12 +159,12 @@ public class Maze {
 	}
 
 	/**
-	 * Updates status of tiles and sprites for drawing graphics.
-	 * If player, spell or enemy sprites have moved, updates their new positions.
-	 * If gems or keys have been collected, sets their tiles to be empty
-	 * @param e ActionEvent that triggers update
+	 * Refreshes the state of the game including checking whether the player has been killed,
+	 * whether spells have killed monsters, whether spells have destroyed portals,
+	 * whether key has been picked up, whether a gem has been picked up, and
+	 * updating player and monster positions
 	 */
-	public void updateSprites(ActionEvent e) {
+	public void updateGame() {
 		int playerCellX = player.getX() / MAZE_CELL_SIZE;
 		int playerCellY = player.getY() / MAZE_CELL_SIZE;
 
@@ -185,7 +178,7 @@ public class Maze {
 
 		for (Iterator<Spell> spellIter = player.getSpells().iterator(); spellIter.hasNext(); ) {
 			// check whether spells have killed monsters
-			boolean canKillPortal = true;
+			boolean monsterKilled = false;
 			Spell s = spellIter.next();
 			for (Iterator<Monster> monsterIter = monsters.iterator(); monsterIter.hasNext(); ) {
 				Monster m = monsterIter.next();
@@ -193,13 +186,13 @@ public class Maze {
 					numMonstersKilled++;
 					spellIter.remove();
 					monsterIter.remove();
-					canKillPortal = false;
+					monsterKilled = true;
 					break;
 				}
 			}
 
 			// check whether spells have killed portals
-			if (!canKillPortal) break;
+			if (monsterKilled) break;
 			for (Iterator<Portal> portalIter = portals.iterator(); portalIter.hasNext(); ) {
 				Portal p = portalIter.next();
 				if (s.getBounds().intersects(p.getBounds())) {
@@ -254,12 +247,12 @@ public class Maze {
 			int distanceToPlayer = (int) Math.sqrt(Math.pow(monsterCellX-playerCellX, 2) + Math.pow(monsterCellY-playerCellY, 2));
 			if ((distanceToPlayer > MAZE_WIDTH/3) || m.canFly()) {
 				// random movement
-				// TODO: improve algorithm
 
 				if (isLegalMove(m, m.getDX(), m.getDY()) && !(m.getDX() == 0 && m.getDY() == 0)) {
 					// continue in straight line
 					m.manualMove(m.getDX(), m.getDY());
 				} else {
+					// choose a random direction
 					while (true) {
 						m.randomiseDirection();
 						if (isLegalMove(m, m.getDX(), m.getDY())) {
@@ -269,6 +262,8 @@ public class Maze {
 					}
 				}
 			} else {
+				// chase player
+				
 				boolean[][] pathToPlayer = solveMaze(monsterCellX, monsterCellY, playerCellX, playerCellY);
 
 				int nextCellX = monsterCellX;
@@ -312,21 +307,22 @@ public class Maze {
 	}
 
 	/**
-	 * checks if a point is inside the maze
-	 * @param x x coordinate to check
-	 * @param y y coordinate to check
-	 * @return true if both coordinates lie inside the maze bounds
+	 * Checks whether a coordinate is a valid position in the maze grid
+	 * @param x the x coordinate to check
+	 * @param y the y coordinate to check
+	 * @return true if the coordinate is within the maze grid
 	 */
 	private boolean withinMaze(int x, int y) {
 		return x >= 0 && y >= 0 && x < MAZE_WIDTH && y < MAZE_HEIGHT;
 	}
 
 	/**
-	 * Checks if a sprite is attempting to move into a maze wall
-	 * @param sprite The sprite attempting to move
-	 * @param dx movement distance along x axis
-	 * @param dy movement distance along y axis
-	 * @return true if movement is valid
+	 * Checks whether a MovableSprite can perform a given x-axis and y-axis movement
+	 * @param sprite The MovableSprite to check
+	 * @param dx the x-axis movement value of the MovableSprite
+	 * @param dy the y-axis movement value of the MovableSprite
+	 * @return true if the movement results in a valid position in the maze grid
+	 * (within the maze and on a path tile)
 	 */
 	private boolean isLegalMove(MovableSprite sprite, int dx, int dy) {
 		Rectangle spriteRect = sprite.getBounds();
@@ -358,12 +354,13 @@ public class Maze {
 	}
 
 	/**
-	 * Performs a search from point X to Y and returns solution in form of a matrix
-	 * @param startX Starting X coordinate
-	 * @param startY Starting Y coordinate
-	 * @param goalX goal X coordinate
-	 * @param goalY goal Y coordinate
-	 * @return boolean matrix containing path from start to goal
+	 * Finds a path between two coordinates in the maze grid
+	 * @param startX the x coordinate of the starting location
+	 * @param startY the y coordinate of the starting location
+	 * @param goalX the x coordinate of the goal location
+	 * @param goalY the y coordinate of the goal location
+	 * @return 2D boolean array where a true value indicates that the 
+	 * cell is in the solution path from the start to the goal coordinate
 	 */
 	public boolean[][] solveMaze(int startX, int startY, int goalX, int goalY) {
 		boolean[][] visited = new boolean[MAZE_HEIGHT][MAZE_WIDTH];
@@ -381,49 +378,60 @@ public class Maze {
 	}
 
 	/**
-	 * Recursively search for path from the given start to end points
-	 * @param x Starting X coordinate
-	 * @param y Starting Y coordinate
-	 * @param goalX Goal X coordinate
-	 * @param goalY Goal Y coordinate
-	 * @param visited boolean matrix with true in points that have been visited
-	 * @param solution boolean matrix containing current path solution
-	 * @return
+	 * Recursively finds a path between two coordinates in the maze grid 
+	 * @param startX the x coordinate of the starting location
+	 * @param startY the y coordinate of the starting location
+	 * @param goalX the x coordinate of the goal location
+	 * @param goalY the y coordinate of the goal location
+	 * @param visited 2D boolean array where a true value indicates that the cell has already been visited
+	 * @param solution 2D boolean array where a true value indicates that the 
+	 * cell is in the solution path from the start to the goal coordinate
+	 * @return true if the current cell is part of the solution path otherwise false
 	 */
 	private boolean recursiveSolve(int x, int y, int goalX, int goalY, boolean[][] visited, boolean[][] solution) {
+		// check if goal coordinate reached
 		if (x == goalX && y == goalY) {
 			solution[y][x] = true;
-			return true; // If you reached the end
+			return true; 
 		}
 
-		if (mazeGrid[y][x] == WALL_TILE || visited[y][x]) return false;  
-		// If you are on a wall or already were here
+		// check if current coordinate is a wall or has already been visited
+		if (mazeGrid[y][x] == WALL_TILE || visited[y][x]) {
+			return false;  
+		}
 
+		// mark current coordinate as visited
 		visited[y][x] = true;
+		
+		// recursively check left cell
 		if (x != 0) // Checks if not on left edge
-			if (recursiveSolve(x-1, y, goalX, goalY, visited, solution)) { // Recalls method one to the left
+			if (recursiveSolve(x-1, y, goalX, goalY, visited, solution)) {
 				solution[y][x] = true; // Sets that path value to true;
 				return true	;
 			}
 
+		// recursively check right cell
 		if (x != MAZE_WIDTH - 1) // Checks if not on right edge
-			if (recursiveSolve(x+1, y, goalX, goalY, visited, solution)) { // Recalls method one to the right
+			if (recursiveSolve(x+1, y, goalX, goalY, visited, solution)) {
 				solution[y][x] = true;
 				return true;
 			}
 
+		// recursively check above cell
 		if (y != 0)  // Checks if not on top edge
-			if (recursiveSolve(x, y-1, goalX, goalY, visited, solution)) { // Recalls method one up
+			if (recursiveSolve(x, y-1, goalX, goalY, visited, solution)) { 
 				solution[y][x] = true;
 				return true;
 			}
 
-		if (y != MAZE_HEIGHT - 1) // Checks if not on bottom edge
-			if (recursiveSolve(x, y+1, goalX, goalY, visited, solution)) { // Recalls method one down
+		// recursively check below cell
+		if (y != MAZE_HEIGHT - 1) 
+			if (recursiveSolve(x, y+1, goalX, goalY, visited, solution)) { 
 				solution[y][x] = true;
 				return true;
 			}
 
+		// current coordinate does not lead to the goal coordinate
 		return false;
 	}
 
