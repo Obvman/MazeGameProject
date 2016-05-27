@@ -688,7 +688,8 @@ public class GameScreen extends JPanel implements ActionListener {
 		mazeLost.add(numGemsCollected, gbc);
 		
 		gbc.gridy = 3;
-		JLabel score = new JLabel(Integer.toString(maze.getScore()), SwingConstants.CENTER);
+		totalScore += maze.getScore();
+		JLabel score = new JLabel("" + totalScore, SwingConstants.CENTER);
 		score.setFont(new Font("Devanagari MT", Font.BOLD, 40));
 		score.setForeground(Color.YELLOW);
 		mazeLost.add(score, gbc);
