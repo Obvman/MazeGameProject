@@ -7,17 +7,6 @@ import javax.swing.ImageIcon;
  * Spell can be either FIRE, WATER or AIR and is chosen by the user when gameplay starts.
  */
 public class Spell implements MovableSprite {
-	// Spell position variables
-	private int initialX;
-	private int initialY;
-	private double x;
-	private double y;
-	private int dx;
-	private int dy;
-	
-	private Image image[]; // Holds 3 different images for when spell is displayed
-	private int scaledSize;
-
 	/**
 	 * Constructor for spell - makes a new spell object given start coordinates,
 	 * 		spell type, and change in X and Y.
@@ -142,4 +131,13 @@ public class Spell implements MovableSprite {
 	public int getStage() {
 		return (int)Math.sqrt(Math.pow(x - initialX, 2) + Math.pow(y - initialY, 2))/scaledSize;
 	}
+	
+	private int initialX;
+	private int initialY;
+	private double x;
+	private double y;
+	private int dx;
+	private int dy;
+	private Image image[];
+	private int scaledSize;
 }

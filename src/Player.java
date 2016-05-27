@@ -14,36 +14,6 @@ import javax.swing.*;
  * 	by the user, and navigates the maze.
  */
 public class Player implements MovableSprite, ActionListener {
-	private double x;
-	private double y;
-	private int dx;
-	private int dy;
-	private LinkedList<Spell> spells;
-	private int spellType;
-	private boolean alive;
-	
-	// Keys chosen by user for player navigation
-	private int moveRightKey;
-	private int moveLeftKey;
-	private int moveUpKey;
-	private int moveDownKey;
-	private int shootKey;
-
-	// character sprites
-	private BufferedImage[] image_N;
-	private BufferedImage[] image_NE;
-	private BufferedImage[] image_E;
-	private BufferedImage[] image_SE;
-	private BufferedImage[] image_S;
-	private BufferedImage[] image_SW;
-	private BufferedImage[] image_W;
-	private BufferedImage[] image_NW;
-	private BufferedImage[] lastImage;
-	private int scaledHeight;
-
-	private Timer timer;
-	private int spriteCounter;
-	
 	/**
 	 * Constructor for Player - makes a new player given the chosen spell type,
 	 *    and the current Key configuration.
@@ -89,7 +59,7 @@ public class Player implements MovableSprite, ActionListener {
 			}
 			lastImage = image_S;
 		} catch (IOException e) {
-			e.printStackTrace();
+			// do nothing
 		}
 		
 		// start timer
@@ -113,7 +83,7 @@ public class Player implements MovableSprite, ActionListener {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	/**
 	 * @return X coordinate of player
 	 */
@@ -345,4 +315,32 @@ public class Player implements MovableSprite, ActionListener {
 		g2.dispose();
 		return resizedImg;
 	}
+	
+	private double x;
+	private double y;
+	private int dx;
+	private int dy;
+	private LinkedList<Spell> spells;
+	private int spellType;
+	private boolean alive;
+	private int moveRightKey;
+	private int moveLeftKey;
+	private int moveUpKey;
+	private int moveDownKey;
+	private int shootKey;
+
+	// character sprites
+	private BufferedImage[] image_N;
+	private BufferedImage[] image_NE;
+	private BufferedImage[] image_E;
+	private BufferedImage[] image_SE;
+	private BufferedImage[] image_S;
+	private BufferedImage[] image_SW;
+	private BufferedImage[] image_W;
+	private BufferedImage[] image_NW;
+	private BufferedImage[] lastImage;
+	private int scaledHeight;
+
+	private Timer timer;
+	private int spriteCounter;
 }

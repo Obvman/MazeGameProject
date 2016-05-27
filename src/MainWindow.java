@@ -5,11 +5,6 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 	
-	private JPanel screens; // contains all the screens of the game
-	private MenuScreen menu;
-	private OptionsScreen options; // used to control game settings
-	private TutorialScreen tutorial;
-	
 	/**
 	 * Constructor.
 	 * Creates JPanel that contains all components of the program.
@@ -87,5 +82,8 @@ public class MainWindow extends JFrame {
 		cl.show(screens, "Options");
 	}
 	
-	
+	private JPanel screens; // contains all the screens of the game
+	private MenuScreen menu;
+	private OptionsScreen options; // used to control game settings
+	private TutorialScreen tutorial;
 }

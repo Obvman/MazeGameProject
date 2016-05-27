@@ -2,20 +2,6 @@ import java.awt.*;
 import javax.swing.*;
 
 public class TileGenerator {
-	private Image pathTile;
-	private Image wallTile;
-	private Image startTile;
-	private Image endTile;
-	private Image keyTile;
-	
-	// for connecting wall tiles for enhanced graphics
-	private Image wallTileN;
-	private Image wallTileW;
-	private Image wallTileS;
-	private Image wallTileE;
-	
-	// for gems
-	private Image[] gemImages;
 
 	public TileGenerator() {
 		int cellSize = Maze.MAZE_CELL_SIZE;
@@ -82,4 +68,19 @@ public class TileGenerator {
 	public Image getGemImage(int x, int y) {
 		return gemImages[(x*31+y*67) % gemImages.length];
 	}
+	
+	private Image pathTile;
+	private Image wallTile;
+	private Image startTile;
+	private Image endTile;
+	private Image keyTile;
+	
+	// for connecting wall tiles for enhanced graphics
+	private Image wallTileN;
+	private Image wallTileW;
+	private Image wallTileS;
+	private Image wallTileE;
+	
+	// for gems
+	private Image[] gemImages;
 }

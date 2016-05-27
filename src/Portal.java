@@ -9,10 +9,6 @@ import javax.swing.ImageIcon;
  *     be killed to stop them from releasing monsters.
  */
 public class Portal {
-	private int x;
-	private int y;
-	private Image image;
-	private LinkedList<Monster> monsters;
 	
 	/**
 	 * Constructor for Portal - makes a new Portal with coordinates x and y and list monsters.
@@ -79,4 +75,9 @@ public class Portal {
 	public Rectangle getBounds() {
 		return new Rectangle(getX(), getY(), Maze.MAZE_CELL_SIZE, Maze.MAZE_CELL_SIZE);
 	}
+	
+	private int x;
+	private int y;
+	private Image image;
+	private LinkedList<Monster> monsters;
 }

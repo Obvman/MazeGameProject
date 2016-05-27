@@ -7,13 +7,22 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class TutorialScreen extends JPanel {
 
-	private MainWindow mainWindow;
-
+	/**
+	 * Constructor.
+	 * Calls the intialization function for the window.
+	 * @param mainWindow The MainWindow this screen belongs to
+	 */
 	public TutorialScreen(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
+
+		setLayout(new GridBagLayout());
+
 		initTutorial();
 	}
 
+	/**
+	 * Paints the background image to the size of the screen
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -21,102 +30,127 @@ public class TutorialScreen extends JPanel {
 		g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
 	}
 
+	/**
+	 * Initialises the tutorial screen.
+	 * Creates JPanel which contains all screen components.
+	 * Initializes the grid bag layout which positions the
+	 * screen elements. Adds labels which detail how to play
+	 * the game.
+	 * Displays the screen.
+	 */
 	private void initTutorial() {
-		JPanel tutorialScreen = new JPanel(new GridBagLayout());
-		tutorialScreen.setOpaque(false);
-		add(tutorialScreen, "Tutorial Screen");
-
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(3, 3, 3, 3);
+		gbc.weighty = 1;
 
-		//Tutorial icon
+		// Tutorial image
 		gbc.gridy = 0;
 		JLabel t1 = new JLabel(new ImageIcon("resources/tut.png"));
-		tutorialScreen.add(t1, gbc);
+		add(t1, gbc);
 
+		// Back story
 		gbc.gridy = 1;
-		tutorialScreen.add(Box.createRigidArea(new Dimension(0, 25)), gbc);
-		
-		//Backstory
+		JPanel story = new JPanel(new GridLayout(0, 1));
+		story.setOpaque(false);
+		JLabel storyLabel = new JLabel("Exiled to a lava wasteland, you must navigate a maze filled with deadly monsters to escape. ", SwingConstants.CENTER);
+		storyLabel.setForeground(Color.WHITE);
+		story.add(storyLabel);
+		add(story, gbc);
+
+		// Objective
 		gbc.gridy = 2;
-		JLabel bg1 = new JLabel("Exiled to a lava wasteland, you must navigate a maze"
-				+ " filled with deadly monsters to escape. ", SwingConstants.CENTER);
-		bg1.setForeground(Color.WHITE);
-		tutorialScreen.add(bg1, gbc);
+		JPanel objective = new JPanel(new GridBagLayout());
+		objective.setOpaque(false);
 
-		gbc.gridy = 3;
-		tutorialScreen.add(Box.createRigidArea(new Dimension(0, 25)), gbc);
-
-		gbc.gridy = 4;
-		JLabel bg2 = new JLabel("Each level will contain a golden key which you must first find and collect"
-				+ " before being able to unlock the door to the next level", SwingConstants.CENTER);
-		bg2.setForeground(Color.WHITE);
-		tutorialScreen.add(bg2, gbc);
-
-		gbc.gridy = 5;
-		JPanel key = new JPanel();
-		key.setOpaque(false);
-		key.add(new JLabel(new ImageIcon("resources/key_tile.gif")));
-		key.add(new JLabel(new ImageIcon("resources/leon_closed_door.png")));
-		tutorialScreen.add(key, gbc);	
-
-		gbc.gridy = 6;
-		tutorialScreen.add(Box.createRigidArea(new Dimension(0, 25)), gbc);
-
-		//Enemies
-		gbc.gridy = 7;
-		JLabel e1 = new JLabel("During your journey, you will encounter monsters and dragons that spawn from portals to try and kill you.", SwingConstants.CENTER);
-		e1.setForeground(Color.WHITE);
-		tutorialScreen.add(e1, gbc);
+		GridBagConstraints gbcObjective = new GridBagConstraints();
 		
-		gbc.gridy = 8;
-		JLabel e2 = new JLabel("Beware! Dragons are able to fly over lava.", SwingConstants.CENTER);
-		e2.setForeground(Color.WHITE);
-		tutorialScreen.add(e2, gbc);
+		JLabel objectiveLabel = new JLabel("Each level will contain a golden key which you must first find and collect "
+				+ "before being able to unlock the door to the next level", SwingConstants.CENTER);
+		objectiveLabel.setForeground(Color.WHITE);
+		gbcObjective.gridy = 0;
+		objective.add(objectiveLabel, gbcObjective);
 
-		gbc.gridy = 9;
-		JPanel monsters = new JPanel();
-		monsters.setOpaque(false);
-		monsters.add(new JLabel(new ImageIcon("resources/monster_down.png")));
-		monsters.add(new JLabel(new ImageIcon("resources/dragon/dragonE4.png")));
-		monsters.add(new JLabel(new ImageIcon("resources/blue_portal_32.gif")));
-		tutorialScreen.add(monsters, gbc);
+		JPanel objectiveImages = new JPanel();
+		objectiveImages.setOpaque(false);
+		objectiveImages.add(new JLabel(new ImageIcon("resources/tiles/key_tile.gif")));
+		objectiveImages.add(new JLabel(new ImageIcon("resources/tiles/leon_closed_door.png")));
+		gbcObjective.gridy = 1;
+		objective.add(objectiveImages, gbcObjective);
 
-		gbc.gridy = 10;
-		tutorialScreen.add(Box.createRigidArea(new Dimension(0, 25)), gbc);
+		add(objective, gbc);
 
-		gbc.gridy = 11;
-		JLabel e3 = new JLabel("Use spells to defeat monsters and destroy portals to stop them from respawning", SwingConstants.CENTER);
-		e3.setForeground(Color.WHITE);
-		tutorialScreen.add(e3, gbc);
+		// Enemies
+		gbc.gridy = 3;
+		JPanel enemies = new JPanel(new GridBagLayout());
+		enemies.setOpaque(false);
+		
+		GridBagConstraints gbcEnemies = new GridBagConstraints();
 
-		gbc.gridy = 12;
-		JPanel spells = new JPanel();
+		JLabel enemiesLabel1 = new JLabel("During your journey, you will encounter monsters and dragons that "
+				+ "spawn from portals to try and kill you.", SwingConstants.CENTER);
+		enemiesLabel1.setForeground(Color.WHITE);
+		gbcEnemies.gridy = 0;
+		enemies.add(enemiesLabel1, gbcEnemies);
+
+		JLabel enemiesLabel2 = new JLabel("Beware! Dragons are able to fly over lava.", SwingConstants.CENTER);
+		enemiesLabel2.setForeground(Color.WHITE);
+		gbcEnemies.gridy = 1;
+		enemies.add(enemiesLabel2, gbcEnemies);
+
+		JPanel enemiesButtons = new JPanel();
+		enemiesButtons.setOpaque(false);
+		enemiesButtons.add(new JLabel(new ImageIcon("resources/monster_down.png")));
+		enemiesButtons.add(new JLabel(new ImageIcon("resources/dragon/dragonE4.png")));
+		enemiesButtons.add(new JLabel(new ImageIcon("resources/blue_portal_32.gif")));
+		gbcEnemies.gridy = 2;
+		enemies.add(enemiesButtons, gbcEnemies);
+
+		add(enemies, gbc);
+
+		// Spells
+		gbc.gridy = 4;
+		JPanel spells = new JPanel(new GridBagLayout());
 		spells.setOpaque(false);
-		spells.add(new JLabel(new ImageIcon("resources/spells/water2.png")));
-		spells.add(new JLabel(new ImageIcon("resources/spells/fire2.png")));
-		spells.add(new JLabel(new ImageIcon("resources/spells/air2.png")));
-		tutorialScreen.add(spells, gbc);
+		
+		GridBagConstraints gbcSpells = new GridBagConstraints();
 
-		gbc.gridy = 13;
-		tutorialScreen.add(Box.createRigidArea(new Dimension(0, 25)), gbc);
+		JLabel spellsLabel = new JLabel("Use spells to defeat monsters and destroy portals to stop them from respawning", SwingConstants.CENTER);
+		spellsLabel.setForeground(Color.WHITE);
+		gbcSpells.gridy = 0;
+		spells.add(spellsLabel, gbcSpells);
 
-		gbc.gridy = 14;
-		JLabel g1 = new JLabel("Improve your score by collecting gems scattered throughout the maze", SwingConstants.CENTER);
-		g1.setForeground(Color.WHITE);
-		tutorialScreen.add(g1, gbc);
+		JPanel spellsImages = new JPanel();
+		spellsImages.setOpaque(false);
+		spellsImages.add(new JLabel(new ImageIcon("resources/spells/water2.png")));
+		spellsImages.add(new JLabel(new ImageIcon("resources/spells/fire2.png")));
+		spellsImages.add(new JLabel(new ImageIcon("resources/spells/air2.png")));
+		gbcSpells.gridy = 1;
+		spells.add(spellsImages, gbcSpells);
 
-		gbc.gridy = 15;
-		JPanel gems = new JPanel();
+		add(spells, gbc);
+
+		// Gems
+		gbc.gridy = 5;
+		JPanel gems = new JPanel(new GridBagLayout());
 		gems.setOpaque(false);
-		gems.add(new JLabel(new ImageIcon("resources/gemssmall.png")));
-		tutorialScreen.add(gems, gbc);
 
-		gbc.gridy = 16;
-		tutorialScreen.add(Box.createRigidArea(new Dimension(0, 25)), gbc);
+		GridBagConstraints gbcGems = new GridBagConstraints();
+		
+		JLabel gemsLabel = new JLabel("Improve your score by collecting gems scattered throughout the maze", SwingConstants.CENTER);
+		gemsLabel.setForeground(Color.WHITE);
+		gbcGems.gridy = 0;
+		gems.add(gemsLabel, gbcGems);
 
-		gbc.gridy = 17;
+		JPanel gemsImages = new JPanel();
+		gemsImages.setOpaque(false);
+		gemsImages.add(new JLabel(new ImageIcon("resources/gemssmall.png")));
+		gbcGems.gridy = 1;
+		gems.add(gemsImages, gbcGems);
+		
+		add(gems, gbc);
+
 		// Main menu button
+		gbc.gridy = 6;
 		JButton menuButton = new JButton(new ImageIcon("resources/buttons/back.png"));
 		menuButton.setContentAreaFilled(false);
 		menuButton.setMargin(new Insets(0, 0, 0, 0));
@@ -130,10 +164,8 @@ public class TutorialScreen extends JPanel {
 				mainWindow.switchToMenu();
 			}
 		});
-		tutorialScreen.add(menuButton, gbc);
-
-
+		add(menuButton, gbc);
 	}
 
-
+	private MainWindow mainWindow;
 }

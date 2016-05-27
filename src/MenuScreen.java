@@ -6,13 +6,19 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class MenuScreen extends JPanel {
 	
-	private MainWindow mainWindow;
-	
+	/**
+	 * Constructor.
+	 * Calls the intialization function for the window.
+	 * @param mainWindow The MainWindow this screen belongs to
+	 */
 	public MenuScreen(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		initMenu();
 	}
 	
+	/**
+	 * Paints the background image to the size of the screen.
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -20,7 +26,16 @@ public class MenuScreen extends JPanel {
 	    g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
 	}
 	
+	/**
+	 * Initialises the menu screen.
+	 * Creates JPanel which contains the screen components.
+	 * Initialises the button panel which positions the buttons.
+	 * Adds buttons for game start, tutorial, options and quit.
+	 * Allows the buttons to be pressed by hotkeys.
+	 * Displays the screen.
+	 */
 	private void initMenu() {
+		//set up 
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setOpaque(false);
         BoxLayout layout = new BoxLayout(buttonPanel, BoxLayout.Y_AXIS);
@@ -71,7 +86,7 @@ public class MenuScreen extends JPanel {
 		optionsButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// display tutorial
+				// display options
 				mainWindow.switchToOptions();
 			}
 		});
@@ -96,6 +111,7 @@ public class MenuScreen extends JPanel {
 		exitButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "pressEsc");
 		exitButton.getActionMap().put("pressEsc", exitPressed);
 		
+		//add to panel with spacing
 		buttonPanel.add(Box.createVerticalStrut(60));
 		buttonPanel.add(startButton);
 		buttonPanel.add(Box.createVerticalStrut(10));
@@ -107,5 +123,5 @@ public class MenuScreen extends JPanel {
 		add(buttonPanel);
 	}
 	
-	
+	private MainWindow mainWindow;
 }

@@ -4,10 +4,6 @@ import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class MazePanel extends JPanel implements ActionListener {
-	private Maze maze;
-	private TileGenerator tileGenerator;
-	private Timer gameSpeedTimer;
-	private Timer portalTimer;
 
 	/**
 	 * Creates a new MazePanel object with parameters to configure the Maze
@@ -160,4 +156,9 @@ public class MazePanel extends JPanel implements ActionListener {
 			maze.getPlayer().keyReleased(e);
 		}
 	}
+	
+	private Maze maze;
+	private TileGenerator tileGenerator;
+	private Timer gameSpeedTimer;
+	private Timer portalTimer;
 }
