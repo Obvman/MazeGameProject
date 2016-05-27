@@ -134,7 +134,6 @@ public class MazePanel extends JPanel implements ActionListener {
 		for (Monster m : maze.getMonsters()) {
 			g.drawImage(m.getImage(), m.getX(), m.getY(), this);
 		}
-
 	}
 
 	/**

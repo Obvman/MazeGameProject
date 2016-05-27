@@ -10,6 +10,7 @@ public class Monster implements MovableSprite {
 	private double y;
 	private int dx;
 	private int dy;
+	
 	private BufferedImage image_N;
 	private BufferedImage image_W;
 	private BufferedImage image_S;
@@ -32,6 +33,12 @@ public class Monster implements MovableSprite {
 	}
 
 	@Override
+	public void setPosition (int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	@Override
 	public int getX() {
         return (int)x;
     }
@@ -49,6 +56,14 @@ public class Monster implements MovableSprite {
 	@Override
 	public int getDY() {
 		return dy;
+	}
+	
+	public void setDX(int dx) {
+		this.dx = dx;
+	}
+	
+	public void setDY(int dy) {
+		this.dy = dy;
 	}
     
 	@Override
@@ -98,11 +113,10 @@ public class Monster implements MovableSprite {
 		dy *= (double)Maze.MAZE_CELL_SIZE/32;
 	}
 	
-	public void setPosition (int x, int y) {
-		this.x = x;
-		this.y = y;
+	public boolean canFly() {
+		return false;
 	}
-
+	
 	 private BufferedImage getScaledImage(BufferedImage src, int w, int h){
 		int finalw = w;
 		int finalh = h;

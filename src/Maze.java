@@ -277,8 +277,8 @@ public class Maze {
 			int monsterCellX = m.getX() / MAZE_CELL_SIZE;
 			int monsterCellY = m.getY() / MAZE_CELL_SIZE;
 
-			if ((Math.abs(monsterCellX-playerCellX) > 0.25 * MAZE_WIDTH 
-					&& Math.abs(monsterCellY-playerCellY) > 0.25 * MAZE_HEIGHT) || m instanceof FlyingMonster) {
+			int distanceToPlayer = (int) Math.sqrt(Math.pow(monsterCellX-playerCellX, 2) + Math.pow(monsterCellY-playerCellY, 2));
+			if ((distanceToPlayer > MAZE_WIDTH/3) || m.canFly()) {
 				// random movement
 				// TODO: improve algorithm
 
@@ -294,7 +294,7 @@ public class Maze {
 						}
 					}
 				}
-			} else if (!(m instanceof FlyingMonster)) {
+			} else {
 				boolean[][] pathToPlayer = solveMaze(monsterCellX, monsterCellY, playerCellX, playerCellY);
 				
 				int nextCellX = monsterCellX;
