@@ -201,9 +201,9 @@ public class OptionsScreen extends JPanel {
 				keyRemapDialog.setModal(true); // lock focus to the dialog
 				keyRemapDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				keyRemapDialog.setLocationRelativeTo(mainWindow);
+				keyRemapDialog.setResizable(false);
 				
 				final JButton sourceButton = (JButton)e.getSource();
-				
 				keyRemapDialog.addKeyListener(new KeyListener() {
 					@Override
 					public void keyPressed(KeyEvent e) {
@@ -227,7 +227,6 @@ public class OptionsScreen extends JPanel {
 							String buttonToChange = sourceButton.getText().split("\\(")[0];
 							sourceButton.setText(buttonToChange + "(" 
 										+ KeyEvent.getKeyText(e.getKeyCode()) + ")");
-							
 							// update controls according to input key and update list of 
 							// valid keys accordingly
 							switch (buttonToChange) {
@@ -280,46 +279,56 @@ public class OptionsScreen extends JPanel {
 				keyRemapDialog.setVisible(true);
 			}
 		};
+		
 
 		gbc.ipady = 5;
 		gbc.gridy = 0;
 		controlPicker.add(controlLabel, gbc);
 		
-		//gbc.gridwidth = 40;
 		
 		gbc.gridy = 1;
-		JButton upRemap = new JButton("Move Up ("+ KeyEvent.getKeyText(moveUpKey)+")");
-		upRemap.setForeground(Color.BLACK);
+		JButton upRemap = new JButton("Move Up ("+ KeyEvent.getKeyText(moveUpKey)+")", new ImageIcon("resources/buttons/plain_small.png"));
+		upRemap.setMargin(new Insets(0, 0, 0, 0));
+		upRemap.setContentAreaFilled(false);
+		upRemap.setHorizontalTextPosition(SwingConstants.CENTER);
+		upRemap.setForeground(Color.WHITE);
 		upRemap.addActionListener(showDialog);
-		upRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(upRemap, gbc);
 		
 		gbc.gridy = 2;
-		JButton leftRemap = new JButton("Move Left ("+ KeyEvent.getKeyText(moveLeftKey)+")");
-		leftRemap.setForeground(Color.BLACK);
+		JButton leftRemap = new JButton("Move Left ("+ KeyEvent.getKeyText(moveLeftKey)+")", new ImageIcon("resources/buttons/plain_small.png"));
+		leftRemap.setMargin(new Insets(0, 0, 0, 0));
+		leftRemap.setContentAreaFilled(false);
+		leftRemap.setHorizontalTextPosition(SwingConstants.CENTER);
+		leftRemap.setForeground(Color.WHITE);
 		leftRemap.addActionListener(showDialog);
-		leftRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(leftRemap, gbc);
 
 		gbc.gridy = 3;
-		JButton downRemap = new JButton("Move Down ("+ KeyEvent.getKeyText(moveDownKey)+")");
-		downRemap.setForeground(Color.BLACK);
+		JButton downRemap = new JButton("Move Down ("+ KeyEvent.getKeyText(moveDownKey)+")", new ImageIcon("resources/buttons/plain_small.png"));
+		downRemap.setMargin(new Insets(0, 0, 0, 0));
+		downRemap.setContentAreaFilled(false);
+		downRemap.setHorizontalTextPosition(SwingConstants.CENTER);
+		downRemap.setForeground(Color.WHITE);
 		downRemap.addActionListener(showDialog);
-		downRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(downRemap, gbc);
 		
 		gbc.gridy = 4;
-		JButton rightRemap = new JButton("Move Right ("+ KeyEvent.getKeyText(moveRightKey)+")");
-		rightRemap.setForeground(Color.BLACK);
+		JButton rightRemap = new JButton("Move Right ("+ KeyEvent.getKeyText(moveRightKey)+")", new ImageIcon("resources/buttons/plain_small.png"));
+		rightRemap.setMargin(new Insets(0, 0, 0, 0));
+		rightRemap.setContentAreaFilled(false);
+		rightRemap.setHorizontalTextPosition(SwingConstants.CENTER);
+		rightRemap.setForeground(Color.WHITE);
 		rightRemap.addActionListener(showDialog);
-		rightRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(rightRemap, gbc);
 
 		gbc.gridy = 5;
-		JButton shootRemap = new JButton("Shoot ("+ KeyEvent.getKeyText(shootKey)+")");
-		shootRemap.setForeground(Color.BLACK);
+		JButton shootRemap = new JButton("Shoot ("+ KeyEvent.getKeyText(shootKey)+")", new ImageIcon("resources/buttons/plain_small.png"));
+		shootRemap.setMargin(new Insets(0, 0, 0, 0));
+		shootRemap.setContentAreaFilled(false);
+		shootRemap.setHorizontalTextPosition(SwingConstants.CENTER);
+		shootRemap.setForeground(Color.WHITE);
 		shootRemap.addActionListener(showDialog);
-		shootRemap.setPreferredSize(new Dimension(180,30));
 		controlPicker.add(shootRemap, gbc);        
 	}
 
@@ -351,7 +360,7 @@ public class OptionsScreen extends JPanel {
 		ButtonGroup group = new ButtonGroup();
 
 		JRadioButton easyButton = new JRadioButton("Easy");
-		easyButton.setForeground(Color.WHITE);
+		easyButton.setForeground(new Color(127, 255, 0));
 		easyButton.setOpaque(false);
 		easyButton.setMnemonic(KeyEvent.VK_B);
 		easyButton.setActionCommand("Easy");
@@ -365,7 +374,7 @@ public class OptionsScreen extends JPanel {
 		});
 
 		JRadioButton mediumButton = new JRadioButton("Medium");
-		mediumButton.setForeground(Color.WHITE);
+		mediumButton.setForeground(new Color(255, 215, 0));
 		mediumButton.setOpaque(false);
 		mediumButton.setMnemonic(KeyEvent.VK_B);
 		mediumButton.setActionCommand("Medium");
@@ -382,7 +391,7 @@ public class OptionsScreen extends JPanel {
 		difficulty = 2;
 
 		JRadioButton hardButton = new JRadioButton("Hard");
-		hardButton.setForeground(Color.WHITE);
+		hardButton.setForeground(new Color(216, 31, 42));
 		hardButton.setOpaque(false);
 		hardButton.setMnemonic(KeyEvent.VK_B);
 		hardButton.setActionCommand("Hard");
